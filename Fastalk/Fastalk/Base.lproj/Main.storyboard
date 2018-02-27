@@ -98,6 +98,7 @@
                                             <state key="normal" title="Create"/>
                                             <connections>
                                                 <action selector="buttonCreateChannelClicked:" destination="sUc-HO-r03" eventType="touchUpInside" id="4rx-Le-4GD"/>
+                                                <action selector="buttonCreateChannelClicked:" destination="PlH-1a-i0J" eventType="touchUpInside" id="CFN-o0-w2b"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -105,7 +106,7 @@
                                 <connections>
                                     <outlet property="buttonCreateChannel" destination="HZb-yf-SUS" id="vYA-fS-VqM"/>
                                     <outlet property="textFieldNewChannelName" destination="Fsq-5m-SIJ" id="36v-cN-aQ1"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="K0L-hq-RsY"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="ShowChannel" id="K0L-hq-RsY"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExistingChannel" textLabel="bqc-6y-jMV" style="IBUITableViewCellStyleDefault" id="eoB-zp-hV3">

@@ -18,9 +18,13 @@ class ChannelListTableViewController: UITableViewController {
     var senderDisplayName: String?
     var newChannelTextField: UITextField?
     private var channels: [Channel] = []
+    private var channelRef = Constants.refs.databaseChannels
+    private var channelRefHandle: DatabaseHandle?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "My Channels"
+        observeChannels()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -29,13 +33,10 @@ class ChannelListTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        channels.append(Channel(id: "1", name: "Channel1"))
-        channels.append(Channel(id: "2", name: "Channel2"))
-        channels.append(Channel(id: "3", name: "Channel3"))
-        self.tableView.reloadData()
+    deinit {
+        if let refHandle = channelRefHandle {
+            channelRef.removeObserver(withHandle: refHandle)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -78,7 +79,13 @@ class ChannelListTableViewController: UITableViewController {
         return cell
     }
     
-
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == Section.currentChannelsSection.rawValue {
+            let channel = channels[(indexPath as NSIndexPath).row]
+            self.performSegue(withIdentifier: "ShowChannel", sender: channel)
+        }
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -123,5 +130,28 @@ class ChannelListTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
+    private func observeChannels() {
+        channelRefHandle = channelRef.observe(.childAdded, with: { (snapshot) -> Void in
+            let channelData = snapshot.value as! Dictionary<String, AnyObject>
+            let id = snapshot.key
+            if let name = channelData["name"] as! String!, name.count > 0 {
+                self.channels.append(Channel(id: id, name: name))
+                self.tableView.reloadData()
+            } else {
+                print("Error! Could not decode channel data")
+            }
+        })
+    }
+    
+    @IBAction func buttonCreateChannelClicked(_ sender: Any) {
+        if let name = newChannelTextField?.text {
+            let newChannelRef = channelRef.childByAutoId()
+            let channelItem = [
+                "name": name
+            ]
+            newChannelRef.setValue(channelItem)
+        }
+    }
+    
 }
