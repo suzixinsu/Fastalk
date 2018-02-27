@@ -7,132 +7,91 @@
 //
 
 import UIKit
+import Firebase
 import JSQMessagesViewController
 
-class ChatViewController: UIViewController{
-//class ChatViewController: JSQMessagesViewController {
-//    var messages = [JSQMessage]()
-//
-//    lazy var outgoingBubble: JSQMessagesBubbleImage = {
-//        return JSQMessagesBubbleImageFactory()!.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
-//    }()
-//
-//    lazy var incomingBubble: JSQMessagesBubbleImage = {
-//        return JSQMessagesBubbleImageFactory()!.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
-//    }()
+class ChatViewController: JSQMessagesViewController {
+    var channelRef: DatabaseReference?
+    var channel: Channel? {
+        didSet {
+            title = channel?.name
+        }
+    }
+    var messages = [JSQMessage]()
+
+    lazy var outgoingBubble: JSQMessagesBubbleImage = {
+        return JSQMessagesBubbleImageFactory()!.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
+    }()
+
+    lazy var incomingBubble: JSQMessagesBubbleImage = {
+        return JSQMessagesBubbleImageFactory()!.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
+    }()
+    
+    private lazy var messageRef: DatabaseReference = self.channelRef!.child("messages")
+    private var newMessageRefHandle: DatabaseHandle?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let defaults = UserDefaults.standard
-//
-//        if  let id = defaults.string(forKey: "jsq_id"),
-//            let name = defaults.string(forKey: "jsq_name")
-//        {
-//            senderId = id
-//            senderDisplayName = name
-//        }
-//        else
-//        {
-//            senderId = String(arc4random_uniform(999999))
-//            senderDisplayName = ""
-//
-//            defaults.set(senderId, forKey: "jsq_id")
-//            defaults.synchronize()
-//
-//            showDisplayNameDialog()
-//        }
-//
-//        title = "Chat: \(senderDisplayName!)"
-//
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(showDisplayNameDialog))
-//        tapGesture.numberOfTapsRequired = 1
-//
-//        navigationController?.navigationBar.addGestureRecognizer(tapGesture)
-//
-//        inputToolbar.contentView.leftBarButtonItem = nil
-//        collectionView.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
-//        collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
-//        let query = Constants.refs.databaseChats.queryLimited(toLast: 10)
-//
-//        _ = query.observe(.childAdded, with: { [weak self] snapshot in
-//
-//            if  let data        = snapshot.value as? [String: String],
-//                let id          = data["sender_id"],
-//                let name        = data["name"],
-//                let text        = data["text"],
-//                !text.isEmpty
-//            {
-//                if let message = JSQMessage(senderId: id, displayName: name, text: text)
-//                {
-//                    self?.messages.append(message)
-//
-//                    self?.finishReceivingMessage()
-//                }
-//            }
-//        })
-        // Do any additional setup after loading the view, typically from a nib.
+        self.senderId = Auth.auth().currentUser?.uid
+        observeMessages()
+        collectionView.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
+        collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
     }
     
-//    @objc func showDisplayNameDialog()
-//    {
-//        let defaults = UserDefaults.standard
-//
-//        let alert = UIAlertController(title: "Your Display Name", message: "Before you can chat, please choose a display name. Others will see this name when you send chat messages. You can change your display name again by tapping the navigation bar.", preferredStyle: .alert)
-//
-//        alert.addTextField { textField in
-//
-//            if let name = defaults.string(forKey: "jsq_name")
-//            {
-//                textField.text = name
-//            }
-//            else
-//            {
-//                let names = ["Ford", "Arthur", "Zaphod", "Trillian", "Slartibartfast", "Humma Kavula", "Deep Thought"]
-//                textField.text = names[Int(arc4random_uniform(UInt32(names.count)))]
-//            }
-//        }
-//
-//        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self, weak alert] _ in
-//
-//            if let textField = alert?.textFields?[0], !textField.text!.isEmpty {
-//
-//                self?.senderDisplayName = textField.text
-//
-//                self?.title = "Chat: \(self!.senderDisplayName!)"
-//
-//                defaults.set(textField.text, forKey: "jsq_name")
-//                defaults.synchronize()
-//            }
-//        }))
-//
-//        present(alert, animated: true, completion: nil)
-//    }
-//
-//    override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData!
-//    {
-//        return messages[indexPath.item]
-//    }
-//
-//    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-//    {
-//        return messages.count
-//    }
+    private func observeMessages() {
+        messageRef = channelRef!.child("messages")
+        let messageQuery = messageRef.queryLimited(toLast:25)
+        newMessageRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
+            let messageData = snapshot.value as! Dictionary<String, String>
+            
+            if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {
+                self.addMessage(withId: id, name: name, text: text)
+
+                self.finishReceivingMessage()
+            } else {
+                print("Error! Could not decode message data")
+            }
+        })
+    }
+    
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData!
+    {
+        return messages[indexPath.item]
+    }
+
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
+        return messages.count
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
-//    override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource!
-//    {
-//        return messages[indexPath.item].senderId == senderId ? outgoingBubble : incomingBubble
-//    }
-//
-//    override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource!
-//    {
-//        return nil
-//    }
-//
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource!
+    {
+        return messages[indexPath.item].senderId == senderId ? outgoingBubble : incomingBubble
+    }
+
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource!
+    {
+        return nil
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
+        let message = messages[indexPath.item]
+        
+        if message.senderId == senderId {
+            cell.textView?.textColor = UIColor.white
+        } else {
+            cell.textView?.textColor = UIColor.black
+        }
+        return cell
+    }
+
+
 //    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) -> NSAttributedString!
 //    {
 //        return messages[indexPath.item].senderId == senderId ? nil : NSAttributedString(string: messages[indexPath.item].senderDisplayName)
@@ -142,17 +101,26 @@ class ChatViewController: UIViewController{
 //    {
 //        return messages[indexPath.item].senderId == senderId ? 0 : 15
 //    }
-//
-//    override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!)
-//    {
-//        let ref = Constants.refs.databaseChats.childByAutoId()
-//
-//        let message = ["sender_id": senderId, "name": senderDisplayName, "text": text]
-//
-//        ref.setValue(message)
-//
-//        finishSendingMessage()
-//    }
+
+    override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!)
+    {
+        let itemRef = messageRef.childByAutoId()
+        let messageItem = [
+            "senderId": senderId!,
+            "senderName": senderDisplayName!,
+            "text": text!,
+            ]
+        
+        itemRef.setValue(messageItem)
+        JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        finishSendingMessage()
+    }
+    
+    private func addMessage(withId id: String, name: String, text: String) {
+        if let message = JSQMessage(senderId: id, displayName: name, text: text) {
+            messages.append(message)
+        }
+    }
 
 }
 
