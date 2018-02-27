@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0882F5CE2044E2D100BBCEFA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5CD2044E2D100BBCEFA /* LoginViewController.swift */; };
+		0882F5D02044E8A800BBCEFA /* ChannelListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5CF2044E8A800BBCEFA /* ChannelListTableViewController.swift */; };
+		0882F5D32044E98500BBCEFA /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5D22044E98500BBCEFA /* Channel.swift */; };
+		0882F5D82044ED4E00BBCEFA /* CreateChannelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5D72044ED4E00BBCEFA /* CreateChannelTableViewCell.swift */; };
 		08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C538982043D1C6002C2393 /* AppDelegate.swift */; };
 		08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5389A2043D1C6002C2393 /* ChatViewController.swift */; };
 		08C5389E2043D1C6002C2393 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08C5389C2043D1C6002C2393 /* Main.storyboard */; };
@@ -19,6 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0882F5CD2044E2D100BBCEFA /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		0882F5CF2044E8A800BBCEFA /* ChannelListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelListTableViewController.swift; sourceTree = "<group>"; };
+		0882F5D22044E98500BBCEFA /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		0882F5D72044ED4E00BBCEFA /* CreateChannelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChannelTableViewCell.swift; sourceTree = "<group>"; };
 		08C538952043D1C6002C2393 /* Fastalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fastalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C538982043D1C6002C2393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08C5389A2043D1C6002C2393 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +55,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0882F5D12044E96F00BBCEFA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0882F5D22044E98500BBCEFA /* Channel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0882F5D42044EB2F00BBCEFA /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				0882F5D72044ED4E00BBCEFA /* CreateChannelTableViewCell.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
 		08C5388C2043D1C6002C2393 = {
 			isa = PBXGroup;
 			children = (
@@ -70,6 +94,8 @@
 		08C538972043D1C6002C2393 /* Fastalk */ = {
 			isa = PBXGroup;
 			children = (
+				0882F5D42044EB2F00BBCEFA /* Layout */,
+				0882F5D12044E96F00BBCEFA /* Model */,
 				08C538982043D1C6002C2393 /* AppDelegate.swift */,
 				08C538AF2043D4F6002C2393 /* GoogleService-Info.plist */,
 				08C5389A2043D1C6002C2393 /* ChatViewController.swift */,
@@ -78,6 +104,8 @@
 				08C538A12043D1C6002C2393 /* LaunchScreen.storyboard */,
 				08C538A42043D1C6002C2393 /* Info.plist */,
 				08C538AC2043D274002C2393 /* Podfile */,
+				0882F5CD2044E2D100BBCEFA /* LoginViewController.swift */,
+				0882F5CF2044E8A800BBCEFA /* ChannelListTableViewController.swift */,
 			);
 			path = Fastalk;
 			sourceTree = "<group>";
@@ -240,7 +268,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0882F5D82044ED4E00BBCEFA /* CreateChannelTableViewCell.swift in Sources */,
+				0882F5CE2044E2D100BBCEFA /* LoginViewController.swift in Sources */,
+				0882F5D32044E98500BBCEFA /* Channel.swift in Sources */,
 				08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */,
+				0882F5D02044E8A800BBCEFA /* ChannelListTableViewController.swift in Sources */,
 				08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */,
 				08C538B22043D5A6002C2393 /* Constants.swift in Sources */,
 			);
