@@ -26,22 +26,39 @@ class RegisterViewController: UIViewController {
     }
     
     @IBAction func buttonRegisterClicked(_ sender: Any) {
-        let email = textFieldEmail.text
-        let password = textFieldPassword.text
+        let email = textFieldEmail.text!
+        let password = textFieldPassword.text!
         // Firebase default: Password should be at least 6 characters
-        if (email == "" || password!.count < 6) {
+        // Firebase default: Email???
+        if (email == "" || password == "") {
+            // TODO: - consider not using alert
             self.alertController = UIAlertController(title: "Empty Fields", message: "Please provide both email and password!", preferredStyle: UIAlertControllerStyle.alert)
             
             let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
             alertController!.addAction(OKAction)
             
             present(self.alertController!, animated: true, completion:nil)
+        } else if (password.count < 6) {
+            self.alertController = UIAlertController(title: "Password error", message: "Password should be at least 6 characters", preferredStyle: UIAlertControllerStyle.alert)
+            
+            let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
+            alertController!.addAction(OKAction)
+            
+            present(self.alertController!, animated: true, completion:nil)
         }
+        
         // TODO: - add email format check here
         
-        Auth.auth().createUser(withEmail: email!, password: password!) { (user, error) in
-            if let error = error {
-                print(error);
+        Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            if let err = error {
+                //print("error: " + err.localizedDescription)
+                self.alertController = UIAlertController(title: "Register error", message: "\(err.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert)
+                
+                let OKAction = UIAlertAction(title: "Try Again", style: UIAlertActionStyle.default)
+                self.alertController!.addAction(OKAction)
+                
+                self.present(self.alertController!, animated: true, completion:nil)
+                return
             }
             if let user = user {
                 let uid = user.uid
@@ -49,6 +66,7 @@ class RegisterViewController: UIViewController {
                 let photoURL = user.photoURL
                 // ...
             }
+            self.performSegue(withIdentifier: "RegisterToChat", sender: nil)
         }
     }
     

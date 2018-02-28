@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="CuA-Az-Gea">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="k0w-Wm-fiM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -34,35 +34,50 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RmV-86-iPf">
-                                <rect key="frame" x="47" y="451" width="45" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RmV-86-iPf">
+                                <rect key="frame" x="57" y="169" width="46" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6P-iC-W54">
-                                <rect key="frame" x="168" y="542" width="38" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Login"/>
-                                <connections>
-                                    <action selector="loginBtnClicked:" destination="k0w-Wm-fiM" eventType="touchUpInside" id="VjS-6g-7fh"/>
-                                    <segue destination="8Q1-qw-hqt" kind="show" identifier="LoginToChat" id="md9-Jh-UO3"/>
-                                </connections>
-                            </button>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9DR-cf-yTB">
-                                <rect key="frame" x="139" y="442" width="192" height="30"/>
+                                <rect key="frame" x="126" y="165" width="192" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZTc-7w-ecp">
+                                <rect key="frame" x="57" y="263" width="79" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bfn-Wf-Oub">
+                                <rect key="frame" x="144" y="258" width="174" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6P-iC-W54">
+                                <rect key="frame" x="168" y="371" width="38" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="loginBtnClicked:" destination="k0w-Wm-fiM" eventType="touchUpInside" id="VjS-6g-7fh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="pkp-zu-IPK"/>
                     </view>
                     <connections>
-                        <outlet property="textFieldName" destination="9DR-cf-yTB" id="kMG-Od-J15"/>
+                        <outlet property="textFieldEmail" destination="9DR-cf-yTB" id="opU-ja-KeW"/>
+                        <outlet property="textFieldPassword" destination="Bfn-Wf-Oub" id="KqN-ez-f5i"/>
+                        <segue destination="8Q1-qw-hqt" kind="show" identifier="LoginToChat" id="Ep4-8f-uCw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nJ-97-bWn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -111,7 +126,6 @@
                                 <state key="normal" title="Register"/>
                                 <connections>
                                     <action selector="buttonRegisterClicked:" destination="CuA-Az-Gea" eventType="touchUpInside" id="hci-tJ-mFd"/>
-                                    <segue destination="8Q1-qw-hqt" kind="show" id="MgM-Pg-LxI"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -121,6 +135,7 @@
                     <connections>
                         <outlet property="textFieldEmail" destination="2Zb-cB-RwB" id="Xnm-Pj-oNG"/>
                         <outlet property="textFieldPassword" destination="Ybz-0j-sBB" id="IPa-nP-ACY"/>
+                        <segue destination="8Q1-qw-hqt" kind="show" identifier="RegisterToChat" id="hEB-ZK-UDw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fTW-g3-M7q" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -216,6 +231,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="MgM-Pg-LxI"/>
+        <segue reference="hEB-ZK-UDw"/>
     </inferredMetricsTieBreakers>
 </document>
