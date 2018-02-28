@@ -11,6 +11,7 @@
 		0882F5D02044E8A800BBCEFA /* ChannelListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5CF2044E8A800BBCEFA /* ChannelListTableViewController.swift */; };
 		0882F5D32044E98500BBCEFA /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5D22044E98500BBCEFA /* Channel.swift */; };
 		0882F5D82044ED4E00BBCEFA /* CreateChannelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5D72044ED4E00BBCEFA /* CreateChannelTableViewCell.swift */; };
+		08B082A02047603900E88F73 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B0829F2047603900E88F73 /* RegisterViewController.swift */; };
 		08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C538982043D1C6002C2393 /* AppDelegate.swift */; };
 		08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5389A2043D1C6002C2393 /* ChatViewController.swift */; };
 		08C5389E2043D1C6002C2393 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08C5389C2043D1C6002C2393 /* Main.storyboard */; };
@@ -27,6 +28,7 @@
 		0882F5CF2044E8A800BBCEFA /* ChannelListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelListTableViewController.swift; sourceTree = "<group>"; };
 		0882F5D22044E98500BBCEFA /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		0882F5D72044ED4E00BBCEFA /* CreateChannelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChannelTableViewCell.swift; sourceTree = "<group>"; };
+		08B0829F2047603900E88F73 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		08C538952043D1C6002C2393 /* Fastalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fastalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C538982043D1C6002C2393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08C5389A2043D1C6002C2393 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				08C538AC2043D274002C2393 /* Podfile */,
 				0882F5CD2044E2D100BBCEFA /* LoginViewController.swift */,
 				0882F5CF2044E8A800BBCEFA /* ChannelListTableViewController.swift */,
+				08B0829F2047603900E88F73 /* RegisterViewController.swift */,
 			);
 			path = Fastalk;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 				0882F5D82044ED4E00BBCEFA /* CreateChannelTableViewCell.swift in Sources */,
 				0882F5CE2044E2D100BBCEFA /* LoginViewController.swift in Sources */,
 				0882F5D32044E98500BBCEFA /* Channel.swift in Sources */,
+				08B082A02047603900E88F73 /* RegisterViewController.swift in Sources */,
 				08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */,
 				0882F5D02044E8A800BBCEFA /* ChannelListTableViewController.swift in Sources */,
 				08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */,
