@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		080F6C7B204B951C008A5C98 /* LoginOrRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */; };
-		0882F5D82044ED4E00BBCEFA /* CreateChannelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5D72044ED4E00BBCEFA /* CreateChannelTableViewCell.swift */; };
 		08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C538982043D1C6002C2393 /* AppDelegate.swift */; };
 		08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5389A2043D1C6002C2393 /* ChatViewController.swift */; };
 		08C5389E2043D1C6002C2393 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08C5389C2043D1C6002C2393 /* Main.storyboard */; };
@@ -25,7 +24,6 @@
 
 /* Begin PBXFileReference section */
 		080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrRegisterViewController.swift; sourceTree = "<group>"; };
-		0882F5D72044ED4E00BBCEFA /* CreateChannelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChannelTableViewCell.swift; sourceTree = "<group>"; };
 		08C538952043D1C6002C2393 /* Fastalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fastalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C538982043D1C6002C2393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08C5389A2043D1C6002C2393 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -90,7 +88,6 @@
 			children = (
 				08C5389C2043D1C6002C2393 /* Main.storyboard */,
 				08C538A12043D1C6002C2393 /* LaunchScreen.storyboard */,
-				0882F5D72044ED4E00BBCEFA /* CreateChannelTableViewCell.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -287,7 +284,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0882F5D82044ED4E00BBCEFA /* CreateChannelTableViewCell.swift in Sources */,
 				08CDD056204BA9D7007439F5 /* MyTabBarController.swift in Sources */,
 				08CDD05A204BB48A007439F5 /* Chat.swift in Sources */,
 				08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */,

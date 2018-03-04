@@ -5,16 +5,17 @@
 //  Created by Dan Xu on 2/25/18.
 //  Copyright © 2018 IOSGroup7. All rights reserved.
 //
-/*
+
 import UIKit
 import Firebase
 import JSQMessagesViewController
 
 class ChatViewController: JSQMessagesViewController {
-    var channelRef: DatabaseReference?
-    var channel: Channel? {
+    private var messagesRef = Constants.refs.databaseMessages
+    private var messagesRefHandle: DatabaseHandle?
+    var chat: ChatViewController? {
         didSet {
-            title = channel?.name
+            title = chat?.title
         }
     }
     var messages = [JSQMessage]()
@@ -26,22 +27,21 @@ class ChatViewController: JSQMessagesViewController {
     lazy var incomingBubble: JSQMessagesBubbleImage = {
         return JSQMessagesBubbleImageFactory()!.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
     }()
-    
-    private lazy var messageRef: DatabaseReference = self.channelRef!.child("messages")
-    private var newMessageRefHandle: DatabaseHandle?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.senderId = Auth.auth().currentUser?.uid
+        // TODO: - change name to username
+        self.senderDisplayName = "aaa"
+        edgesForExtendedLayout = []
         observeMessages()
         collectionView.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
         collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
     }
     
     private func observeMessages() {
-        messageRef = channelRef!.child("messages")
-        let messageQuery = messageRef.queryLimited(toLast:25)
-        newMessageRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
+        let messageQuery = messagesRef.queryLimited(toLast:25)
+        messagesRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
             let messageData = snapshot.value as! Dictionary<String, String>
             
             if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {
@@ -104,7 +104,7 @@ class ChatViewController: JSQMessagesViewController {
 
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!)
     {
-        let itemRef = messageRef.childByAutoId()
+        let itemRef = messagesRef.childByAutoId()
         let messageItem = [
             "senderId": senderId!,
             "senderName": senderDisplayName!,
@@ -115,7 +115,7 @@ class ChatViewController: JSQMessagesViewController {
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
         finishSendingMessage()
     }
-    
+
     private func addMessage(withId id: String, name: String, text: String) {
         if let message = JSQMessage(senderId: id, displayName: name, text: text) {
             messages.append(message)
@@ -123,4 +123,4 @@ class ChatViewController: JSQMessagesViewController {
     }
 
 }
-*/
+
