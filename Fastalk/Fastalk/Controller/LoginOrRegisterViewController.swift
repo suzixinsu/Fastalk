@@ -95,13 +95,13 @@ class LoginOrRegisterViewController: UIViewController {
         // TODO: - add a logout somewhere
     }
     
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        let navVc = segue.destination as! UINavigationController
-        let channelVc = navVc.viewControllers.first as! ChannelListTableViewController
-        
-        channelVc.senderDisplayName = textFieldEmail?.text
-    }
+//    // MARK: - Navigation
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        super.prepare(for: segue, sender: sender)
+//        let navVc = segue.destination as! UITabBarController
+//        let channelVc = navVc.viewControllers.first as! ChannelListTableViewController
+//
+//        channelVc.senderDisplayName = textFieldEmail?.text
+//    }
     
 }

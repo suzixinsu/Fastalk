@@ -5,7 +5,7 @@
 //  Created by Dan Xu on 2/25/18.
 //  Copyright © 2018 IOSGroup7. All rights reserved.
 //
-
+/*
 import UIKit
 import Firebase
 import JSQMessagesViewController
@@ -123,4 +123,4 @@ class ChatViewController: JSQMessagesViewController {
     }
 
 }
-
+*/

@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		080F6C7B204B951C008A5C98 /* LoginOrRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */; };
-		0882F5D02044E8A800BBCEFA /* ChannelListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5CF2044E8A800BBCEFA /* ChannelListTableViewController.swift */; };
-		0882F5D32044E98500BBCEFA /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5D22044E98500BBCEFA /* Channel.swift */; };
 		0882F5D82044ED4E00BBCEFA /* CreateChannelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0882F5D72044ED4E00BBCEFA /* CreateChannelTableViewCell.swift */; };
 		08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C538982043D1C6002C2393 /* AppDelegate.swift */; };
 		08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5389A2043D1C6002C2393 /* ChatViewController.swift */; };
@@ -19,13 +17,14 @@
 		08C538AD2043D274002C2393 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 08C538AC2043D274002C2393 /* Podfile */; };
 		08C538B02043D4F6002C2393 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 08C538AF2043D4F6002C2393 /* GoogleService-Info.plist */; };
 		08C538B22043D5A6002C2393 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C538B12043D5A6002C2393 /* Constants.swift */; };
+		08CDD056204BA9D7007439F5 /* MyTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CDD055204BA9D7007439F5 /* MyTabBarController.swift */; };
+		08CDD058204BB423007439F5 /* ChatsListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CDD057204BB423007439F5 /* ChatsListTableViewController.swift */; };
+		08CDD05A204BB48A007439F5 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CDD059204BB48A007439F5 /* Chat.swift */; };
 		2C0C60C47A3A95B853633E5D /* Pods_Fastalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B12BDBBEECBFED4BBF45BF5 /* Pods_Fastalk.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrRegisterViewController.swift; sourceTree = "<group>"; };
-		0882F5CF2044E8A800BBCEFA /* ChannelListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelListTableViewController.swift; sourceTree = "<group>"; };
-		0882F5D22044E98500BBCEFA /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		0882F5D72044ED4E00BBCEFA /* CreateChannelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateChannelTableViewCell.swift; sourceTree = "<group>"; };
 		08C538952043D1C6002C2393 /* Fastalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fastalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C538982043D1C6002C2393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -38,6 +37,9 @@
 		08C538AE2043D3F4002C2393 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		08C538AF2043D4F6002C2393 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		08C538B12043D5A6002C2393 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Fastalk/Constants.swift; sourceTree = "<group>"; };
+		08CDD055204BA9D7007439F5 /* MyTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
+		08CDD057204BB423007439F5 /* ChatsListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsListTableViewController.swift; sourceTree = "<group>"; };
+		08CDD059204BB48A007439F5 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		1E49F27962CDE2497FDA5C3D /* Pods-Fastalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fastalk.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Fastalk/Pods-Fastalk.debug.xcconfig"; sourceTree = "<group>"; };
 		3B12BDBBEECBFED4BBF45BF5 /* Pods_Fastalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fastalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		664D00B332CD5FC3A820582F /* Pods-Fastalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fastalk.release.xcconfig"; path = "Pods/Target Support Files/Pods-Fastalk/Pods-Fastalk.release.xcconfig"; sourceTree = "<group>"; };
@@ -59,8 +61,9 @@
 			isa = PBXGroup;
 			children = (
 				080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */,
-				0882F5CF2044E8A800BBCEFA /* ChannelListTableViewController.swift */,
 				08C5389A2043D1C6002C2393 /* ChatViewController.swift */,
+				08CDD055204BA9D7007439F5 /* MyTabBarController.swift */,
+				08CDD057204BB423007439F5 /* ChatsListTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -77,7 +80,7 @@
 		0882F5D12044E96F00BBCEFA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0882F5D22044E98500BBCEFA /* Channel.swift */,
+				08CDD059204BB48A007439F5 /* Chat.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -285,10 +288,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0882F5D82044ED4E00BBCEFA /* CreateChannelTableViewCell.swift in Sources */,
-				0882F5D32044E98500BBCEFA /* Channel.swift in Sources */,
+				08CDD056204BA9D7007439F5 /* MyTabBarController.swift in Sources */,
+				08CDD05A204BB48A007439F5 /* Chat.swift in Sources */,
 				08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */,
 				080F6C7B204B951C008A5C98 /* LoginOrRegisterViewController.swift in Sources */,
-				0882F5D02044E8A800BBCEFA /* ChannelListTableViewController.swift in Sources */,
+				08CDD058204BB423007439F5 /* ChatsListTableViewController.swift in Sources */,
 				08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */,
 				08C538B22043D5A6002C2393 /* Constants.swift in Sources */,
 			);
