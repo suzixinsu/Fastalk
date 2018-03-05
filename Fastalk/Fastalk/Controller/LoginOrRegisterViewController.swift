@@ -109,9 +109,12 @@ class LoginOrRegisterViewController: UIViewController {
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let tabVc = segue.destination as! MyTabBarController
-        let navVc = tabVc.viewControllers!.first as! UINavigationController
-        let chatListVc = navVc.viewControllers.first as! ChatsListTableViewController
-        chatListVc.senderDisplayName = username
+        if (currentOption != 0) {
+            tabVc.freshLaunch = true
+        }
+//        let navVc = tabVc.viewControllers!.first as! UINavigationController
+//        let chatListVc = navVc.viewControllers.first as! ChatsListTableViewController
+//        chatListVc.senderDisplayName = username
     }
     
 }

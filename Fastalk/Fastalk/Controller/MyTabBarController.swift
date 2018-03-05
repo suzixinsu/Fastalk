@@ -9,10 +9,11 @@
 import UIKit
 
 class MyTabBarController: UITabBarController {
+    var freshLaunch: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
 
@@ -21,6 +22,12 @@ class MyTabBarController: UITabBarController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if freshLaunch == true {
+            freshLaunch = false
+            self.selectedIndex = 1 // settings tab
+        }
+    }
 
     /*
     // MARK: - Navigation
