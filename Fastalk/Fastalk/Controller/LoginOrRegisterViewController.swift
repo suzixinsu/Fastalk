@@ -10,15 +10,13 @@ import UIKit
 import Firebase
 
 class LoginOrRegisterViewController: UIViewController {
-    @IBOutlet weak var textFieldUsername: UITextField!
     @IBOutlet weak var textFieldEmail: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     @IBOutlet weak var segControl: UISegmentedControl!
     
     private var usersRef = Constants.refs.databaseUsers
     private var usersRefHandle: DatabaseHandle?
-    
-    var username: String?
+
     var email: String?
     var password: String?
 
@@ -43,7 +41,6 @@ class LoginOrRegisterViewController: UIViewController {
     @IBAction func goButtonClicked(_ sender: Any) {
         self.email = textFieldEmail.text!
         self.password = textFieldPassword.text!
-        self.username = textFieldUsername.text!
         if (email == "" || password == "") {
             self.alertController = UIAlertController(title: "Empty Fields", message: "Please provide both email and password!", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -71,13 +68,6 @@ class LoginOrRegisterViewController: UIViewController {
                     self.present(self.alertController!, animated: true, completion:nil)
                     return
                 }
-                // TODO: - change to set username after register
-                if let user = user {
-                    let username = [
-                        "username": self.textFieldUsername.text
-                    ]
-                    self.usersRef.child(user.uid).setValue(username)
-                }
                 self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: nil)
             }
         } else {
@@ -91,13 +81,6 @@ class LoginOrRegisterViewController: UIViewController {
                     
                     self.present(self.alertController!, animated: true, completion:nil)
                     return
-                }
-                // TODO: - change to set username after register
-                if let user = user {
-                    let username = [
-                        "username": self.textFieldUsername.text
-                    ]
-                    self.usersRef.child(user.uid).setValue(username)
                 }
                 self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: nil)
             }
