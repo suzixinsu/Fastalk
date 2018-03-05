@@ -11,9 +11,9 @@ import Firebase
 import JSQMessagesViewController
 
 class ChatViewController: JSQMessagesViewController {
-    private var messagesRef = Constants.refs.databaseMessages
-    private var messagesRefHandle: DatabaseHandle?
     var chat: Chat?
+    var messagesRef: DatabaseReference?
+    private var messagesRefHandle: DatabaseHandle?
     var messages = [JSQMessage]()
 
     lazy var outgoingBubble: JSQMessagesBubbleImage = {
@@ -37,7 +37,7 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     private func observeMessages() {
-        let messageQuery = messagesRef.queryLimited(toLast:25)
+        let messageQuery = messagesRef!.queryLimited(toLast:25)
         messagesRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
             let messageData = snapshot.value as! Dictionary<String, String>
             if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {
@@ -100,7 +100,7 @@ class ChatViewController: JSQMessagesViewController {
 
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!)
     {
-        let itemRef = messagesRef.childByAutoId()
+        let itemRef = messagesRef!.childByAutoId()
         let date = getDate()
         let messageItem = [
             "senderId": senderId!,

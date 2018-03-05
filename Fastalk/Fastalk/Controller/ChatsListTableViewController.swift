@@ -11,7 +11,7 @@ import Firebase
 
 class ChatsListTableViewController: UITableViewController {
     private var chats: [Chat] = []
-    private var chatsRef = Constants.refs.databaseChats
+    private var chatsRef = Constants.refs.databaseUsers.child(Config.userId()).child("Chats")
     private var chatsRefHandle: DatabaseHandle?
     var alertController:UIAlertController? = nil
     var emailTextField: UITextField? = nil
@@ -31,8 +31,10 @@ class ChatsListTableViewController: UITableViewController {
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             if let email = self.emailTextField?.text {
                 let newChatsRef = self.chatsRef.childByAutoId()
+                let date = self.getDate()
                 let chatItem = [
-                    "title": email
+                    "title": email,
+                    "timeStamp": date
                 ]
                 newChatsRef.setValue(chatItem)
             }
@@ -46,6 +48,14 @@ class ChatsListTableViewController: UITableViewController {
         }
         
         present(self.alertController!, animated: true, completion:nil)
+    }
+    
+    private func getDate() -> String{
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm MM/dd/yy"
+        let convertedDate = dateFormatter.string(from: currentDate)
+        return convertedDate
     }
     
     deinit {
@@ -76,16 +86,35 @@ class ChatsListTableViewController: UITableViewController {
         let reuseIdentifier = "ExistingChats"
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         cell.textLabel?.text = chats[(indexPath as NSIndexPath).row].title
+        cell.detailTextLabel?.text = chats[(indexPath as NSIndexPath).row].timeStamp
         return cell
     }
+    
+    /* show full date if time difference larger than 24 hours
+    private func showDate(_ thenDateString:String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm MM/dd/yy"
+        let thenDate = dateFormatter.date(from: thenDateString)
+        let nowDate = Date()
+        let calendar = Calendar.current
+        let diffHours = calendar.dateComponents([.hour], from: thenDate!, to: nowDate).hour ?? 0
+        if (diffHours >= 24) {
+            return thenDateString
+        } else {
+            dateFormatter.dateFormat = "hh:mm"
+            let convertedDate = dateFormatter.string(from: thenDate!)
+            return convertedDate
+        }
+    }
+    */
     
     private func observeChats() {
         chatsRefHandle = chatsRef.observe(.childAdded, with: { (snapshot) -> Void in
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
             let id = snapshot.key
             
-            if let title = chatsData["title"] as! String!, title.count > 0 {
-                self.chats.append(Chat(id: id, title: title))
+            if let title = chatsData["title"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, title.count > 0 {
+                self.chats.append(Chat(id: id, title: title, timeStamp: timeStamp))
                 self.tableView.reloadData()
             } else {
                 print("Error! Could not decode chat data")
@@ -140,7 +169,9 @@ class ChatsListTableViewController: UITableViewController {
         if let indexPath = tableView.indexPathForSelectedRow{
             let selectedRow = indexPath.row
             let chatVc = segue.destination as! ChatViewController
-            chatVc.chat = chats[selectedRow]
+            let selectedChat = chats[selectedRow]
+            chatVc.chat = selectedChat
+            chatVc.messagesRef = Constants.refs.databaseMessages.child(selectedChat.id).child("chats")
 //            chatVc.senderDisplayName = senderDisplayName
         }
     }
