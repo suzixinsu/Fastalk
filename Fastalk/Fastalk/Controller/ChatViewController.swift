@@ -27,10 +27,9 @@ class ChatViewController: JSQMessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.senderId = Auth.auth().currentUser?.uid
+        self.senderDisplayName = Config.username()
         self.title = chat?.title
-        // TODO: - change name to username
-        print("sender is \(senderDisplayName)")
-        //self.senderDisplayName = ""
+        // TODO: - change title to username
         edgesForExtendedLayout = []
         observeMessages()
         collectionView.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
@@ -41,7 +40,6 @@ class ChatViewController: JSQMessagesViewController {
         let messageQuery = messagesRef.queryLimited(toLast:25)
         messagesRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
             let messageData = snapshot.value as! Dictionary<String, String>
-            
             if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {
                 self.addMessage(withId: id, name: name, text: text)
 
@@ -103,15 +101,26 @@ class ChatViewController: JSQMessagesViewController {
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!)
     {
         let itemRef = messagesRef.childByAutoId()
+        let date = getDate()
         let messageItem = [
             "senderId": senderId!,
             "senderName": senderDisplayName!,
             "text": text!,
-            ]
+            "timeStamp": date,
+            "chatId": chat!.id
+        ]
         
         itemRef.setValue(messageItem)
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
         finishSendingMessage()
+    }
+    
+    private func getDate() -> String{
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm MM/dd/yy"
+        let convertedDate = dateFormatter.string(from: currentDate)
+        return convertedDate
     }
 
     private func addMessage(withId id: String, name: String, text: String) {

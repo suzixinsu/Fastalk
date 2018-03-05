@@ -141,7 +141,7 @@ class ChatsListTableViewController: UITableViewController {
             let selectedRow = indexPath.row
             let chatVc = segue.destination as! ChatViewController
             chatVc.chat = chats[selectedRow]
-            chatVc.senderDisplayName = senderDisplayName
+//            chatVc.senderDisplayName = senderDisplayName
         }
     }
 }
