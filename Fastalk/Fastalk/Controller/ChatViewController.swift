@@ -13,11 +13,7 @@ import JSQMessagesViewController
 class ChatViewController: JSQMessagesViewController {
     private var messagesRef = Constants.refs.databaseMessages
     private var messagesRefHandle: DatabaseHandle?
-    var chat: ChatViewController? {
-        didSet {
-            title = chat?.title
-        }
-    }
+    var chat: Chat?
     var messages = [JSQMessage]()
 
     lazy var outgoingBubble: JSQMessagesBubbleImage = {
@@ -31,8 +27,10 @@ class ChatViewController: JSQMessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.senderId = Auth.auth().currentUser?.uid
+        self.title = chat?.title
         // TODO: - change name to username
-        self.senderDisplayName = "aaa"
+        print("sender is \(senderDisplayName)")
+        //self.senderDisplayName = ""
         edgesForExtendedLayout = []
         observeMessages()
         collectionView.collectionViewLayout.incomingAvatarViewSize = CGSize.zero

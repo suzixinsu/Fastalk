@@ -10,9 +10,17 @@ import UIKit
 import Firebase
 
 class LoginOrRegisterViewController: UIViewController {
+    @IBOutlet weak var textFieldUsername: UITextField!
     @IBOutlet weak var textFieldEmail: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     @IBOutlet weak var segControl: UISegmentedControl!
+    
+    private var usersRef = Constants.refs.databaseUsers
+    private var usersRefHandle: DatabaseHandle?
+    
+    var username: String?
+    var email: String?
+    var password: String?
 
     var currentOption = 0
     var alertController:UIAlertController? = nil
@@ -33,8 +41,9 @@ class LoginOrRegisterViewController: UIViewController {
     }
     
     @IBAction func goButtonClicked(_ sender: Any) {
-        let email = textFieldEmail.text!
-        let password = textFieldPassword.text!
+        self.email = textFieldEmail.text!
+        self.password = textFieldPassword.text!
+        self.username = textFieldUsername.text!
         if (email == "" || password == "") {
             self.alertController = UIAlertController(title: "Empty Fields", message: "Please provide both email and password!", preferredStyle: UIAlertControllerStyle.alert)
             
@@ -42,7 +51,7 @@ class LoginOrRegisterViewController: UIViewController {
             alertController!.addAction(OKAction)
             
             present(self.alertController!, animated: true, completion:nil)
-        } else if (password.count < 6) {
+        } else if (password!.count < 6) {
             self.alertController = UIAlertController(title: "Password error", message: "Password should be at least 6 characters", preferredStyle: UIAlertControllerStyle.alert)
             
             let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
@@ -51,7 +60,7 @@ class LoginOrRegisterViewController: UIViewController {
             present(self.alertController!, animated: true, completion:nil)
         }
         if (currentOption == 0) {
-            Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+            Auth.auth().signIn(withEmail: email!, password: password!) { (user, error) in
                 if let err = error {
                     //print("error: " + err.localizedDescription)
                     self.alertController = UIAlertController(title: "Login error", message: "\(err.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert)
@@ -62,16 +71,17 @@ class LoginOrRegisterViewController: UIViewController {
                     self.present(self.alertController!, animated: true, completion:nil)
                     return
                 }
+                // TODO: - change to set username after register
                 if let user = user {
-                    let uid = user.uid
-                    let email = user.email
-                    let photoURL = user.photoURL
-                    // ...
+                    let username = [
+                        "username": self.textFieldUsername.text
+                    ]
+                    self.usersRef.child(user.uid).setValue(username)
                 }
                 self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: nil)
             }
         } else {
-            Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+            Auth.auth().createUser(withEmail: email!, password: password!) { (user, error) in
                 if let err = error {
                     //print("error: " + err.localizedDescription)
                     self.alertController = UIAlertController(title: "Register error", message: "\(err.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert)
@@ -82,11 +92,12 @@ class LoginOrRegisterViewController: UIViewController {
                     self.present(self.alertController!, animated: true, completion:nil)
                     return
                 }
+                // TODO: - change to set username after register
                 if let user = user {
-                    let uid = user.uid
-                    let email = user.email
-                    let photoURL = user.photoURL
-                    // ...
+                    let username = [
+                        "username": self.textFieldUsername.text
+                    ]
+                    self.usersRef.child(user.uid).setValue(username)
                 }
                 self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: nil)
             }
@@ -95,13 +106,12 @@ class LoginOrRegisterViewController: UIViewController {
         // TODO: - add a logout somewhere
     }
     
-//    // MARK: - Navigation
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        super.prepare(for: segue, sender: sender)
-//        let navVc = segue.destination as! UITabBarController
-//        let channelVc = navVc.viewControllers.first as! ChannelListTableViewController
-//
-//        channelVc.senderDisplayName = textFieldEmail?.text
-//    }
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let tabVc = segue.destination as! MyTabBarController
+        let navVc = tabVc.viewControllers!.first as! UINavigationController
+        let chatListVc = navVc.viewControllers.first as! ChatsListTableViewController
+        chatListVc.senderDisplayName = username
+    }
     
 }

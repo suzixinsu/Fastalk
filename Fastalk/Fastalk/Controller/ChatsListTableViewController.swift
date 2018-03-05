@@ -15,6 +15,7 @@ class ChatsListTableViewController: UITableViewController {
     private var chatsRefHandle: DatabaseHandle?
     var alertController:UIAlertController? = nil
     var emailTextField: UITextField? = nil
+    var senderDisplayName: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,12 +93,11 @@ class ChatsListTableViewController: UITableViewController {
         })
     }
     
-    // TODO: - implement select row efect
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let chat = chats[(indexPath as NSIndexPath).row]
-//        self.performSegue(withIdentifier: "ShowChat", sender: chat)
-//    }
-
+    /*
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    }
+    */
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -133,14 +133,15 @@ class ChatsListTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let indexPath = tableView.indexPathForSelectedRow{
+            let selectedRow = indexPath.row
+            let chatVc = segue.destination as! ChatViewController
+            chatVc.chat = chats[selectedRow]
+            chatVc.senderDisplayName = senderDisplayName
+        }
     }
-    */
-
 }
