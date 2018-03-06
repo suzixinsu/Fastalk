@@ -11,20 +11,45 @@ import Firebase
 
 class SetUsernameViewController: UIViewController {
     private var usersRef = Constants.refs.databaseUsers
-    @IBOutlet weak var textFieldUsername: UITextField!
+    var alertController:UIAlertController? = nil
+    var usernameTextField: UITextField?
+    var userHasSignedIn = false
+    
+    @IBOutlet weak var labelUsername: UILabel!
+    @IBOutlet weak var labelSignOut: UILabel!
+    @IBOutlet weak var labelEmail: UILabel!
+    
     var username: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        labelEmail.text = Config.email()
+        //TODO: - Dinamically show username
+        //labelUsername.text = Config.username()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    // MARK: - UI Actions
-    @IBAction func okClickedAction(_ sender: Any) {
-        self.username = textFieldUsername.text!
+    // MARK: - Private Methods
+    private func presentAlert() {
+        self.alertController = UIAlertController(title: "Change Username", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        self.alertController!.addTextField { (textField) -> Void in
+            self.usernameTextField = textField
+            self.usernameTextField?.placeholder = "Enter the username"
+        }
+        let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            //change label
+            self.username = self.usernameTextField!.text
+            self.labelUsername.text = self.username
+            self.updateUserInfo()
+        })
+        self.alertController!.addAction(OKAction)
+        self.present(self.alertController!, animated: true, completion:nil)
+    }
+    
+    private func updateUserInfo() {
         let userId = Auth.auth().currentUser?.uid
         let email = Auth.auth().currentUser?.email
         let userItem = [
@@ -33,8 +58,12 @@ class SetUsernameViewController: UIViewController {
         ]
         self.usersRef.child(username!).setValue(userItem)
         
-        Config.setUserId(userId!)
         Config.setUsername(username!)
+    }
+    
+    // MARK: - UI Actions
+    @IBAction func changeClickedAction(_ sender: Any) {
+        presentAlert()
     }
     
     @IBAction func signOutClickedAction(_ sender: Any) {
@@ -42,8 +71,9 @@ class SetUsernameViewController: UIViewController {
         do {
             try firebaseAuth.signOut()
         } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
+            labelSignOut.text = signOutError.localizedDescription
         }
+        labelSignOut.text = "success"
     }
     
     /*

@@ -11,6 +11,7 @@ import Foundation
 class Config: NSObject {
     fileprivate static let kUserIdKey = "userId"
     fileprivate static let kUsernameKey = "username"
+    fileprivate static let kEmailKey = "email"
     
     class func setUserId(_ userId:String) {
         UserDefaults.standard.set(userId, forKey: kUserIdKey)
@@ -20,11 +21,18 @@ class Config: NSObject {
         UserDefaults.standard.set(username, forKey: kUsernameKey)
         UserDefaults.standard.synchronize()
     }
+    class func setEmail(_ email:String) {
+        UserDefaults.standard.set(email, forKey: kEmailKey)
+        UserDefaults.standard.synchronize()
+    }
     
     class func userId() -> String {
         return UserDefaults.standard.object(forKey: kUserIdKey) as! String
     }
     class func username() -> String {
         return UserDefaults.standard.object(forKey: kUsernameKey) as! String
+    }
+    class func email() -> String {
+        return UserDefaults.standard.object(forKey: kEmailKey) as! String
     }
 }

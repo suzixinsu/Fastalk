@@ -73,9 +73,17 @@ class LoginOrRegisterViewController: UIViewController {
             if let err = error {
                 self.presentAlert(err: err)
             } else {
+                self.saveUser()
                 self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: self)
             }
         }
+    }
+    
+    private func saveUser() {
+        let userId = Auth.auth().currentUser?.uid
+        let email = Auth.auth().currentUser?.email
+        Config.setUserId(userId!)
+        Config.setEmail(email!)
     }
     
     // MARK: - UI Actions
