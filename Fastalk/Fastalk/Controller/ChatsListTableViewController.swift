@@ -79,7 +79,6 @@ class ChatsListTableViewController: UITableViewController {
         chatsRefHandle = chatsRef!.observe(.childAdded, with: { (snapshot) -> Void in
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
             let id = snapshot.key
-            
             if let title = chatsData["title"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, title.count > 0 {
                 self.chats.append(Chat(id: id, title: title, timeStamp: timeStamp))
                 self.tableView.reloadData()

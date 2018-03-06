@@ -13,7 +13,9 @@ class LoginOrRegisterViewController: UIViewController {
     @IBOutlet weak var textFieldEmail: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     @IBOutlet weak var segControl: UISegmentedControl!
-
+    @IBOutlet weak var labelEmail: UILabel!
+    @IBOutlet weak var labelPassword: UILabel!
+    
     var email: String?
     var password: String?
 
@@ -29,6 +31,17 @@ class LoginOrRegisterViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    // MARK: - Private methods
+    private func presentAlert(err: Error) {
+        self.alertController = UIAlertController(title: "Error", message: "\(err.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert)
+
+        let OKAction = UIAlertAction(title: "Try Again", style: UIAlertActionStyle.default)
+        self.alertController!.addAction(OKAction)
+
+        self.present(self.alertController!, animated: true, completion:nil)
+    }
+    
+    // MARK: - UI Actions
     @IBAction func segControlAction(_ sender: Any) {
         self.currentOption = self.segControl.selectedSegmentIndex
     }
@@ -36,30 +49,22 @@ class LoginOrRegisterViewController: UIViewController {
     @IBAction func goButtonClicked(_ sender: Any) {
         self.email = textFieldEmail.text!
         self.password = textFieldPassword.text!
-        if (email == "" || password == "") {
-            self.alertController = UIAlertController(title: "Empty Fields", message: "Please provide both email and password!", preferredStyle: UIAlertControllerStyle.alert)
-            
-            let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
-            alertController!.addAction(OKAction)
-            
-            present(self.alertController!, animated: true, completion:nil)
+        // TODO: - fix log in
+        if (email!.isEmpty) {
+            labelEmail.text = "Please provide an email"
+            return
+        } else if (password!.isEmpty) {
+            labelPassword.text = "Please provide a password"
+            return
         } else if (password!.count < 6) {
-            self.alertController = UIAlertController(title: "Password error", message: "Password should be at least 6 characters", preferredStyle: UIAlertControllerStyle.alert)
-            
-            let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
-            alertController!.addAction(OKAction)
-            
-            present(self.alertController!, animated: true, completion:nil)
+            labelPassword.text = "Password should contain at least 6 characters"
+            return
         }
+        
         if (currentOption == 0) {
             Auth.auth().signIn(withEmail: email!, password: password!) { (user, error) in
                 if let err = error {
-                    self.alertController = UIAlertController(title: "Login error", message: "\(err.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert)
-                    
-                    let OKAction = UIAlertAction(title: "Try Again", style: UIAlertActionStyle.default)
-                    self.alertController!.addAction(OKAction)
-                    
-                    self.present(self.alertController!, animated: true, completion:nil)
+                    self.presentAlert(err: err)
                     return
                 }
                 self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: nil)
@@ -67,12 +72,7 @@ class LoginOrRegisterViewController: UIViewController {
         } else {
             Auth.auth().createUser(withEmail: email!, password: password!) { (user, error) in
                 if let err = error {
-                    self.alertController = UIAlertController(title: "Register error", message: "\(err.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert)
-                    
-                    let OKAction = UIAlertAction(title: "Try Again", style: UIAlertActionStyle.default)
-                    self.alertController!.addAction(OKAction)
-                    
-                    self.present(self.alertController!, animated: true, completion:nil)
+                    self.presentAlert(err: err)
                     return
                 }
                 self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: nil)

@@ -37,6 +37,15 @@ class SetUsernameViewController: UIViewController {
         Config.setUsername(username!)
     }
     
+    @IBAction func signOutClickedAction(_ sender: Any) {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+    }
+    
     /*
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

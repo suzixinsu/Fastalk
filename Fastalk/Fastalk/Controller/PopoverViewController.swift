@@ -38,15 +38,24 @@ class PopoverViewController: UIViewController {
     
     @objc private func textFieldDidChange(_ textField: UITextField) {
         if let username = textField.text {
-            self.usersRef.queryOrdered(byChild: "username").queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
-                if snapshot.exists() {
-                    self.actionToEnable!.isEnabled = true
-                    self.alertController?.message = "User Found"
-                } else {
-                    self.alertController?.message = "User does not exist"
-                }
-            })
+            let exists = checkIfUsrExists(username)
+            if (exists) {
+                self.actionToEnable!.isEnabled = true
+                self.alertController?.message = "User Found"
+            } else {
+                self.alertController?.message = "User does not exist"
+            }
         }
+    }
+    
+    private func checkIfUsrExists(_ username: String) -> Bool {
+        self.usersRef.queryOrderedByKey().queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                return true
+            } else {
+                return false
+            }
+        })
     }
     
     private func addNewContact() {
@@ -60,6 +69,7 @@ class PopoverViewController: UIViewController {
         
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let newChatsRef = self.chatsRef!.childByAutoId()
+            //TODO: - change date to last message
             let date = self.getDate()
             let friendname = self.usernameTextField!.text!
             let chatItem = [
@@ -69,19 +79,19 @@ class PopoverViewController: UIViewController {
             newChatsRef.setValue(chatItem)
             let chatId = newChatsRef.key
             
-            self.usersRef.queryOrderedByKey().queryEqual(toValue: friendname).observeSingleEvent(of: .value, with: { (snapshot) in
-                if snapshot.exists() {
-                    let friendRef = self.usersRef.child(friendname)
-                    let friendChatsRef = friendRef.child("chats").child(chatId)
-                    let date = self.getDate()
-                    let chatItem = [
-                        "title": Config.username(),
-                        "timeStamp": date
-                    ]
-                    friendChatsRef.setValue(chatItem)
-                } else {
-                }
-            })
+            let exists = self.checkIfUsrExists(friendname)
+            if (exists) {
+                let friendRef = self.usersRef.child(friendname)
+                let friendChatsRef = friendRef.child("chats").child(chatId)
+                let date = self.getDate()
+                let chatItem = [
+                    "title": Config.username(),
+                    "timeStamp": date
+                ]
+                friendChatsRef.setValue(chatItem)
+            } else {
+                
+            }
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
