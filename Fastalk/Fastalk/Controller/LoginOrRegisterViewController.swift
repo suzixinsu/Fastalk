@@ -13,9 +13,6 @@ class LoginOrRegisterViewController: UIViewController {
     @IBOutlet weak var textFieldEmail: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     @IBOutlet weak var segControl: UISegmentedControl!
-    
-    private var usersRef = Constants.refs.databaseUsers
-    private var usersRefHandle: DatabaseHandle?
 
     var email: String?
     var password: String?

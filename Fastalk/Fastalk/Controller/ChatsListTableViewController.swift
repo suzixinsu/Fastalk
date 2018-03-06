@@ -9,9 +9,9 @@
 import UIKit
 import Firebase
 
-class ChatsListTableViewController: UITableViewController {
+class ChatsListTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     private var chats: [Chat] = []
-    private var chatsRef = Constants.refs.databaseUsers.child(Config.userId()).child("Chats")
+    private var chatsRef: DatabaseReference?
     private var chatsRefHandle: DatabaseHandle?
     var alertController:UIAlertController? = nil
     var emailTextField: UITextField? = nil
@@ -20,12 +20,15 @@ class ChatsListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Chats"
+        let userId = Auth.auth().currentUser?.uid
+        chatsRef = Constants.refs.databaseUsers.child(userId!).child("Chats")
         observeChats()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
     }
     
-    @IBAction func AddClickedAction(_ sender: Any) {
+    @IBAction func AddClickedAction(_ sender: UIBarButtonItem) {
+        /*
         self.alertController = UIAlertController(title: "Start Chat", message: "Please provide the email", preferredStyle: UIAlertControllerStyle.alert)
         
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
@@ -46,8 +49,20 @@ class ChatsListTableViewController: UITableViewController {
             self.emailTextField = textField
             self.emailTextField?.placeholder = "Enter the email"
         }
-        
         present(self.alertController!, animated: true, completion:nil)
+ */
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "popoverViewController")
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.preferredContentSize = CGSize(width: 150, height: 100)
+        let popover = vc.popoverPresentationController!
+        popover.barButtonItem = sender
+        popover.delegate = self
+        present(vc, animated: true, completion:nil)
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
     }
     
     private func getDate() -> String{
@@ -60,7 +75,7 @@ class ChatsListTableViewController: UITableViewController {
     
     deinit {
         if let refHandle = chatsRefHandle {
-            chatsRef.removeObserver(withHandle: refHandle)
+            chatsRef!.removeObserver(withHandle: refHandle)
         }
     }
 
@@ -109,7 +124,7 @@ class ChatsListTableViewController: UITableViewController {
     */
     
     private func observeChats() {
-        chatsRefHandle = chatsRef.observe(.childAdded, with: { (snapshot) -> Void in
+        chatsRefHandle = chatsRef!.observe(.childAdded, with: { (snapshot) -> Void in
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
             let id = snapshot.key
             
