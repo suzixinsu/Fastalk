@@ -1,14 +1,14 @@
 //
-//  Contact.swift
+//  User.swift
 //  Fastalk
 //
-//  Created by Dan Xu on 3/5/18.
+//  Created by Dan Xu on 3/6/18.
 //  Copyright © 2018 IOSGroup7. All rights reserved.
 //
 
 import Foundation
 
-internal class Contact {
+internal class User {
     internal let username: String
     internal let userId: String
     

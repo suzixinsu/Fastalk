@@ -23,12 +23,10 @@ class LoginOrRegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         textFieldPassword.isSecureTextEntry = true
-        // Do any additional setup after loading the view.
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func segControlAction(_ sender: Any) {
@@ -56,7 +54,6 @@ class LoginOrRegisterViewController: UIViewController {
         if (currentOption == 0) {
             Auth.auth().signIn(withEmail: email!, password: password!) { (user, error) in
                 if let err = error {
-                    //print("error: " + err.localizedDescription)
                     self.alertController = UIAlertController(title: "Login error", message: "\(err.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert)
                     
                     let OKAction = UIAlertAction(title: "Try Again", style: UIAlertActionStyle.default)
@@ -70,7 +67,6 @@ class LoginOrRegisterViewController: UIViewController {
         } else {
             Auth.auth().createUser(withEmail: email!, password: password!) { (user, error) in
                 if let err = error {
-                    //print("error: " + err.localizedDescription)
                     self.alertController = UIAlertController(title: "Register error", message: "\(err.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert)
                     
                     let OKAction = UIAlertAction(title: "Try Again", style: UIAlertActionStyle.default)
@@ -92,9 +88,6 @@ class LoginOrRegisterViewController: UIViewController {
         if (currentOption != 0) {
             tabVc.freshLaunch = true
         }
-//        let navVc = tabVc.viewControllers!.first as! UINavigationController
-//        let chatListVc = navVc.viewControllers.first as! ChatsListTableViewController
-//        chatListVc.senderDisplayName = username
     }
     
 }

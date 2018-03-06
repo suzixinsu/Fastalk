@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ChatsListTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
+class ChatsListTableViewController: UITableViewController {
     private var chats: [Chat] = []
     private var chatsRef: DatabaseReference?
     private var chatsRefHandle: DatabaseHandle?
@@ -27,21 +27,6 @@ class ChatsListTableViewController: UITableViewController, UIPopoverPresentation
         // self.clearsSelectionOnViewWillAppear = false
     }
     
-    @IBAction func AddClickedAction(_ sender: UIBarButtonItem) {
-        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "popoverViewController")
-        vc.modalPresentationStyle = UIModalPresentationStyle.popover
-        vc.preferredContentSize = CGSize(width: 150, height: 100)
-        let popover = vc.popoverPresentationController!
-        popover.barButtonItem = sender
-        popover.delegate = self
-        present(vc, animated: true, completion:nil)
-    }
-    
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
-    }
-    
     deinit {
         if let refHandle = chatsRefHandle {
             chatsRef!.removeObserver(withHandle: refHandle)
@@ -50,18 +35,15 @@ class ChatsListTableViewController: UITableViewController, UIPopoverPresentation
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
-
+    // MARK: - Overriden Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return chats.count
     }
 
@@ -74,6 +56,7 @@ class ChatsListTableViewController: UITableViewController, UIPopoverPresentation
         return cell
     }
     
+    // MARK: - Privage Methods
     /* show full date if time difference larger than 24 hours
     private func showDate(_ thenDateString:String) -> String {
         let dateFormatter = DateFormatter()
@@ -105,50 +88,20 @@ class ChatsListTableViewController: UITableViewController, UIPopoverPresentation
             }
         })
     }
-    
-    /*
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    }
-    */
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    // MARK: - UI Actions
+    @IBAction func AddClickedAction(_ sender: UIBarButtonItem) {
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "popoverViewController")
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.preferredContentSize = CGSize(width: 150, height: 100)
+        let popover = vc.popoverPresentationController!
+        popover.barButtonItem = sender
+        popover.delegate = self
+        present(vc, animated: true, completion:nil)
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
     
     // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let indexPath = tableView.indexPathForSelectedRow{
             let selectedRow = indexPath.row
@@ -156,7 +109,12 @@ class ChatsListTableViewController: UITableViewController, UIPopoverPresentation
             let selectedChat = chats[selectedRow]
             chatVc.chat = selectedChat
             chatVc.messagesRef = Constants.refs.databaseMessages.child("chats").child(selectedChat.id)
-//            chatVc.senderDisplayName = senderDisplayName
         }
+    }
+}
+
+extension ChatsListTableViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
     }
 }
