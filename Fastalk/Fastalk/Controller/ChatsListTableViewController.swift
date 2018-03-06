@@ -19,7 +19,7 @@ class ChatsListTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Chats"
+        self.title = "Chats"
         let username = Config.username()
         chatsRef = Constants.refs.databaseUsers.child(username).child("chats")
         observeChats()

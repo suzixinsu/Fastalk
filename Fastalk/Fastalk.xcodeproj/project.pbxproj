@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		080F6C7B204B951C008A5C98 /* LoginOrRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */; };
 		085B902C204EA3A6001DDE8D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085B902B204EA3A6001DDE8D /* User.swift */; };
+		085B9032204F4641001DDE8D /* ContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085B9031204F4641001DDE8D /* ContactsTableViewController.swift */; };
 		08957DCA204E536800EB10F7 /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08957DC9204E536800EB10F7 /* PopoverViewController.swift */; };
 		08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C538982043D1C6002C2393 /* AppDelegate.swift */; };
 		08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5389A2043D1C6002C2393 /* ChatViewController.swift */; };
@@ -30,6 +31,7 @@
 /* Begin PBXFileReference section */
 		080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrRegisterViewController.swift; sourceTree = "<group>"; };
 		085B902B204EA3A6001DDE8D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		085B9031204F4641001DDE8D /* ContactsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTableViewController.swift; sourceTree = "<group>"; };
 		08957DC9204E536800EB10F7 /* PopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		08C538952043D1C6002C2393 /* Fastalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fastalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C538982043D1C6002C2393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				08E31ADE204CD8670033A7BD /* SettingsTableViewController.swift */,
 				08E31AE0204CDD940033A7BD /* SetUsernameViewController.swift */,
 				08957DC9204E536800EB10F7 /* PopoverViewController.swift */,
+				085B9031204F4641001DDE8D /* ContactsTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				08957DCA204E536800EB10F7 /* PopoverViewController.swift in Sources */,
 				08E31AE3204CE2620033A7BD /* Config.swift in Sources */,
 				08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */,
+				085B9032204F4641001DDE8D /* ContactsTableViewController.swift in Sources */,
 				08C538B22043D5A6002C2393 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

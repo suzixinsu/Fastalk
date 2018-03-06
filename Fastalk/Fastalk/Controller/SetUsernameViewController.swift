@@ -13,7 +13,6 @@ class SetUsernameViewController: UIViewController {
     private var usersRef = Constants.refs.databaseUsers
     var alertController:UIAlertController? = nil
     var usernameTextField: UITextField?
-    var userHasSignedIn = false
     
     @IBOutlet weak var labelUsername: UILabel!
     @IBOutlet weak var labelSignOut: UILabel!
@@ -24,6 +23,7 @@ class SetUsernameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         labelEmail.text = Config.email()
+        self.title = "My Profile"
         //TODO: - Dinamically show username
         //labelUsername.text = Config.username()
     }
