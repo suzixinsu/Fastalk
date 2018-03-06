@@ -74,6 +74,7 @@ class SetUsernameViewController: UIViewController {
             labelSignOut.text = signOutError.localizedDescription
         }
         labelSignOut.text = "success"
+        self.performSegue(withIdentifier: "LoginOutToLogIn", sender: self)
     }
     
     /*
