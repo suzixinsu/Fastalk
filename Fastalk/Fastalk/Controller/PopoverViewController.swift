@@ -49,13 +49,13 @@ class PopoverViewController: UIViewController {
     }
     
     private func checkIfUsrExists(_ username: String) -> Bool {
+        var exists = false
         self.usersRef.queryOrderedByKey().queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
-                return true
-            } else {
-                return false
+                exists = true
             }
         })
+        return exists
     }
     
     private func addNewContact() {

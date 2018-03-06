@@ -41,41 +41,58 @@ class LoginOrRegisterViewController: UIViewController {
         self.present(self.alertController!, animated: true, completion:nil)
     }
     
+    private func check() -> Bool{
+        self.email = textFieldEmail.text!
+        self.password = textFieldPassword.text!
+        // TODO: - fix log in
+        if (email!.isEmpty) {
+            labelEmail.text = "Please provide an email"
+            return false
+        } else if (password!.isEmpty) {
+            labelPassword.text = "Please provide a password"
+            return false
+        } else if (password!.count < 6) {
+            labelPassword.text = "Password should contain at least 6 characters"
+            return false
+        }
+        return true
+    }
+    
+    private func login(){
+        Auth.auth().signIn(withEmail: email!, password: password!) { (user, error) in
+            if let err = error {
+                self.presentAlert(err: err)
+            } else {
+                self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: self)
+            }
+        }
+    }
+    
+    private func register(){
+        Auth.auth().createUser(withEmail: email!, password: password!) { (user, error) in
+            if let err = error {
+                self.presentAlert(err: err)
+            } else {
+                self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: self)
+            }
+        }
+    }
+    
     // MARK: - UI Actions
     @IBAction func segControlAction(_ sender: Any) {
         self.currentOption = self.segControl.selectedSegmentIndex
     }
     
     @IBAction func goButtonClicked(_ sender: Any) {
-        self.email = textFieldEmail.text!
-        self.password = textFieldPassword.text!
-        // TODO: - fix log in
-        if (email!.isEmpty) {
-            labelEmail.text = "Please provide an email"
-            return
-        } else if (password!.isEmpty) {
-            labelPassword.text = "Please provide a password"
-            return
-        } else if (password!.count < 6) {
-            labelPassword.text = "Password should contain at least 6 characters"
-            return
-        }
-        
-        if (currentOption == 0) {
-            Auth.auth().signIn(withEmail: email!, password: password!) { (user, error) in
-                if let err = error {
-                    self.presentAlert(err: err)
-                    return
-                }
-                self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: nil)
-            }
-        } else {
-            Auth.auth().createUser(withEmail: email!, password: password!) { (user, error) in
-                if let err = error {
-                    self.presentAlert(err: err)
-                    return
-                }
-                self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: nil)
+        self.labelEmail.text = ""
+        self.labelPassword.text = ""
+        let checkResults = check()
+        if (checkResults) {
+            if (currentOption == 0) {
+                //success = login(finish: hanlderBlock)
+                login()
+            } else {
+                register()
             }
         }
         // TODO: - add email format check here
