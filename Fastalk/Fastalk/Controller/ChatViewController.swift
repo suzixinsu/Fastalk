@@ -107,7 +107,6 @@ class ChatViewController: JSQMessagesViewController {
             "senderName": senderDisplayName!,
             "text": text!,
             "timeStamp": date
-            //"chatId": chat!.id
         ]
         
         itemRef.setValue(messageItem)

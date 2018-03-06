@@ -19,7 +19,7 @@ class PopoverViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        chatsRef = usersRef.child(Config.userId()).child("chats")
+        chatsRef = usersRef.child(Config.username()).child("chats")
         // Do any additional setup after loading the view.
     }
 
@@ -35,12 +35,27 @@ class PopoverViewController: UIViewController {
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let newChatsRef = self.chatsRef!.childByAutoId()
             let date = self.getDate()
-            let username = self.usernameTextField!.text as! String
+            let friendname = self.usernameTextField!.text!
             let chatItem = [
-                "title": username,
+                "title": friendname,
                 "timeStamp": date
             ]
             newChatsRef.setValue(chatItem)
+            let chatId = newChatsRef.key
+            
+            self.usersRef.queryOrderedByKey().queryEqual(toValue: friendname).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.exists() {
+                    let friendRef = self.usersRef.child(friendname)
+                    let friendChatsRef = friendRef.child("chats").child(chatId)
+                    let date = self.getDate()
+                    let chatItem = [
+                        "title": Config.username(),
+                        "timeStamp": date
+                    ]
+                    friendChatsRef.setValue(chatItem)
+                } else {
+                }
+            })
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
@@ -90,7 +105,6 @@ class PopoverViewController: UIViewController {
     @objc private func textFieldDidChange(_ textField: UITextField) {
         if let username = textField.text {
             self.usersRef.queryOrdered(byChild: "username").queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
-                print(snapshot.exists())
                 if snapshot.exists() {
                     self.actionToEnable!.isEnabled = true
                     self.alertController?.message = "User Found"

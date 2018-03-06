@@ -20,8 +20,8 @@ class ChatsListTableViewController: UITableViewController, UIPopoverPresentation
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Chats"
-        let userId = Auth.auth().currentUser?.uid
-        chatsRef = Constants.refs.databaseUsers.child(userId!).child("chats")
+        let username = Config.username()
+        chatsRef = Constants.refs.databaseUsers.child(username).child("chats")
         observeChats()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

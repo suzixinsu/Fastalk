@@ -27,14 +27,13 @@ class SetUsernameViewController: UIViewController {
     
     @IBAction func okClickedAction(_ sender: Any) {
         self.username = textFieldUsername.text!
-        
         let userId = Auth.auth().currentUser?.uid
         let email = Auth.auth().currentUser?.email
         let userItem = [
-            "username": username,
+            "userId": userId,
             "email": email
         ]
-        self.usersRef.child(userId!).setValue(userItem)
+        self.usersRef.child(username!).setValue(userItem)
         
         Config.setUserId(userId!)
         Config.setUsername(username!)
