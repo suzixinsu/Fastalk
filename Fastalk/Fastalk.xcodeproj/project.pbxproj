@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		080F6C7B204B951C008A5C98 /* LoginOrRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */; };
 		08957DCA204E536800EB10F7 /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08957DC9204E536800EB10F7 /* PopoverViewController.swift */; };
+		08957DCC204E568C00EB10F7 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08957DCB204E568C00EB10F7 /* Contact.swift */; };
 		08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C538982043D1C6002C2393 /* AppDelegate.swift */; };
 		08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5389A2043D1C6002C2393 /* ChatViewController.swift */; };
 		08C5389E2043D1C6002C2393 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08C5389C2043D1C6002C2393 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 /* Begin PBXFileReference section */
 		080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrRegisterViewController.swift; sourceTree = "<group>"; };
 		08957DC9204E536800EB10F7 /* PopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
+		08957DCB204E568C00EB10F7 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		08C538952043D1C6002C2393 /* Fastalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fastalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C538982043D1C6002C2393 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08C5389A2043D1C6002C2393 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			children = (
 				08CDD059204BB48A007439F5 /* Chat.swift */,
 				08E31AE2204CE2620033A7BD /* Config.swift */,
+				08957DCB204E568C00EB10F7 /* Contact.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -296,6 +299,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08957DCC204E568C00EB10F7 /* Contact.swift in Sources */,
 				08CDD056204BA9D7007439F5 /* MyTabBarController.swift in Sources */,
 				08CDD05A204BB48A007439F5 /* Chat.swift in Sources */,
 				08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */,

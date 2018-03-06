@@ -25,7 +25,7 @@ class MyTabBarController: UITabBarController {
     override func viewWillAppear(_ animated: Bool) {
         if freshLaunch == true {
             freshLaunch = false
-            self.selectedIndex = 1 // settings tab
+            self.selectedIndex = 2 // settings tab
         }
     }
 

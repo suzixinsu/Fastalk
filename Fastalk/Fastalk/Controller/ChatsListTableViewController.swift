@@ -21,36 +21,13 @@ class ChatsListTableViewController: UITableViewController, UIPopoverPresentation
         super.viewDidLoad()
         title = "Chats"
         let userId = Auth.auth().currentUser?.uid
-        chatsRef = Constants.refs.databaseUsers.child(userId!).child("Chats")
+        chatsRef = Constants.refs.databaseUsers.child(userId!).child("chats")
         observeChats()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
     }
     
     @IBAction func AddClickedAction(_ sender: UIBarButtonItem) {
-        /*
-        self.alertController = UIAlertController(title: "Start Chat", message: "Please provide the email", preferredStyle: UIAlertControllerStyle.alert)
-        
-        let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
-            if let email = self.emailTextField?.text {
-                let newChatsRef = self.chatsRef.childByAutoId()
-                let date = self.getDate()
-                let chatItem = [
-                    "title": email,
-                    "timeStamp": date
-                ]
-                newChatsRef.setValue(chatItem)
-            }
-        })
-        
-        alertController!.addAction(OKAction)
-        
-        self.alertController!.addTextField { (textField) -> Void in
-            self.emailTextField = textField
-            self.emailTextField?.placeholder = "Enter the email"
-        }
-        present(self.alertController!, animated: true, completion:nil)
- */
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "popoverViewController")
         vc.modalPresentationStyle = UIModalPresentationStyle.popover
@@ -63,14 +40,6 @@ class ChatsListTableViewController: UITableViewController, UIPopoverPresentation
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
-    }
-    
-    private func getDate() -> String{
-        let currentDate = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm MM/dd/yy"
-        let convertedDate = dateFormatter.string(from: currentDate)
-        return convertedDate
     }
     
     deinit {
@@ -186,7 +155,7 @@ class ChatsListTableViewController: UITableViewController, UIPopoverPresentation
             let chatVc = segue.destination as! ChatViewController
             let selectedChat = chats[selectedRow]
             chatVc.chat = selectedChat
-            chatVc.messagesRef = Constants.refs.databaseMessages.child(selectedChat.id).child("chats")
+            chatVc.messagesRef = Constants.refs.databaseMessages.child("chats").child(selectedChat.id)
 //            chatVc.senderDisplayName = senderDisplayName
         }
     }
