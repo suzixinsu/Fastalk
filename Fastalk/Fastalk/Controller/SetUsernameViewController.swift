@@ -73,7 +73,6 @@ class SetUsernameViewController: UIViewController {
         } catch let signOutError as NSError {
             labelSignOut.text = signOutError.localizedDescription
         }
-        labelSignOut.text = "success"
         self.performSegue(withIdentifier: "LoginOutToLogIn", sender: self)
     }
     

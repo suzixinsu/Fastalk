@@ -323,7 +323,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yLP-Gy-lYR">
                                 <rect key="frame" x="133" y="90" width="125" height="128"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VDx-8P-02e">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VDx-8P-02e">
                                 <rect key="frame" x="165" y="541" width="60" height="30"/>
                                 <state key="normal" title="Sign Out"/>
                                 <connections>
@@ -367,6 +367,7 @@
                             <constraint firstItem="yLP-Gy-lYR" firstAttribute="leading" secondItem="Ojj-gS-JlK" secondAttribute="leading" constant="133" id="rxB-XP-ODN"/>
                             <constraint firstItem="424-WW-4CL" firstAttribute="top" secondItem="yLP-Gy-lYR" secondAttribute="bottom" constant="53" id="t6K-vf-Hnb"/>
                             <constraint firstItem="dO3-j4-BCP" firstAttribute="top" secondItem="424-WW-4CL" secondAttribute="bottom" constant="31" id="twP-WV-PzF"/>
+                            <constraint firstItem="Ojj-gS-JlK" firstAttribute="bottom" secondItem="VDx-8P-02e" secondAttribute="bottom" constant="47" id="uAX-z9-IJW"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ojj-gS-JlK"/>
                     </view>
@@ -375,7 +376,7 @@
                         <outlet property="labelEmail" destination="YOz-sZ-xFv" id="8Tr-YM-bDR"/>
                         <outlet property="labelSignOut" destination="l1p-Ke-T5Y" id="tIg-Dm-4Jb"/>
                         <outlet property="labelUsername" destination="Efu-6z-rlk" id="rpJ-6r-MIK"/>
-                        <segue destination="k0w-Wm-fiM" kind="show" identifier="LoginOutToLogIn" id="9aq-Cb-k6c"/>
+                        <segue destination="k0w-Wm-fiM" kind="presentation" identifier="LoginOutToLogIn" modalPresentationStyle="overFullScreen" id="9aq-Cb-k6c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BHU-wJ-XIy" userLabel="First Responder" sceneMemberID="firstResponder"/>

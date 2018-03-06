@@ -129,6 +129,8 @@ class PopoverViewController: UIViewController {
         
         self.usernameTextField!.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
+    
+    // TODO: - Dismiss Popover after click
 
     /*
     // MARK: - Navigation

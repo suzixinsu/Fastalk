@@ -63,6 +63,7 @@ class LoginOrRegisterViewController: UIViewController {
             if let err = error {
                 self.presentAlert(err: err)
             } else {
+                self.saveUser()
                 self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: self)
             }
         }
