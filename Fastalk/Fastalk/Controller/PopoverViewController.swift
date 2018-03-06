@@ -89,10 +89,11 @@ class PopoverViewController: UIViewController {
     
     @objc private func textFieldDidChange(_ textField: UITextField) {
         if let username = textField.text {
-            self.usersRef.queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.usersRef.queryOrdered(byChild: "username").queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
                 print(snapshot.exists())
                 if snapshot.exists() {
                     self.actionToEnable!.isEnabled = true
+                    self.alertController?.message = "User Found"
                 } else {
                     self.alertController?.message = "User does not exist"
                 }
