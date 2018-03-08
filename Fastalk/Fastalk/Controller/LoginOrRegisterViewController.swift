@@ -64,7 +64,7 @@ class LoginOrRegisterViewController: UIViewController {
                 self.presentAlert(err: err)
             } else {
                 self.saveUser()
-                self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: self)
+                self.performSegue(withIdentifier: "LoginToChat", sender: self)
             }
         }
     }
@@ -75,7 +75,7 @@ class LoginOrRegisterViewController: UIViewController {
                 self.presentAlert(err: err)
             } else {
                 self.saveUser()
-                self.performSegue(withIdentifier: "LoginOrRegisterToChat", sender: self)
+                self.performSegue(withIdentifier: "RegisterToSetUsername", sender: self)
             }
         }
     }
@@ -109,11 +109,9 @@ class LoginOrRegisterViewController: UIViewController {
     }
     
     // MARK: - Navigation
+    /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let tabVc = segue.destination as! MyTabBarController
-        if (currentOption != 0) {
-            tabVc.freshLaunch = true
-        }
     }
+    */
     
 }

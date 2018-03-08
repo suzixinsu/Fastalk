@@ -115,12 +115,13 @@
                         <outlet property="segControl" destination="2rR-jl-JmA" id="3vY-mf-TZz"/>
                         <outlet property="textFieldEmail" destination="9DR-cf-yTB" id="opU-ja-KeW"/>
                         <outlet property="textFieldPassword" destination="Bfn-Wf-Oub" id="KqN-ez-f5i"/>
-                        <segue destination="pMI-hm-Ycd" kind="show" identifier="LoginOrRegisterToChat" id="5Ux-1g-1zQ"/>
+                        <segue destination="q9P-3I-RK8" kind="show" identifier="RegisterToSetUsername" id="8RP-XQ-W5e"/>
+                        <segue destination="pMI-hm-Ycd" kind="show" identifier="LoginToChat" id="7xC-n3-k8o"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nJ-97-bWn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2970.4000000000001" y="131.78410794602701"/>
+            <point key="canvasLocation" x="-3922" y="131"/>
         </scene>
         <!--My Tab Bar Controller-->
         <scene sceneID="bz9-G9-bXy">
@@ -313,23 +314,9 @@
                                     <action selector="setClickedAction:" destination="q9P-3I-RK8" eventType="touchUpInside" id="lfb-eD-KhT"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l1p-Ke-T5Y">
-                                <rect key="frame" x="152" y="550" width="86" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yLP-Gy-lYR">
                                 <rect key="frame" x="133" y="90" width="125" height="128"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VDx-8P-02e">
-                                <rect key="frame" x="165" y="541" width="60" height="30"/>
-                                <state key="normal" title="Sign Out"/>
-                                <connections>
-                                    <action selector="signOutClickedAction:" destination="q9P-3I-RK8" eventType="touchUpInside" id="szY-8U-0iz"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="&lt;New User&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Efu-6z-rlk">
                                 <rect key="frame" x="151" y="271" width="97" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -351,12 +338,19 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DKh-3h-ibU">
+                                <rect key="frame" x="177" y="562" width="37" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <segue destination="pMI-hm-Ycd" kind="show" id="eGL-qm-X0I"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="c50-8y-0eT" firstAttribute="leading" secondItem="Efu-6z-rlk" secondAttribute="trailing" constant="20" id="358-XI-hay"/>
                             <constraint firstItem="c50-8y-0eT" firstAttribute="baseline" secondItem="Efu-6z-rlk" secondAttribute="baseline" id="7BI-ca-l7K"/>
-                            <constraint firstItem="VDx-8P-02e" firstAttribute="leading" secondItem="Ojj-gS-JlK" secondAttribute="leading" constant="165" id="7Q6-vN-nrI"/>
                             <constraint firstItem="dO3-j4-BCP" firstAttribute="leading" secondItem="Ojj-gS-JlK" secondAttribute="leading" constant="54" id="8pm-Ok-Z1X"/>
                             <constraint firstItem="YOz-sZ-xFv" firstAttribute="baseline" secondItem="dO3-j4-BCP" secondAttribute="baseline" id="B8u-zW-WWW"/>
                             <constraint firstItem="Efu-6z-rlk" firstAttribute="leading" secondItem="424-WW-4CL" secondAttribute="trailing" constant="13" id="amd-xv-9Fg"/>
@@ -367,7 +361,6 @@
                             <constraint firstItem="yLP-Gy-lYR" firstAttribute="leading" secondItem="Ojj-gS-JlK" secondAttribute="leading" constant="133" id="rxB-XP-ODN"/>
                             <constraint firstItem="424-WW-4CL" firstAttribute="top" secondItem="yLP-Gy-lYR" secondAttribute="bottom" constant="53" id="t6K-vf-Hnb"/>
                             <constraint firstItem="dO3-j4-BCP" firstAttribute="top" secondItem="424-WW-4CL" secondAttribute="bottom" constant="31" id="twP-WV-PzF"/>
-                            <constraint firstItem="Ojj-gS-JlK" firstAttribute="bottom" secondItem="VDx-8P-02e" secondAttribute="bottom" constant="47" id="uAX-z9-IJW"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ojj-gS-JlK"/>
                     </view>
@@ -375,14 +368,49 @@
                     <connections>
                         <outlet property="buttonSet" destination="c50-8y-0eT" id="9s6-Nm-1hj"/>
                         <outlet property="labelEmail" destination="YOz-sZ-xFv" id="8Tr-YM-bDR"/>
-                        <outlet property="labelSignOut" destination="l1p-Ke-T5Y" id="tIg-Dm-4Jb"/>
                         <outlet property="labelUsername" destination="Efu-6z-rlk" id="rpJ-6r-MIK"/>
-                        <segue destination="k0w-Wm-fiM" kind="presentation" identifier="LoginOutToLogIn" modalPresentationStyle="overFullScreen" id="9aq-Cb-k6c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BHU-wJ-XIy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4279.1999999999998" y="1923.6881559220392"/>
+            <point key="canvasLocation" x="-2911" y="-389"/>
+        </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="GTF-Iv-sFQ">
+            <objects>
+                <viewController id="Nwt-cX-hD8" customClass="SettingsViewController" customModule="Fastalk" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="99o-6U-6Ag">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPm-UB-e0K">
+                                <rect key="frame" x="157" y="504" width="60" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Sign Out"/>
+                                <connections>
+                                    <action selector="buttonLogOutClickedAction:" destination="Nwt-cX-hD8" eventType="touchUpInside" id="NlA-qD-hgV"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZVD-Zf-wT7">
+                                <rect key="frame" x="132" y="562" width="111" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="miV-rz-ugQ"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="4uH-vE-eeG"/>
+                    <connections>
+                        <outlet property="labelSignOutError" destination="ZVD-Zf-wT7" id="1mk-Gy-F30"/>
+                        <segue destination="k0w-Wm-fiM" kind="presentation" identifier="LogOutToLogIn" modalPresentationStyle="overFullScreen" id="m57-7z-Q06"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lLP-Ff-by6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4777" y="2002"/>
         </scene>
         <!--Settings-->
         <scene sceneID="z6Q-Bv-2sn">
@@ -396,12 +424,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="q9P-3I-RK8" kind="relationship" relationship="rootViewController" id="fdP-ev-iRl"/>
+                        <segue destination="Nwt-cX-hD8" kind="relationship" relationship="rootViewController" id="YH3-Qo-pyP"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H8q-E7-8Hc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4278" y="1055"/>
+            <point key="canvasLocation" x="-4777" y="1075"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="JOy-0h-J9O">
@@ -423,4 +451,7 @@
             <point key="canvasLocation" x="-974.39999999999998" y="981.40929535232397"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="7xC-n3-k8o"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -1,18 +1,20 @@
 //
-//  MyTabBarController.swift
+//  SettingsViewController.swift
 //  Fastalk
 //
-//  Created by Dan Xu on 3/3/18.
+//  Created by Dan Xu on 3/8/18.
 //  Copyright © 2018 IOSGroup7. All rights reserved.
 //
 
 import UIKit
+import Firebase
 
-class MyTabBarController: UITabBarController {
-
+class SettingsViewController: UIViewController {
+    @IBOutlet weak var labelSignOutError: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Do any additional setup after loading the view.
     }
 
@@ -20,7 +22,17 @@ class MyTabBarController: UITabBarController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    @IBAction func buttonLogOutClickedAction(_ sender: Any) {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+            labelSignOutError.text = signOutError.localizedDescription
+        }
+        self.performSegue(withIdentifier: "LogOutToLogIn", sender: self)
+    }
+    
     /*
     // MARK: - Navigation
 

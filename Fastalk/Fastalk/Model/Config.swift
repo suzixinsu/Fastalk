@@ -30,7 +30,12 @@ class Config: NSObject {
         return UserDefaults.standard.object(forKey: kUserIdKey) as! String
     }
     class func username() -> String {
-        return UserDefaults.standard.object(forKey: kUsernameKey) as! String
+        let username = UserDefaults.standard.object(forKey: kUsernameKey)
+        if username == nil {
+            return "New User"
+        } else {
+            return username as! String
+        }
     }
     class func email() -> String {
         return UserDefaults.standard.object(forKey: kEmailKey) as! String

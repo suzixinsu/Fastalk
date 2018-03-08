@@ -17,7 +17,6 @@ class SetUsernameViewController: UIViewController {
     var userAlreadyExist = false
     
     @IBOutlet weak var labelUsername: UILabel!
-    @IBOutlet weak var labelSignOut: UILabel!
     @IBOutlet weak var labelEmail: UILabel!
     @IBOutlet weak var buttonSet: UIButton!
     
@@ -26,9 +25,11 @@ class SetUsernameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         labelEmail.text = Config.email()
-        self.title = "My Profile"
+        self.title = "Complete Profile"
         checkUsername()
     }
+    
+    // TODO: - Require username
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -103,17 +104,6 @@ class SetUsernameViewController: UIViewController {
     // MARK: - UI Actions
     @IBAction func setClickedAction(_ sender: Any) {
         presentAlert()
-    }
-    
-    
-    @IBAction func signOutClickedAction(_ sender: Any) {
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-        } catch let signOutError as NSError {
-            labelSignOut.text = signOutError.localizedDescription
-        }
-        self.performSegue(withIdentifier: "LoginOutToLogIn", sender: self)
     }
     
     /*
