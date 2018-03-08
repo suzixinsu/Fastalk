@@ -13,6 +13,7 @@ class SetUsernameViewController: UIViewController {
     private var usersRef = Constants.refs.databaseUsers
     var alertController:UIAlertController? = nil
     var usernameTextField: UITextField?
+    var actionToEnable: UIAlertAction?
     
     @IBOutlet weak var labelUsername: UILabel!
     @IBOutlet weak var labelSignOut: UILabel!
@@ -45,8 +46,13 @@ class SetUsernameViewController: UIViewController {
             self.labelUsername.text = self.username
             self.updateUserInfo()
         })
+        
+        OKAction.isEnabled = false
+        actionToEnable = OKAction
         self.alertController!.addAction(OKAction)
         self.present(self.alertController!, animated: true, completion:nil)
+        
+        self.usernameTextField!.addTarget(self, action: #selector(checkIfUsrExists), for: .editingChanged)
     }
     
     private func updateUserInfo() {
@@ -59,6 +65,23 @@ class SetUsernameViewController: UIViewController {
         self.usersRef.child(username!).setValue(userItem)
         
         Config.setUsername(username!)
+    }
+    
+    @objc func checkIfUsrExists() {
+        self.alertController?.message = "Checking..."
+        let username = usernameTextField!.text
+        guard !(username?.isEmpty)! else {
+            return
+        }
+        self.usersRef.queryOrderedByKey().queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                self.alertController?.message = "User already exists"
+                self.actionToEnable!.isEnabled = false
+            } else {
+                self.alertController?.message = "Nice Name"
+                self.actionToEnable!.isEnabled = true
+            }
+        })
     }
     
     // MARK: - UI Actions

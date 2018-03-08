@@ -35,27 +35,16 @@ class PopoverViewController: UIViewController {
         return convertedDate
     }
     
-    
-    @objc private func textFieldDidChange(_ textField: UITextField) {
-        if let username = textField.text {
-            let exists = checkIfUsrExists(username)
-            if (exists) {
+    @objc private func checkIfUsrExists() {
+        let username = usernameTextField!.text
+        self.usersRef.queryOrderedByKey().queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
                 self.actionToEnable!.isEnabled = true
                 self.alertController?.message = "User Found"
             } else {
                 self.alertController?.message = "User does not exist"
             }
-        }
-    }
-    
-    private func checkIfUsrExists(_ username: String) -> Bool {
-        var exists = false
-        self.usersRef.queryOrderedByKey().queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.exists() {
-                exists = true
-            }
         })
-        return exists
     }
     
     private func addNewContact() {
@@ -63,6 +52,7 @@ class PopoverViewController: UIViewController {
     }
     
     // MARK: - UI Actions
+    //TODO: - navigate to contacts
     @IBAction func newChatClickedAction(_ sender: Any) {
         //TODO: navigate to contacts
         self.alertController = UIAlertController(title: "New Chat", message: "Please provide the username", preferredStyle: UIAlertControllerStyle.alert)
@@ -79,19 +69,20 @@ class PopoverViewController: UIViewController {
             newChatsRef.setValue(chatItem)
             let chatId = newChatsRef.key
             
-            let exists = self.checkIfUsrExists(friendname)
-            if (exists) {
-                let friendRef = self.usersRef.child(friendname)
-                let friendChatsRef = friendRef.child("chats").child(chatId)
-                let date = self.getDate()
-                let chatItem = [
-                    "title": Config.username(),
-                    "timeStamp": date
-                ]
-                friendChatsRef.setValue(chatItem)
-            } else {
-                
-            }
+            self.usersRef.queryOrderedByKey().queryEqual(toValue: friendname).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.exists() {
+                    let friendRef = self.usersRef.child(friendname)
+                    let friendChatsRef = friendRef.child("chats").child(chatId)
+                    let date = self.getDate()
+                    let chatItem = [
+                        "title": Config.username(),
+                        "timeStamp": date
+                    ]
+                    friendChatsRef.setValue(chatItem)
+                } else {
+                    
+                }
+            })
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
@@ -127,7 +118,7 @@ class PopoverViewController: UIViewController {
         actionToEnable = OKAction
         present(self.alertController!, animated: true, completion:nil)
         
-        self.usernameTextField!.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        self.usernameTextField!.addTarget(self, action: #selector(checkIfUsrExists), for: .editingChanged)
     }
     
     // TODO: - Dismiss Popover after click
