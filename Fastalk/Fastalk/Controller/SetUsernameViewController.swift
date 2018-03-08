@@ -14,10 +14,12 @@ class SetUsernameViewController: UIViewController {
     var alertController:UIAlertController? = nil
     var usernameTextField: UITextField?
     var actionToEnable: UIAlertAction?
+    var userAlreadyExist = false
     
     @IBOutlet weak var labelUsername: UILabel!
     @IBOutlet weak var labelSignOut: UILabel!
     @IBOutlet weak var labelEmail: UILabel!
+    @IBOutlet weak var buttonSet: UIButton!
     
     var username: String?
     
@@ -25,7 +27,7 @@ class SetUsernameViewController: UIViewController {
         super.viewDidLoad()
         labelEmail.text = Config.email()
         self.title = "My Profile"
-        //TODO: - Dinamically show username
+        checkUsername()
         //labelUsername.text = Config.username()
     }
 
@@ -34,6 +36,21 @@ class SetUsernameViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    private func checkUsername() {
+        let userId = Auth.auth().currentUser?.uid
+        self.usersRef.queryOrdered(byChild: "userId").queryEqual(toValue: userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                self.userAlreadyExist = true
+                
+                let value = snapshot.value as? NSDictionary
+                for (k, _) in value! {
+                    self.labelUsername.text = (k as! String)
+                }
+                self.buttonSet.isHidden = true
+            }
+        })
+    }
+    
     private func presentAlert() {
         self.alertController = UIAlertController(title: "Change Username", message: "", preferredStyle: UIAlertControllerStyle.alert)
         self.alertController!.addTextField { (textField) -> Void in
@@ -52,7 +69,7 @@ class SetUsernameViewController: UIViewController {
         self.alertController!.addAction(OKAction)
         self.present(self.alertController!, animated: true, completion:nil)
         
-        self.usernameTextField!.addTarget(self, action: #selector(checkIfUsrExists), for: .editingChanged)
+        self.usernameTextField!.addTarget(self, action: #selector(checkIfUserExists), for: .editingChanged)
     }
     
     private func updateUserInfo() {
@@ -62,12 +79,17 @@ class SetUsernameViewController: UIViewController {
             "userId": userId,
             "email": email
         ]
-        self.usersRef.child(username!).setValue(userItem)
+        if (userAlreadyExist) {
+            let oldUsername = usernameTextField!.text!
+            self.usersRef.child(oldUsername).setValue(username!)
+        } else {
+            self.usersRef.child(username!).setValue(userItem)
+        }
         
         Config.setUsername(username!)
     }
     
-    @objc func checkIfUsrExists() {
+    @objc func checkIfUserExists() {
         self.alertController?.message = "Checking..."
         let username = usernameTextField!.text
         guard !(username?.isEmpty)! else {
@@ -85,9 +107,10 @@ class SetUsernameViewController: UIViewController {
     }
     
     // MARK: - UI Actions
-    @IBAction func changeClickedAction(_ sender: Any) {
+    @IBAction func setClickedAction(_ sender: Any) {
         presentAlert()
     }
+    
     
     @IBAction func signOutClickedAction(_ sender: Any) {
         let firebaseAuth = Auth.auth()

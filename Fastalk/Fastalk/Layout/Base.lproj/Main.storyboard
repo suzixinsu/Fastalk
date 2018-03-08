@@ -307,10 +307,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c50-8y-0eT">
-                                <rect key="frame" x="268" y="267" width="53" height="30"/>
-                                <state key="normal" title="Change"/>
+                                <rect key="frame" x="268" y="267" width="30" height="30"/>
+                                <state key="normal" title="Set"/>
                                 <connections>
-                                    <action selector="changeClickedAction:" destination="q9P-3I-RK8" eventType="touchUpInside" id="LY3-od-a8A"/>
+                                    <action selector="setClickedAction:" destination="q9P-3I-RK8" eventType="touchUpInside" id="lfb-eD-KhT"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l1p-Ke-T5Y">
@@ -373,6 +373,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="XS8-8v-sJY"/>
                     <connections>
+                        <outlet property="buttonSet" destination="c50-8y-0eT" id="9s6-Nm-1hj"/>
                         <outlet property="labelEmail" destination="YOz-sZ-xFv" id="8Tr-YM-bDR"/>
                         <outlet property="labelSignOut" destination="l1p-Ke-T5Y" id="tIg-Dm-4Jb"/>
                         <outlet property="labelUsername" destination="Efu-6z-rlk" id="rpJ-6r-MIK"/>
