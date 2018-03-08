@@ -15,11 +15,11 @@ class PopoverViewController: UIViewController {
     var actionToEnable: UIAlertAction?
     private var chatsRefHandle: DatabaseHandle?
     private var usersRef = Constants.refs.databaseUsers
-    private var chatsRef: DatabaseReference?
+    private var chatsRef = Constants.refs.databaseChats
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        chatsRef = usersRef.child(Config.username()).child("chats")
+        chatsRef = chatsRef.child(Config.username())
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,7 +58,7 @@ class PopoverViewController: UIViewController {
         self.alertController = UIAlertController(title: "New Chat", message: "Please provide the username", preferredStyle: UIAlertControllerStyle.alert)
         
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
-            let newChatsRef = self.chatsRef!.childByAutoId()
+            let newChatsRef = self.chatsRef.childByAutoId()
             //TODO: - change date to last message
             let date = self.getDate()
             let friendname = self.usernameTextField!.text!

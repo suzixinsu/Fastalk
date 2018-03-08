@@ -28,7 +28,6 @@ class SetUsernameViewController: UIViewController {
         labelEmail.text = Config.email()
         self.title = "My Profile"
         checkUsername()
-        //labelUsername.text = Config.username()
     }
 
     override func didReceiveMemoryWarning() {
@@ -79,12 +78,7 @@ class SetUsernameViewController: UIViewController {
             "userId": userId,
             "email": email
         ]
-        if (userAlreadyExist) {
-            let oldUsername = usernameTextField!.text!
-            self.usersRef.child(oldUsername).setValue(username!)
-        } else {
-            self.usersRef.child(username!).setValue(userItem)
-        }
+        self.usersRef.child(username!).setValue(userItem)
         
         Config.setUsername(username!)
     }

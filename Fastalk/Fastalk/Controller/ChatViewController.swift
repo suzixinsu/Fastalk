@@ -92,6 +92,7 @@ class ChatViewController: JSQMessagesViewController {
         let messageItem = [
             "senderId": senderId!,
             "senderName": senderDisplayName!,
+            "recieverName": chat?.title,
             "text": text!,
             "timeStamp": date
         ]

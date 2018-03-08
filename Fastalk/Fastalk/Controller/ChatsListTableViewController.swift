@@ -11,7 +11,8 @@ import Firebase
 
 class ChatsListTableViewController: UITableViewController {
     private var chats: [Chat] = []
-    private var chatsRef: DatabaseReference?
+    private var chatsRef = Constants.refs.databaseChats
+    private var usersRef = Constants.refs.databaseUsers
     private var chatsRefHandle: DatabaseHandle?
     var alertController:UIAlertController? = nil
     var emailTextField: UITextField? = nil
@@ -20,16 +21,14 @@ class ChatsListTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Chats"
-        let username = Config.username()
-        chatsRef = Constants.refs.databaseUsers.child(username).child("chats")
-        observeChats()
+        getUsernameThenObserve()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
     }
     
     deinit {
         if let refHandle = chatsRefHandle {
-            chatsRef!.removeObserver(withHandle: refHandle)
+            chatsRef.removeObserver(withHandle: refHandle)
         }
     }
 
@@ -75,8 +74,22 @@ class ChatsListTableViewController: UITableViewController {
     }
     */
     
+    private func getUsernameThenObserve() {
+        let userId = Auth.auth().currentUser?.uid
+        self.usersRef.queryOrdered(byChild: "userId").queryEqual(toValue: userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                let value = snapshot.value as? NSDictionary
+                for (k, _) in value! {
+                    let username = (k as! String)
+                    self.chatsRef = self.chatsRef.child(username)
+                    self.observeChats()
+                }
+            }
+        })
+    }
+    
     private func observeChats() {
-        chatsRefHandle = chatsRef!.observe(.childAdded, with: { (snapshot) -> Void in
+        chatsRefHandle = chatsRef.observe(.childAdded, with: { (snapshot) -> Void in
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
             let id = snapshot.key
             if let title = chatsData["title"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, title.count > 0 {
