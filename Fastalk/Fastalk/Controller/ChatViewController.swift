@@ -12,9 +12,12 @@ import JSQMessagesViewController
 
 class ChatViewController: JSQMessagesViewController {
     var chat: Chat?
-    var messagesRef: DatabaseReference?
+    var userId = Auth.auth().currentUser!.uid
+    let messagesRef = Constants.refs.databaseMessages
+    var userMessagesRef: DatabaseReference?
     private var messagesRefHandle: DatabaseHandle?
     var messages = [JSQMessage]()
+    let usersRef = Constants.refs.databaseUsers
 
     lazy var outgoingBubble: JSQMessagesBubbleImage = {
         return JSQMessagesBubbleImageFactory()!.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
@@ -26,12 +29,11 @@ class ChatViewController: JSQMessagesViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.senderId = Auth.auth().currentUser?.uid
-        self.senderDisplayName = Config.username()
         self.title = chat?.title
-        // TODO: - change title to username
-        edgesForExtendedLayout = []
+        self.userMessagesRef = messagesRef.child(chat!.id)
         observeMessages()
+        
+        edgesForExtendedLayout = []
         collectionView.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
         collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
     }
@@ -87,11 +89,11 @@ class ChatViewController: JSQMessagesViewController {
 
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!)
     {
-        let itemRef = messagesRef!.childByAutoId()
+        let itemRef = userMessagesRef!.childByAutoId()
         let date = getDate()
         let messageItem = [
-            "senderId": senderId!,
-            "senderName": senderDisplayName!,
+            "senderId": self.senderId,
+            "senderName": self.senderDisplayName,
             "recieverName": chat?.title,
             "text": text!,
             "timeStamp": date
@@ -103,8 +105,9 @@ class ChatViewController: JSQMessagesViewController {
     }
     
     // MARK: - Private Methods
+    
     private func observeMessages() {
-        let messageQuery = messagesRef!.queryLimited(toLast:25)
+        let messageQuery = userMessagesRef!.queryLimited(toLast:25)
         messagesRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
             let messageData = snapshot.value as! Dictionary<String, String>
             if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {

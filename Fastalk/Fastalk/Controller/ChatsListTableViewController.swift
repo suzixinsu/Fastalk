@@ -14,11 +14,14 @@ class ChatsListTableViewController: UITableViewController {
     private var chatsRef = Constants.refs.databaseChats
     private var usersRef = Constants.refs.databaseUsers
     private var chatsRefHandle: DatabaseHandle?
+    var username: String?
+    let userId = Auth.auth().currentUser?.uid
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Chats"
-        getUsernameThenObserve()
+        observeChats()
+        getUsername()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
     }
@@ -70,30 +73,28 @@ class ChatsListTableViewController: UITableViewController {
         }
     }
     */
-    
-    private func getUsernameThenObserve() {
+    private func observeChats() {
         let userId = Auth.auth().currentUser?.uid
-        self.usersRef.queryOrdered(byChild: "userId").queryEqual(toValue: userId).observeSingleEvent(of: .value, with: { (snapshot) in
-            if (snapshot.exists()) {
-                let value = snapshot.value as? NSDictionary
-                for (k, _) in value! {
-                    let username = (k as! String)
-                    self.chatsRef = self.chatsRef.child(username)
-                    self.observeChats()
-                }
+        self.chatsRef = self.chatsRef.child(userId!)
+        chatsRefHandle = chatsRef.observe(.childAdded, with: { (snapshot) -> Void in
+            let chatsData = snapshot.value as! Dictionary<String, AnyObject>
+            let chatId = snapshot.key
+            if let title = chatsData["title"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, title.count > 0 {
+                self.chats.append(Chat(id: chatId, title: title, timeStamp: timeStamp))
+                self.tableView.reloadData()
+            } else {
+                print("Error! Could not decode chat data")
             }
         })
     }
     
-    private func observeChats() {
-        chatsRefHandle = chatsRef.observe(.childAdded, with: { (snapshot) -> Void in
-            let chatsData = snapshot.value as! Dictionary<String, AnyObject>
-            let id = snapshot.key
-            if let title = chatsData["title"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, title.count > 0 {
-                self.chats.append(Chat(id: id, title: title, timeStamp: timeStamp))
-                self.tableView.reloadData()
-            } else {
-                print("Error! Could not decode chat data")
+    private func getUsername() {
+        self.usersRef.queryOrderedByKey().queryEqual(toValue: userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                let user = snapshot.value as! NSDictionary
+                let value = user[self.userId!] as! NSDictionary
+                let username = value["username"] as! String
+                self.username = username
             }
         })
     }
@@ -117,7 +118,8 @@ class ChatsListTableViewController: UITableViewController {
             let chatVc = segue.destination as! ChatViewController
             let selectedChat = chats[selectedRow]
             chatVc.chat = selectedChat
-            chatVc.messagesRef = Constants.refs.databaseMessages.child("chats").child(selectedChat.id)
+            chatVc.senderId = self.userId
+            chatVc.senderDisplayName = self.username
         }
     }
 }

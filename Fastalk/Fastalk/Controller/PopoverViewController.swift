@@ -18,14 +18,13 @@ class PopoverViewController: UIViewController {
     private var chatsRef = Constants.refs.databaseChats
     private var userChatsRef: DatabaseReference?
     private var friendChatsRef: DatabaseReference?
-    private var contactsRef = Constants.refs.databaseContacts
     var username: String?
-    var contactUsername: String?
-    var contactUserId: String?
+    let userId = Auth.auth().currentUser!.uid
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        getUsernameAndUpdateReference()
+        updateReference()
+        getUsername()
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,46 +40,18 @@ class PopoverViewController: UIViewController {
         return convertedDate
     }
     
-    @objc private func checkIfUsrExists() {
-        let username = usernameTextField!.text
-        self.usersRef.queryOrderedByKey().queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.exists() {
-                self.actionToEnable!.isEnabled = true
-                self.alertController?.message = "User Found"
-                let value = snapshot.value as? NSDictionary
-                for (k, v) in value! {
-                    let username = (k as! String)
-                    let v = (v as! NSDictionary)
-                    let userId = v["userId"] as! String
-                    self.contactUsername = username
-                    self.contactUserId = userId
-                }
-                
-            } else {
-                self.alertController?.message = "User does not exist"
-            }
-        })
-    }
-    
-    private func addNewContact() {
-        let contactItem = [
-            "username": self.contactUsername!,
-            "userId": self.contactUserId!
-        ]
-        self.contactsRef.child(self.contactUsername!).setValue(contactItem)
-    }
-    
-    private func getUsernameAndUpdateReference() {
+    private func updateReference() {
         let userId = Auth.auth().currentUser?.uid
-        self.usersRef.queryOrdered(byChild: "userId").queryEqual(toValue: userId).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.userChatsRef = self.chatsRef.child(userId!)
+    }
+    
+    private func getUsername() {
+        self.usersRef.queryOrderedByKey().queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
-                let value = snapshot.value as? NSDictionary
-                for (k, _) in value! {
-                    let username = (k as! String)
-                    self.username = username
-                    self.userChatsRef = self.chatsRef.child(username)
-                    self.contactsRef = self.contactsRef.child(username)
-                }
+                let user = snapshot.value as! NSDictionary
+                let value = user[self.userId] as! NSDictionary
+                let username = value["username"] as! String
+                self.username = username
             }
         })
     }
@@ -92,28 +63,29 @@ class PopoverViewController: UIViewController {
         self.alertController = UIAlertController(title: "New Chat", message: "Please provide the username", preferredStyle: UIAlertControllerStyle.alert)
         
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
-            let newUserChatsRef = self.userChatsRef!.childByAutoId()
-            //TODO: - change date to last message
-            let date = self.getDate()
             let friendname = self.usernameTextField!.text!
-            let chatItem = [
-                "title": friendname,
-                "timeStamp": date
-            ]
-            newUserChatsRef.setValue(chatItem)
-            let chatId = newUserChatsRef.key
-            
-            self.usersRef.queryOrderedByKey().queryEqual(toValue: friendname).observeSingleEvent(of: .value, with: { (snapshot) in
-                if snapshot.exists() {
-                    let friendChatsRef = self.chatsRef.child(friendname).child(chatId)
+            self.usersRef.queryOrdered(byChild: "username").queryEqual(toValue: friendname).observeSingleEvent(of: .value, with: { (snapshot) in
+                if (snapshot.exists()) {
+                    let friend = snapshot.value as! NSDictionary
+                    let keys = friend.allKeys as! [String]
+                    let friendId = keys[0]
+                    let friendChatsRef = self.chatsRef.child(friendId)
+                    let friendNewChatRef = friendChatsRef.childByAutoId()
+                    //TODO: - change date to last message
                     let date = self.getDate()
-                    let chatItem = [
+                    let friendChatItem = [
                         "title": self.username,
                         "timeStamp": date
                     ]
-                    friendChatsRef.setValue(chatItem)
-                } else {
+                    friendNewChatRef.setValue(friendChatItem)
                     
+                    let chatId = friendNewChatRef.key
+                    let userNewChatRef = self.chatsRef.child(self.userId).child(chatId)
+                    let userChatItem = [
+                        "title": friendname,
+                        "timeStamp": date
+                    ]
+                    userNewChatRef.setValue(userChatItem)
                 }
             })
         })
@@ -130,29 +102,7 @@ class PopoverViewController: UIViewController {
         present(self.alertController!, animated: true, completion:nil)
     }
     
-    @IBAction func addContactClickedAction(_ sender: Any) {
-        self.alertController = UIAlertController(title: "Add Contact", message: "Please provide the username", preferredStyle: UIAlertControllerStyle.alert)
-        
-        let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
-            //add user to contacts
-            self.addNewContact()
-        })
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
-        
-        alertController!.addAction(OKAction)
-        alertController!.addAction(cancelAction)
-        
-        self.alertController!.addTextField { (textField) -> Void in
-            self.usernameTextField = textField
-            self.usernameTextField?.placeholder = "Enter the username"
-        }
-        OKAction.isEnabled = false
-        actionToEnable = OKAction
-        present(self.alertController!, animated: true, completion:nil)
-        
-        self.usernameTextField!.addTarget(self, action: #selector(checkIfUsrExists), for: .editingChanged)
-    }
+    
     
     // TODO: - Dismiss Popover after click
 

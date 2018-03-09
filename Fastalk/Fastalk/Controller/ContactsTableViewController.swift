@@ -14,6 +14,11 @@ class ContactsTableViewController: UITableViewController {
     private var contactsRef = Constants.refs.databaseContacts
     private var usersRef = Constants.refs.databaseUsers
     private var contactsRefHandle: DatabaseHandle?
+    /*
+    private var contactsRef = Constants.refs.databaseContacts
+    var contactUsername: String?
+    var contactUserId: String?
+ */
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,5 +93,62 @@ class ContactsTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+
+    /*
+    @IBAction func addContactClickedAction(_ sender: Any) {
+        self.alertController = UIAlertController(title: "Add Contact", message: "Please provide the username", preferredStyle: UIAlertControllerStyle.alert)
+        
+        let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            //add user to contacts
+            self.addNewContact()
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
+        
+        alertController!.addAction(OKAction)
+        alertController!.addAction(cancelAction)
+        
+        self.alertController!.addTextField { (textField) -> Void in
+            self.usernameTextField = textField
+            self.usernameTextField?.placeholder = "Enter the username"
+        }
+        OKAction.isEnabled = false
+        actionToEnable = OKAction
+        present(self.alertController!, animated: true, completion:nil)
+        
+        self.usernameTextField!.addTarget(self, action: #selector(checkIfUserExists), for: .editingChanged)
+    }
+     
+
+ }
+    
+    private func addNewContact() {
+        let contactItem = [
+            "username": self.contactUsername!,
+            "userId": self.contactUserId!
+        ]
+        self.contactsRef.child(self.contactUsername!).setValue(contactItem)
+    }
+    
+    @objc private func checkIfUserExists() {
+        let username = usernameTextField!.text
+        self.usersRef.queryOrderedByKey().queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                self.actionToEnable!.isEnabled = true
+                self.alertController?.message = "User Found"
+                let value = snapshot.value as? NSDictionary
+                for (k, v) in value! {
+                    let username = (k as! String)
+                    let v = (v as! NSDictionary)
+                    let userId = v["userId"] as! String
+                    self.contactUsername = username
+                    self.contactUserId = userId
+                }
+                
+            } else {
+                self.alertController?.message = "User does not exist"
+            }
+        })
+     */
 
 }

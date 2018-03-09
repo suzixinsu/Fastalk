@@ -14,19 +14,19 @@ class SetUsernameViewController: UIViewController {
     var alertController:UIAlertController? = nil
     var usernameTextField: UITextField?
     var actionToEnable: UIAlertAction?
-    var userAlreadyExist = false
     
     @IBOutlet weak var labelUsername: UILabel!
     @IBOutlet weak var labelEmail: UILabel!
     @IBOutlet weak var buttonSet: UIButton!
     
     var username: String?
+    let userId = Auth.auth().currentUser?.uid
+    let email = Auth.auth().currentUser?.email
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        labelEmail.text = Config.email()
+        labelEmail.text = self.email
         self.title = "Complete Profile"
-        checkUsername()
     }
     
     // TODO: - Require username
@@ -36,29 +36,14 @@ class SetUsernameViewController: UIViewController {
     }
     
     // MARK: - Private Methods
-    private func checkUsername() {
-        let userId = Auth.auth().currentUser?.uid
-        self.usersRef.queryOrdered(byChild: "userId").queryEqual(toValue: userId).observeSingleEvent(of: .value, with: { (snapshot) in
-            if (snapshot.exists()) {
-                self.userAlreadyExist = true
-                
-                let value = snapshot.value as? NSDictionary
-                for (k, _) in value! {
-                    self.labelUsername.text = (k as! String)
-                }
-                self.buttonSet.isHidden = true
-            }
-        })
-    }
     
     private func presentAlert() {
-        self.alertController = UIAlertController(title: "Change Username", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        self.alertController = UIAlertController(title: "Set Username", message: "", preferredStyle: UIAlertControllerStyle.alert)
         self.alertController!.addTextField { (textField) -> Void in
             self.usernameTextField = textField
             self.usernameTextField?.placeholder = "Enter the username"
         }
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
-            //change label
             self.username = self.usernameTextField!.text
             self.labelUsername.text = self.username
             self.updateUserInfo()
@@ -73,15 +58,13 @@ class SetUsernameViewController: UIViewController {
     }
     
     private func updateUserInfo() {
-        let userId = Auth.auth().currentUser?.uid
-        let email = Auth.auth().currentUser?.email
         let userItem = [
-            "userId": userId,
-            "email": email
+            "username": self.username!,
+            "email": self.email
         ]
-        self.usersRef.child(username!).setValue(userItem)
+        self.usersRef.child(self.userId!).setValue(userItem)
         
-        Config.setUsername(username!)
+        Config.setUsername(self.username!)
     }
     
     @objc func checkIfUserExists() {
