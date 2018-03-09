@@ -18,11 +18,14 @@ class PopoverViewController: UIViewController {
     private var chatsRef = Constants.refs.databaseChats
     private var userChatsRef: DatabaseReference?
     private var friendChatsRef: DatabaseReference?
+    private var contactsRef = Constants.refs.databaseContacts
     var username: String?
+    var contactUsername: String?
+    var contactUserId: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        getUsername()
+        getUsernameAndUpdateReference()
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,6 +47,15 @@ class PopoverViewController: UIViewController {
             if snapshot.exists() {
                 self.actionToEnable!.isEnabled = true
                 self.alertController?.message = "User Found"
+                let value = snapshot.value as? NSDictionary
+                for (k, v) in value! {
+                    let username = (k as! String)
+                    let v = (v as! NSDictionary)
+                    let userId = v["userId"] as! String
+                    self.contactUsername = username
+                    self.contactUserId = userId
+                }
+                
             } else {
                 self.alertController?.message = "User does not exist"
             }
@@ -51,10 +63,14 @@ class PopoverViewController: UIViewController {
     }
     
     private func addNewContact() {
-        
+        let contactItem = [
+            "username": self.contactUsername!,
+            "userId": self.contactUserId!
+        ]
+        self.contactsRef.child(self.contactUsername!).setValue(contactItem)
     }
     
-    private func getUsername() {
+    private func getUsernameAndUpdateReference() {
         let userId = Auth.auth().currentUser?.uid
         self.usersRef.queryOrdered(byChild: "userId").queryEqual(toValue: userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
@@ -63,6 +79,7 @@ class PopoverViewController: UIViewController {
                     let username = (k as! String)
                     self.username = username
                     self.userChatsRef = self.chatsRef.child(username)
+                    self.contactsRef = self.contactsRef.child(username)
                 }
             }
         })

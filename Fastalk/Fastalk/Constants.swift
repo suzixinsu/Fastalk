@@ -17,5 +17,6 @@ struct Constants
         static let databaseMessages = databaseRoot.child("messages")
         static let databaseUsers = databaseRoot.child("users")
         static let databaseChats = databaseRoot.child("chats")
+        static let databaseContacts = databaseRoot.child("contacts")
     }
 }

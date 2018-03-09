@@ -14,9 +14,6 @@ class ChatsListTableViewController: UITableViewController {
     private var chatsRef = Constants.refs.databaseChats
     private var usersRef = Constants.refs.databaseUsers
     private var chatsRefHandle: DatabaseHandle?
-    var alertController:UIAlertController? = nil
-    var emailTextField: UITextField? = nil
-    var senderDisplayName: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
