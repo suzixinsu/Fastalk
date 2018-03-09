@@ -12,25 +12,26 @@ import Firebase
 class ContactsTableViewController: UITableViewController {
     private var contacts: [Contact] = []
     private var contactsRef = Constants.refs.databaseContacts
+    private var userContactsRef: DatabaseReference?
+    private var userContactsRefHandle: DatabaseHandle?
     private var usersRef = Constants.refs.databaseUsers
-    private var contactsRefHandle: DatabaseHandle?
-    /*
-    private var contactsRef = Constants.refs.databaseContacts
+    var alertController: UIAlertController?
+    var usernameTextField: UITextField?
+    var actionToEnable: UIAlertAction?
     var contactUsername: String?
     var contactUserId: String?
- */
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Contacts"
-        getUsernameThenObserve()
+        startObserve()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
     }
     
     deinit {
-        if let refHandle = contactsRefHandle {
-            contactsRef.removeObserver(withHandle: refHandle)
+        if let refHandle = userContactsRefHandle {
+            self.userContactsRef!.removeObserver(withHandle: refHandle)
         }
     }
 
@@ -59,43 +60,46 @@ class ContactsTableViewController: UITableViewController {
     }
     
     // MARK: - Privage Methods
-    private func getUsernameThenObserve() {
+    private func startObserve() {
         let userId = Auth.auth().currentUser?.uid
-        self.usersRef.queryOrdered(byChild: "userId").queryEqual(toValue: userId).observeSingleEvent(of: .value, with: { (snapshot) in
-            if (snapshot.exists()) {
-                let value = snapshot.value as? NSDictionary
-                for (k, _) in value! {
-                    let username = (k as! String)
-                    self.contactsRef = self.contactsRef.child(username)
-                    self.observeContacts()
-                }
-            }
-        })
-    }
-    
-    private func observeContacts() {
-        contactsRefHandle = contactsRef.observe(.childAdded, with: { (snapshot) -> Void in
+        self.userContactsRef = self.contactsRef.child(userId!)
+        self.userContactsRefHandle = self.userContactsRef!.observe(.childAdded, with: { (snapshot) -> Void in
             print(snapshot)
             let contactsData = snapshot.value as! Dictionary<String, AnyObject>
-            if let username = contactsData["username"] as! String!, let userId = contactsData["userId"] as! String!, username.count > 0 {
-                self.contacts.append(Contact(username: username, userId: userId))
+            if let username = contactsData["username"] as! String!, username.count > 0 {
+                self.contacts.append(Contact(username: username, userId: userId!))
                 self.tableView.reloadData()
             } else {
                 print("Error! Could not decode contact data")
             }
         })
     }
-
-    /*
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    private func addNewContact() {
+        let contactItem = [
+            "username": self.contactUsername!
+        ]
+        self.userContactsRef!.child(self.contactUserId!).setValue(contactItem)
     }
-    */
-
-    /*
-    @IBAction func addContactClickedAction(_ sender: Any) {
+    
+    @objc private func checkIfContactUsernameExists() {
+        let contactUsername = usernameTextField!.text
+        self.usersRef.queryOrdered(byChild: "username").queryEqual(toValue: contactUsername).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                self.actionToEnable!.isEnabled = true
+                self.alertController?.message = "User Found"
+                let contact = snapshot.value as! NSDictionary
+                let keys = contact.allKeys as! [String]
+                let contactUserId = keys[0]
+                self.contactUserId = contactUserId
+                self.contactUsername = contactUsername
+            } else {
+                self.alertController?.message = "User does not exist"
+            }
+        })
+    }
+    
+    @IBAction func buttonAddClickedAction(_ sender: Any) {
         self.alertController = UIAlertController(title: "Add Contact", message: "Please provide the username", preferredStyle: UIAlertControllerStyle.alert)
         
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
@@ -116,39 +120,16 @@ class ContactsTableViewController: UITableViewController {
         actionToEnable = OKAction
         present(self.alertController!, animated: true, completion:nil)
         
-        self.usernameTextField!.addTarget(self, action: #selector(checkIfUserExists), for: .editingChanged)
+        self.usernameTextField!.addTarget(self, action: #selector(checkIfContactUsernameExists), for: .editingChanged)
     }
-     
 
- }
-    
-    private func addNewContact() {
-        let contactItem = [
-            "username": self.contactUsername!,
-            "userId": self.contactUserId!
-        ]
-        self.contactsRef.child(self.contactUsername!).setValue(contactItem)
+    /*
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
     }
-    
-    @objc private func checkIfUserExists() {
-        let username = usernameTextField!.text
-        self.usersRef.queryOrderedByKey().queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.exists() {
-                self.actionToEnable!.isEnabled = true
-                self.alertController?.message = "User Found"
-                let value = snapshot.value as? NSDictionary
-                for (k, v) in value! {
-                    let username = (k as! String)
-                    let v = (v as! NSDictionary)
-                    let userId = v["userId"] as! String
-                    self.contactUsername = username
-                    self.contactUserId = userId
-                }
-                
-            } else {
-                self.alertController?.message = "User does not exist"
-            }
-        })
-     */
+    */
+
 
 }

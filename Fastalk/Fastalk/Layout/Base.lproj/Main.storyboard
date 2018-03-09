@@ -280,7 +280,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="lJb-iY-qfN">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="m65-o2-kwX"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="m65-o2-kwX">
+                            <connections>
+                                <action selector="buttonAddClickedAction:" destination="ejX-RI-j3F" id="4P6-O6-jLo"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bjm-ZT-UdR" userLabel="First Responder" sceneMemberID="firstResponder"/>
