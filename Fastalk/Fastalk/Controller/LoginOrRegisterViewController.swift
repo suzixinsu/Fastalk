@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import AVFoundation
 
 class LoginOrRegisterViewController: UIViewController {
     @IBOutlet weak var textFieldEmail: UITextField!
@@ -15,6 +16,9 @@ class LoginOrRegisterViewController: UIViewController {
     @IBOutlet weak var segControl: UISegmentedControl!
     @IBOutlet weak var labelEmail: UILabel!
     @IBOutlet weak var labelPassword: UILabel!
+    
+    var Player:AVPlayer!
+    var PlayerLayer:AVPlayerLayer!
     
     var email: String?
     var password: String?
@@ -25,6 +29,22 @@ class LoginOrRegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         textFieldPassword.isSecureTextEntry = true
+        
+        let URL = Bundle.main.url(forResource: "moments", withExtension: "mp4")
+        
+        Player = AVPlayer.init(url: URL!)
+        
+        PlayerLayer = AVPlayerLayer(player: Player)
+        PlayerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        PlayerLayer.frame = view.layer.frame
+        
+        Player.actionAtItemEnd = AVPlayerActionAtItemEnd.none
+        Player.play()
+        view.layer.insertSublayer(PlayerLayer, at: 0)
+        NotificationCenter.default.addObserver(self, selector: #selector(playerItemReachEnd(notification:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: Player.currentItem)
+    }
+    @objc func playerItemReachEnd(notification: NSNotification){
+        Player.seek(to:kCMTimeZero)
     }
     
     override func didReceiveMemoryWarning() {
