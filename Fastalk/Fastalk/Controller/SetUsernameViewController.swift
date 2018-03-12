@@ -18,6 +18,7 @@ class SetUsernameViewController: UIViewController {
     @IBOutlet weak var labelUsername: UILabel!
     @IBOutlet weak var labelEmail: UILabel!
     @IBOutlet weak var buttonSet: UIButton!
+    @IBOutlet weak var buttonDone: UIButton!
     
     var username: String?
     let userId = Auth.auth().currentUser?.uid
@@ -27,6 +28,7 @@ class SetUsernameViewController: UIViewController {
         super.viewDidLoad()
         labelEmail.text = self.email
         self.title = "Complete Profile"
+        self.buttonDone.isEnabled = false
     }
     
     // TODO: - Require username
@@ -47,6 +49,8 @@ class SetUsernameViewController: UIViewController {
             self.username = self.usernameTextField!.text
             self.labelUsername.text = self.username
             self.updateUserInfo()
+            self.buttonDone.isEnabled = true
+            self.buttonSet.isHidden = true
         })
         
         OKAction.isEnabled = false
@@ -73,7 +77,7 @@ class SetUsernameViewController: UIViewController {
         guard !(username?.isEmpty)! else {
             return
         }
-        self.usersRef.queryOrderedByKey().queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.usersRef.queryOrdered(byChild: "username").queryEqual(toValue: username).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
                 self.alertController?.message = "User already exists"
                 self.actionToEnable!.isEnabled = false

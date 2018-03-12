@@ -364,6 +364,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="XS8-8v-sJY"/>
                     <connections>
+                        <outlet property="buttonDone" destination="DKh-3h-ibU" id="25C-AJ-KKm"/>
                         <outlet property="buttonSet" destination="c50-8y-0eT" id="9s6-Nm-1hj"/>
                         <outlet property="labelEmail" destination="YOz-sZ-xFv" id="8Tr-YM-bDR"/>
                         <outlet property="labelUsername" destination="Efu-6z-rlk" id="rpJ-6r-MIK"/>
@@ -450,6 +451,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="7xC-n3-k8o"/>
+        <segue reference="eGL-qm-X0I"/>
     </inferredMetricsTieBreakers>
 </document>
