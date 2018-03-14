@@ -35,17 +35,17 @@ class ChatsListTableViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
+    
     // MARK: - Table view data source
     // MARK: - Overriden Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return chats.count
     }
-
+    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reuseIdentifier = "ExistingChats"
@@ -55,6 +55,22 @@ class ChatsListTableViewController: UITableViewController {
         return cell
     }
     
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .destructive, title:"Delete"){
+            (action,view, completion) in
+            //TO DO in database
+            self.chats.remove(at: indexPath.row)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            completion(true)
+            print("Delete")
+        }
+        //delete.backgroundColor = color.red
+        
+        let config = UISwipeActionsConfiguration(actions:[delete])
+        config.performsFirstActionWithFullSwipe = false
+        return config
+    }
     // MARK: - Privage Methods
     /* show full date if time difference larger than 24 hours
     private func showDate(_ thenDateString:String) -> String {
@@ -129,3 +145,12 @@ extension ChatsListTableViewController: UIPopoverPresentationControllerDelegate 
         return UIModalPresentationStyle.none
     }
 }
+
+//extension ChatsListTableViewController: UITableViewDataSource {
+//
+//}
+
+//extension ChatsListTableViewController: UITableViewDelegate{
+//
+//}
+

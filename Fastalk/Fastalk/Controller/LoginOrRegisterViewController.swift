@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+//new import
 import AVFoundation
 
 class LoginOrRegisterViewController: UIViewController {
@@ -17,6 +18,7 @@ class LoginOrRegisterViewController: UIViewController {
     @IBOutlet weak var labelEmail: UILabel!
     @IBOutlet weak var labelPassword: UILabel!
     
+    //new variables
     var Player:AVPlayer!
     var PlayerLayer:AVPlayerLayer!
     
@@ -30,6 +32,7 @@ class LoginOrRegisterViewController: UIViewController {
         super.viewDidLoad()
         textFieldPassword.isSecureTextEntry = true
         
+        //new code
         let URL = Bundle.main.url(forResource: "moments", withExtension: "mp4")
         
         Player = AVPlayer.init(url: URL!)
@@ -46,7 +49,7 @@ class LoginOrRegisterViewController: UIViewController {
     @objc func playerItemReachEnd(notification: NSNotification){
         Player.seek(to:kCMTimeZero)
     }
-    
+    //new code ends
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
