@@ -138,6 +138,11 @@ class ChatsListTableViewController: UITableViewController {
             chatVc.senderDisplayName = self.username
         }
     }
+    //set height
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
+
 }
 
 extension ChatsListTableViewController: UIPopoverPresentationControllerDelegate {
@@ -145,12 +150,4 @@ extension ChatsListTableViewController: UIPopoverPresentationControllerDelegate 
         return UIModalPresentationStyle.none
     }
 }
-
-//extension ChatsListTableViewController: UITableViewDataSource {
-//
-//}
-
-//extension ChatsListTableViewController: UITableViewDelegate{
-//
-//}
 

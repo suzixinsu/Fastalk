@@ -11,7 +11,7 @@ import Firebase
 
 class SettingsViewController: UIViewController {
     @IBOutlet weak var labelSignOutError: UILabel!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Settings"
