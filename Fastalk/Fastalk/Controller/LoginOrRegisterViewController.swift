@@ -11,7 +11,7 @@ import Firebase
 //new import
 import AVFoundation
 
-class LoginOrRegisterViewController: UIViewController {
+class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var textFieldEmail: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     @IBOutlet weak var segControl: UISegmentedControl!
@@ -30,7 +30,9 @@ class LoginOrRegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        textFieldPassword.isSecureTextEntry = true
+        self.textFieldPassword.isSecureTextEntry = true
+        self.textFieldEmail.delegate = self
+        self.textFieldPassword.delegate = self
         
         //new code
         let URL = Bundle.main.url(forResource: "moments", withExtension: "mp4")
@@ -52,6 +54,15 @@ class LoginOrRegisterViewController: UIViewController {
     //new code ends
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     // MARK: - Private methods
