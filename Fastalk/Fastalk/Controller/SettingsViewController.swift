@@ -10,17 +10,38 @@ import UIKit
 import Firebase
 
 class SettingsViewController: UIViewController {
+    private var usersRef = Constants.refs.databaseUsers
+    var username: String?
+    let userId = Auth.auth().currentUser?.uid
+    
     @IBOutlet weak var labelSignOutError: UILabel!
+    @IBOutlet weak var labelUsername: UILabel!
+    @IBOutlet weak var labelEmail: UILabel!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Settings"
+        getAndSetUsername()
+        self.labelEmail.text = Auth.auth().currentUser?.email
         // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    private func getAndSetUsername() {
+        self.usersRef.queryOrderedByKey().queryEqual(toValue: userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                let user = snapshot.value as! NSDictionary
+                let value = user[self.userId!] as! NSDictionary
+                let username = value["username"] as! String
+                self.username = username
+                self.labelUsername.text = username
+            }
+        })
     }
     
     @IBAction func buttonLogOutClickedAction(_ sender: Any) {
