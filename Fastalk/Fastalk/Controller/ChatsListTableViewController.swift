@@ -14,12 +14,14 @@ class ChatsListTableViewController: UITableViewController {
     private var chatsRef = Constants.refs.databaseChats
     private var usersRef = Constants.refs.databaseUsers
     private var chatsRefHandle: DatabaseHandle?
+    private var currentUserChatsRef: DatabaseReference?
     var username: String?
     let userId = Auth.auth().currentUser?.uid
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Chats"
+        self.currentUserChatsRef = self.chatsRef.child(self.userId!)
         observeChats()
         getUsername()
         // Uncomment the following line to preserve selection between presentations
@@ -60,8 +62,7 @@ class ChatsListTableViewController: UITableViewController {
         let delete = UIContextualAction(style: .destructive, title:"Delete"){
             (action,view, completion) in
             //TO DO in database
-            self.chats.remove(at: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.deleteChat(indexPath)
             completion(true)
             print("Delete")
         }
@@ -71,6 +72,7 @@ class ChatsListTableViewController: UITableViewController {
         config.performsFirstActionWithFullSwipe = false
         return config
     }
+    
     // MARK: - Privage Methods
     /* show full date if time difference larger than 24 hours
     private func showDate(_ thenDateString:String) -> String {
@@ -90,9 +92,7 @@ class ChatsListTableViewController: UITableViewController {
     }
     */
     private func observeChats() {
-        let userId = Auth.auth().currentUser?.uid
-        self.chatsRef = self.chatsRef.child(userId!)
-        chatsRefHandle = chatsRef.observe(.childAdded, with: { (snapshot) -> Void in
+        chatsRefHandle = self.currentUserChatsRef?.observe(.childAdded, with: { (snapshot) -> Void in
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
             let chatId = snapshot.key
             if let title = chatsData["title"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, title.count > 0 {
@@ -113,6 +113,18 @@ class ChatsListTableViewController: UITableViewController {
                 self.username = username
             }
         })
+    }
+    
+    private func deleteChat(_ indexPath: IndexPath) {
+        let row = indexPath.row
+        let chatId = self.chats[row].id
+        self.currentUserChatsRef!.child(chatId).removeValue() { error, _ in
+            print("userId", self.userId!)
+            print("chatId", chatId)
+            print("error", error.debugDescription)
+        }
+        self.chats.remove(at: row)
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 
     // MARK: - UI Actions
