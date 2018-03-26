@@ -34,8 +34,13 @@ class ChatViewController: JSQMessagesViewController {
         observeMessages()
         
         edgesForExtendedLayout = []
+        inputToolbar.contentView.leftBarButtonItem = nil
         collectionView.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
         collectionView.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
+        
+        let tapRecognizer = UITapGestureRecognizer()
+        tapRecognizer.addTarget(self, action: #selector(ChatViewController.tapToDismissKeyboard(_:)))
+        view.addGestureRecognizer(tapRecognizer)
     }
 
     override func didReceiveMemoryWarning() {
@@ -131,6 +136,10 @@ class ChatViewController: JSQMessagesViewController {
         if let message = JSQMessage(senderId: id, displayName: name, text: text) {
             messages.append(message)
         }
+    }
+    
+    @objc func tapToDismissKeyboard(_ sender: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
 
 }
