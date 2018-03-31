@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		080F6C7B204B951C008A5C98 /* LoginOrRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */; };
+		0825C52E206F472500CF29ED /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0825C52D206F472500CF29ED /* SearchTableViewController.swift */; };
+		0825C532206F4C5A00CF29ED /* SearchMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0825C531206F4C5A00CF29ED /* SearchMessageCell.swift */; };
+		0825C534206F4FBB00CF29ED /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0825C533206F4FBB00CF29ED /* Message.swift */; };
 		085B9032204F4641001DDE8D /* ContactsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085B9031204F4641001DDE8D /* ContactsTableViewController.swift */; };
 		086C8EF72051FC7000F74AAF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C8EF62051FC7000F74AAF /* SettingsViewController.swift */; };
 		086C8EFB205236B700F74AAF /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C8EFA205236B700F74AAF /* Contact.swift */; };
@@ -32,6 +35,9 @@
 
 /* Begin PBXFileReference section */
 		080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrRegisterViewController.swift; sourceTree = "<group>"; };
+		0825C52D206F472500CF29ED /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
+		0825C531206F4C5A00CF29ED /* SearchMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMessageCell.swift; sourceTree = "<group>"; };
+		0825C533206F4FBB00CF29ED /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		085B9031204F4641001DDE8D /* ContactsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsTableViewController.swift; sourceTree = "<group>"; };
 		086C8EF62051FC7000F74AAF /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		086C8EFA205236B700F74AAF /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
@@ -84,6 +90,8 @@
 				08957DC9204E536800EB10F7 /* PopoverViewController.swift */,
 				085B9031204F4641001DDE8D /* ContactsTableViewController.swift */,
 				086C8EF62051FC7000F74AAF /* SettingsViewController.swift */,
+				0825C52D206F472500CF29ED /* SearchTableViewController.swift */,
+				0825C531206F4C5A00CF29ED /* SearchMessageCell.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -103,6 +111,7 @@
 				08CDD059204BB48A007439F5 /* Chat.swift */,
 				08E31AE2204CE2620033A7BD /* Config.swift */,
 				086C8EFA205236B700F74AAF /* Contact.swift */,
+				0825C533206F4FBB00CF29ED /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -313,6 +322,7 @@
 				08CDD056204BA9D7007439F5 /* MyTabBarController.swift in Sources */,
 				08CDD05A204BB48A007439F5 /* Chat.swift in Sources */,
 				08C5389B2043D1C6002C2393 /* ChatViewController.swift in Sources */,
+				0825C52E206F472500CF29ED /* SearchTableViewController.swift in Sources */,
 				080F6C7B204B951C008A5C98 /* LoginOrRegisterViewController.swift in Sources */,
 				08CDD058204BB423007439F5 /* ChatsListTableViewController.swift in Sources */,
 				086C8EFB205236B700F74AAF /* Contact.swift in Sources */,
@@ -322,6 +332,8 @@
 				08C538992043D1C6002C2393 /* AppDelegate.swift in Sources */,
 				086C8EF72051FC7000F74AAF /* SettingsViewController.swift in Sources */,
 				085B9032204F4641001DDE8D /* ContactsTableViewController.swift in Sources */,
+				0825C534206F4FBB00CF29ED /* Message.swift in Sources */,
+				0825C532206F4C5A00CF29ED /* SearchMessageCell.swift in Sources */,
 				08C538B22043D5A6002C2393 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
