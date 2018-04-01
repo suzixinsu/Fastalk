@@ -30,7 +30,7 @@ class ChatViewController: JSQMessagesViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = chat?.title
+        self.title = chat?.receiverName
         self.userMessagesRef = messagesRef.child(chat!.id)
         observeMessages()
         
@@ -99,7 +99,7 @@ class ChatViewController: JSQMessagesViewController {
         let messageItem = [
             "senderId": self.senderId,
             "senderName": self.senderDisplayName,
-            "recieverName": chat?.title,
+            "recieverName": chat?.receiverName,
             "text": text!,
             "timeStamp": date
         ]

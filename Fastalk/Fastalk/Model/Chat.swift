@@ -10,12 +10,14 @@ import Foundation
 
 internal class Chat {
     internal let id: String
-    internal let title: String
+    internal let receiverId: String
+    internal let receiverName: String
     internal let timeStamp: String
     
-    init(id: String, title: String, timeStamp: String) {
+    init(id: String, receiverId: String, receiverName: String, timeStamp: String) {
         self.id = id
-        self.title = title
+        self.receiverId = receiverId
+        self.receiverName = receiverName
         self.timeStamp = timeStamp
     }
 }

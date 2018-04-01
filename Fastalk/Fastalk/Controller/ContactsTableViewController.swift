@@ -24,6 +24,7 @@ class ContactsTableViewController: UITableViewController {
     var contactUsername: String?
     var contactUserId: String?
     var username: String?
+    var selectedChat: Chat?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,24 +72,50 @@ class ContactsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let friendname = contacts[indexPath.row].username
         let friendId = contacts[indexPath.row].userId
-        print("friendId", friendId)
         //TODO: - change date to last message
-        let date = self.getDate()
-        let friendChatItem = [
-            "title": self.username,
-            "timeStamp": date
-        ]
-        self.friendChatsRef = self.chatsRef.child(friendId)
-        let friendNewChatRef = self.friendChatsRef!.childByAutoId()
-        friendNewChatRef.setValue(friendChatItem)
         
-        let chatId = friendNewChatRef.key
-        let userNewChatRef = self.chatsRef.child(self.userId).child(chatId)
-        let userChatItem = [
-            "title": friendname,
-            "timeStamp": date
-        ]
-        userNewChatRef.setValue(userChatItem)
+        self.chatsRef.child(userId).queryOrdered(byChild: "receiverId").queryEqual(toValue: friendId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                let chat = snapshot.value as! NSDictionary
+                let id = chat.allKeys[0] as! String
+                let chatContent = chat[id] as! NSDictionary
+                let receiverId = chatContent["receiverId"] as! String
+                let receiverName = chatContent["receiverName"] as! String
+                let timeStamp = chatContent["timeStamp"] as! String
+                let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, timeStamp: timeStamp)
+                self.selectedChat = chatItem
+//                print("id", id)
+//                print("receiverId", receiverId)
+//                print("receiverName", receiverName)
+//                print("timestamp", timeStamp)
+            } else {
+                self.chatsRef.child(friendId).queryOrdered(byChild: "receiverId").queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
+                    let date = self.getDate()
+                    var chatId = "0"
+                    if (snapshot.exists()) {
+                        let chat = snapshot.value as! NSDictionary
+                        chatId = chat.allKeys[0] as! String
+                    } else {
+                        let friendChatItem = [
+                            "receiverName": self.username,
+                            "receiverId": self.userId,
+                            "timeStamp": date
+                        ]
+                        self.friendChatsRef = self.chatsRef.child(friendId)
+                        let friendNewChatRef = self.friendChatsRef!.childByAutoId()
+                        friendNewChatRef.setValue(friendChatItem)
+                        chatId = friendNewChatRef.key
+                    }
+                    let userNewChatRef = self.chatsRef.child(self.userId).child(chatId)
+                    let userChatItem = [
+                        "receiverName": friendname,
+                        "receiverId": friendId,
+                        "timeStamp": date
+                    ]
+                    userNewChatRef.setValue(userChatItem)
+                })
+            }
+        })
     }
     
     // MARK: - Privage Methods
@@ -174,13 +201,17 @@ class ContactsTableViewController: UITableViewController {
         self.usernameTextField!.addTarget(self, action: #selector(checkIfContactUsernameExists), for: .editingChanged)
     }
     
-    /*
-    // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if let indexPath = tableView.indexPathForSelectedRow{
+//            let selectedRow = indexPath.row
+//            let chatVc = segue.destination as! ChatViewController
+//            let selectedChat = chats[selectedRow]
+//            chatVc.chat = selectedChat
+//            chatVc.senderId = self.userId
+//            chatVc.senderDisplayName = self.username
+        }
     }
-    */
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }

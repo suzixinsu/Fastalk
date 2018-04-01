@@ -52,7 +52,7 @@ class ChatsListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reuseIdentifier = "ExistingChats"
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-        cell.textLabel?.text = chats[(indexPath as NSIndexPath).row].title
+        cell.textLabel?.text = chats[(indexPath as NSIndexPath).row].receiverName
         cell.detailTextLabel?.text = chats[(indexPath as NSIndexPath).row].timeStamp
         return cell
     }
@@ -61,10 +61,8 @@ class ChatsListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title:"Delete"){
             (action,view, completion) in
-            //TO DO in database
             self.deleteChat(indexPath)
             completion(true)
-            print("Delete")
         }
         //delete.backgroundColor = color.red
         
@@ -95,8 +93,8 @@ class ChatsListTableViewController: UITableViewController {
         chatsRefHandle = self.currentUserChatsRef?.observe(.childAdded, with: { (snapshot) -> Void in
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
             let chatId = snapshot.key
-            if let title = chatsData["title"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, title.count > 0 {
-                self.chats.insert(Chat(id: chatId, title: title, timeStamp: timeStamp), at: 0)
+            if let receiverId = chatsData["receiverId"] as! String!, let receiverName = chatsData["receiverName"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, receiverId.count > 0 {
+                self.chats.insert(Chat(id: chatId, receiverId: receiverId, receiverName: receiverName, timeStamp: timeStamp), at: 0)
                 self.tableView.reloadData()
             } else {
                 print("Error! Could not decode chat data")
