@@ -15,15 +15,20 @@ class ContactsTableViewController: UITableViewController {
     private var userContactsRef: DatabaseReference?
     private var userContactsRefHandle: DatabaseHandle?
     private var usersRef = Constants.refs.databaseUsers
+    private var friendChatsRef: DatabaseReference?
+    private var chatsRef = Constants.refs.databaseChats
+    let userId = Auth.auth().currentUser!.uid
     var alertController: UIAlertController?
     var usernameTextField: UITextField?
     var actionToEnable: UIAlertAction?
     var contactUsername: String?
     var contactUserId: String?
+    var username: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Contacts"
+        getUsername()
         startObserve()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -59,15 +64,39 @@ class ContactsTableViewController: UITableViewController {
         return cell
     }
     
+    // add chat to user and friend
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let friendname = contacts[indexPath.row].username
+        let friendId = contacts[indexPath.row].userId
+        print("friendId", friendId)
+        //TODO: - change date to last message
+        let date = self.getDate()
+        let friendChatItem = [
+            "title": self.username,
+            "timeStamp": date
+        ]
+        self.friendChatsRef = self.chatsRef.child(friendId)
+        let friendNewChatRef = self.friendChatsRef!.childByAutoId()
+        friendNewChatRef.setValue(friendChatItem)
+        
+        let chatId = friendNewChatRef.key
+        let userNewChatRef = self.chatsRef.child(self.userId).child(chatId)
+        let userChatItem = [
+            "title": friendname,
+            "timeStamp": date
+        ]
+        userNewChatRef.setValue(userChatItem)
+    }
+    
     // MARK: - Privage Methods
     private func startObserve() {
         let userId = Auth.auth().currentUser?.uid
         self.userContactsRef = self.contactsRef.child(userId!)
         self.userContactsRefHandle = self.userContactsRef!.observe(.childAdded, with: { (snapshot) -> Void in
-            print(snapshot)
+            let contactId = snapshot.key
             let contactsData = snapshot.value as! Dictionary<String, AnyObject>
-            if let username = contactsData["username"] as! String!, username.count > 0 {
-                self.contacts.append(Contact(username: username, userId: userId!))
+            if let contactName = contactsData["username"] as! String!, contactName.count > 0 {
+                self.contacts.append(Contact(username: contactName, userId: contactId))
                 self.tableView.reloadData()
             } else {
                 print("Error! Could not decode contact data")
@@ -75,11 +104,30 @@ class ContactsTableViewController: UITableViewController {
         })
     }
     
+    private func getDate() -> String{
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm MM/dd/yy"
+        let convertedDate = dateFormatter.string(from: currentDate)
+        return convertedDate
+    }
+    
     private func addNewContact() {
         let contactItem = [
             "username": self.contactUsername!
         ]
         self.userContactsRef!.child(self.contactUserId!).setValue(contactItem)
+    }
+    
+    private func getUsername() {
+        self.usersRef.queryOrderedByKey().queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                let user = snapshot.value as! NSDictionary
+                let value = user[self.userId] as! NSDictionary
+                let username = value["username"] as! String
+                self.username = username
+            }
+        })
     }
     
     @objc private func checkIfContactUsernameExists() {
@@ -123,6 +171,7 @@ class ContactsTableViewController: UITableViewController {
         self.usernameTextField!.addTarget(self, action: #selector(checkIfContactUsernameExists), for: .editingChanged)
     }
 
+    // TODO: -Implement jump to chat view
     /*
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

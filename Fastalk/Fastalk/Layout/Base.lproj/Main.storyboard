@@ -142,7 +142,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="New Chat"/>
                                 <connections>
-                                    <action selector="newChatClickedAction:" destination="xWJ-Ae-2it" eventType="touchUpInside" id="rjs-Qe-Uf7"/>
+                                    <segue destination="SZg-EU-sv2" kind="show" id="OkP-5Y-bCQ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -152,7 +152,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PMb-27-MPR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1049" y="-639"/>
+            <point key="canvasLocation" x="1012" y="-1560"/>
         </scene>
         <!--Chats List Table View Controller-->
         <scene sceneID="VSf-bB-5u2">
@@ -258,6 +258,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="JKP-dC-ny3" kind="show" id="BWh-ns-Bvz"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -275,7 +278,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bjm-ZT-UdR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="124" y="981"/>
+            <point key="canvasLocation" x="66" y="-787"/>
         </scene>
         <!--Set Username View Controller-->
         <scene sceneID="b1V-Jk-Utd">
@@ -463,7 +466,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uWD-MU-iVe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-974.39999999999998" y="981.40929535232397"/>
+            <point key="canvasLocation" x="-831" y="-786"/>
         </scene>
         <!--Search-->
         <scene sceneID="tZs-U7-u39">
@@ -482,7 +485,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hVD-B6-g0e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-974" y="1820"/>
+            <point key="canvasLocation" x="-974" y="1151"/>
         </scene>
         <!--Search Table View Controller-->
         <scene sceneID="6hL-GW-5ZG">
@@ -563,10 +566,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ehZ-bn-1R1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="1818.440779610195"/>
+            <point key="canvasLocation" x="65" y="1151"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="OkP-5Y-bCQ"/>
+        <segue reference="BWh-ns-Bvz"/>
         <segue reference="eGL-qm-X0I"/>
     </inferredMetricsTieBreakers>
 </document>

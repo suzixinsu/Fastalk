@@ -129,7 +129,7 @@ class SearchTableViewController: UITableViewController {
 
 extension SearchTableViewController: SearchMessageCellProtocol {
     func searchClicked(_ sender: SearchMessageCell) {
-        //let keyword = self.textFieldSearch?.text
+        let keyword = self.textFieldSearch?.text
         print("userId", self.userId)
         self.messagesByUserRef.queryOrdered(byChild: "text").queryEqual(toValue: keyword).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
