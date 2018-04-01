@@ -8,8 +8,14 @@
 
 import UIKit
 
+protocol SearchMessageCellProtocol {
+    func searchClicked(_ sender: SearchMessageCell)
+}
+
 class SearchMessageCell: UITableViewCell {
     @IBOutlet weak var textFieldSearchKeyword: UITextField!
+    
+    var delegate: SearchMessageCellProtocol?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,4 +28,7 @@ class SearchMessageCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    @IBAction func buttonSearchClicked(_ sender: Any) {
+        delegate?.searchClicked(self)
+    }
 }

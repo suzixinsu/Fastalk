@@ -17,6 +17,9 @@ class SearchTableViewController: UITableViewController {
     var senderDisplayName: String?
     var textFieldSearch: UITextField?
     private var messages: [Message] = []
+
+    var userId = Auth.auth().currentUser!.uid
+    let messagesByUserRef = Constants.refs.databaseMessagesByUser
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -68,6 +71,7 @@ class SearchTableViewController: UITableViewController {
         if (indexPath as NSIndexPath).section == Section.searchSection.rawValue {
             if let searchMessageCell = cell as? SearchMessageCell {
                 textFieldSearch = searchMessageCell.textFieldSearchKeyword
+                searchMessageCell.delegate = self;
             }
         } else if (indexPath as NSIndexPath).section == Section.resultsSection.rawValue {
             cell.textLabel?.text = messages[(indexPath as NSIndexPath).row].text
@@ -121,4 +125,16 @@ class SearchTableViewController: UITableViewController {
     }
     */
 
+}
+
+extension SearchTableViewController: SearchMessageCellProtocol {
+    func searchClicked(_ sender: SearchMessageCell) {
+        //let keyword = self.textFieldSearch?.text
+        print("userId", self.userId)
+        self.messagesByUserRef.queryOrdered(byChild: "text").queryEqual(toValue: keyword).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                print(snapshot)
+            }
+        })
+    }
 }

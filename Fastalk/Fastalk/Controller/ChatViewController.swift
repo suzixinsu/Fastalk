@@ -13,7 +13,8 @@ import JSQMessagesViewController
 class ChatViewController: JSQMessagesViewController {
     var chat: Chat?
     var userId = Auth.auth().currentUser!.uid
-    let messagesRef = Constants.refs.databaseMessages
+    let messagesRef = Constants.refs.databaseMessagesByChat
+    let messagesByUserRef = Constants.refs.databaseMessagesByUser
     var userMessagesRef: DatabaseReference?
     private var messagesRefHandle: DatabaseHandle?
     var messages = [JSQMessage]()
@@ -105,6 +106,8 @@ class ChatViewController: JSQMessagesViewController {
         
         itemRef.setValue(messageItem)
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        messagesByUserRef.child(userId).child(itemRef.key).setValue(messageItem)
+        //messagesByUserRef.child(userId).child(itemRef.key).setValue(messageItem)
         finishSendingMessage()
     }
     

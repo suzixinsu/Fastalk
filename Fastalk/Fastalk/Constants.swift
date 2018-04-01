@@ -14,7 +14,8 @@ struct Constants
     struct refs
     {
         static let databaseRoot = Database.database().reference()
-        static let databaseMessages = databaseRoot.child("messagesByChat")
+        static let databaseMessagesByChat = databaseRoot.child("messagesByChat")
+        static let databaseMessagesByUser = databaseRoot.child("messagesByUser")
         static let databaseUsers = databaseRoot.child("users")
         static let databaseChats = databaseRoot.child("chatsByUser")
         static let databaseContacts = databaseRoot.child("contactsByUser")

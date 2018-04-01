@@ -512,6 +512,9 @@
                                                 <constraint firstAttribute="width" constant="48" id="VRw-ka-NUA"/>
                                             </constraints>
                                             <state key="normal" title="Search"/>
+                                            <connections>
+                                                <action selector="buttonSearchClicked:" destination="1O0-Aq-s2q" eventType="touchUpInside" id="aYL-76-VQe"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
@@ -526,7 +529,7 @@
                                     <outlet property="textFieldSearchKeyword" destination="r6f-Dd-D6s" id="Use-7I-iAi"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Results" textLabel="DiB-6G-dbf" detailTextLabel="MwU-Bg-deR" style="IBUITableViewCellStyleValue1" id="E8b-TP-wAB">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Results" textLabel="DiB-6G-dbf" detailTextLabel="MwU-Bg-deR" style="IBUITableViewCellStyleSubtitle" id="E8b-TP-wAB">
                                 <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="E8b-TP-wAB" id="oIL-TI-MK1">
@@ -534,16 +537,16 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DiB-6G-dbf">
-                                            <rect key="frame" x="16" y="12" width="33.5" height="20.5"/>
+                                            <rect key="frame" x="16" y="5" width="33.5" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MwU-Bg-deR">
-                                            <rect key="frame" x="315" y="12" width="44" height="20.5"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MwU-Bg-deR">
+                                            <rect key="frame" x="16" y="25.5" width="33" height="14.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
