@@ -96,7 +96,7 @@ class ChatsListTableViewController: UITableViewController {
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
             let chatId = snapshot.key
             if let title = chatsData["title"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, title.count > 0 {
-                self.chats.append(Chat(id: chatId, title: title, timeStamp: timeStamp))
+                self.chats.insert(Chat(id: chatId, title: title, timeStamp: timeStamp), at: 0)
                 self.tableView.reloadData()
             } else {
                 print("Error! Could not decode chat data")
@@ -119,8 +119,6 @@ class ChatsListTableViewController: UITableViewController {
         let row = indexPath.row
         let chatId = self.chats[row].id
         self.currentUserChatsRef!.child(chatId).removeValue() { error, _ in
-            print("userId", self.userId!)
-            print("chatId", chatId)
             print("error", error.debugDescription)
         }
         self.chats.remove(at: row)

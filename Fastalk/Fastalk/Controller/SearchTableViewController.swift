@@ -24,9 +24,7 @@ class SearchTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        messages.append(Message(id: "1", text: "Message1"))
-        messages.append(Message(id: "2", text: "Message2"))
-        messages.append(Message(id: "3", text: "Message3"))
+        //messages.append(Message(id: "1", text: "Message1"))
         self.tableView.reloadData()
     }
 
@@ -130,8 +128,7 @@ class SearchTableViewController: UITableViewController {
 extension SearchTableViewController: SearchMessageCellProtocol {
     func searchClicked(_ sender: SearchMessageCell) {
         let keyword = self.textFieldSearch?.text
-        print("userId", self.userId)
-        self.messagesByUserRef.queryOrdered(byChild: "text").queryEqual(toValue: keyword).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.messagesByUserRef.child(userId).queryOrdered(byChild: "text").queryEqual(toValue: keyword).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
                 print(snapshot)
             }

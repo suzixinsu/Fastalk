@@ -64,7 +64,10 @@ class ContactsTableViewController: UITableViewController {
         return cell
     }
     
-    // add chat to user and friend
+    // TODO: - check if chat already exist
+    // if chat exist, not add
+    // if chat does not exist, but friend chat exist, get the chat Id
+    // if chat does not exist on both sides, add a new chat
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let friendname = contacts[indexPath.row].username
         let friendId = contacts[indexPath.row].userId
@@ -170,8 +173,7 @@ class ContactsTableViewController: UITableViewController {
         
         self.usernameTextField!.addTarget(self, action: #selector(checkIfContactUsernameExists), for: .editingChanged)
     }
-
-    // TODO: -Implement jump to chat view
+    
     /*
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

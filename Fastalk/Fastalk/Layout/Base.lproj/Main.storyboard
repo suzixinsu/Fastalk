@@ -259,7 +259,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="JKP-dC-ny3" kind="show" id="BWh-ns-Bvz"/>
+                                    <segue destination="HZN-D9-sAh" kind="show" id="uw3-Q4-hwA"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -571,7 +571,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="OkP-5Y-bCQ"/>
-        <segue reference="BWh-ns-Bvz"/>
+        <segue reference="uw3-Q4-hwA"/>
         <segue reference="eGL-qm-X0I"/>
     </inferredMetricsTieBreakers>
 </document>
