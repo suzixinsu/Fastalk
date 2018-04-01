@@ -84,6 +84,7 @@ class ContactsTableViewController: UITableViewController {
                 let timeStamp = chatContent["timeStamp"] as! String
                 let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, timeStamp: timeStamp)
                 self.selectedChat = chatItem
+                self.performSegue(withIdentifier: "ContactsToChat", sender: self)
 //                print("id", id)
 //                print("receiverId", receiverId)
 //                print("receiverName", receiverName)
@@ -113,6 +114,9 @@ class ContactsTableViewController: UITableViewController {
                         "timeStamp": date
                     ]
                     userNewChatRef.setValue(userChatItem)
+                    let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, timeStamp: date)
+                    self.selectedChat = chatItem
+                    self.performSegue(withIdentifier: "ContactsToChat", sender: self)
                 })
             }
         })
@@ -202,14 +206,10 @@ class ContactsTableViewController: UITableViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let indexPath = tableView.indexPathForSelectedRow{
-//            let selectedRow = indexPath.row
-//            let chatVc = segue.destination as! ChatViewController
-//            let selectedChat = chats[selectedRow]
-//            chatVc.chat = selectedChat
-//            chatVc.senderId = self.userId
-//            chatVc.senderDisplayName = self.username
-        }
+        let chatVc = segue.destination as! ChatViewController
+        chatVc.chat = self.selectedChat
+        chatVc.senderId = self.userId
+        chatVc.senderDisplayName = self.username
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

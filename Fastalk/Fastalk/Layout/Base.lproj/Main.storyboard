@@ -272,10 +272,13 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="JKP-dC-ny3" kind="show" identifier="ContactsToChat" id="ZmD-Ev-2f0"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bjm-ZT-UdR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="66" y="-787"/>
+            <point key="canvasLocation" x="188" y="-787"/>
         </scene>
         <!--Set Username View Controller-->
         <scene sceneID="b1V-Jk-Utd">
@@ -568,6 +571,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="OkP-5Y-bCQ"/>
+        <segue reference="ZmD-Ev-2f0"/>
         <segue reference="eGL-qm-X0I"/>
     </inferredMetricsTieBreakers>
 </document>
