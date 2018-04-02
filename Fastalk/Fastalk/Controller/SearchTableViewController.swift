@@ -15,16 +15,14 @@ enum Section: Int {
 
 class SearchTableViewController: UITableViewController {
     var senderDisplayName: String?
+    let messagesByUserRef = Constants.refs.databaseMessagesByUser
     var textFieldSearch: UITextField?
     private var messages: [Message] = []
 
     var userId = Auth.auth().currentUser!.uid
-    let messagesByUserRef = Constants.refs.databaseMessagesByUser
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        //messages.append(Message(id: "1", text: "Message1"))
         self.tableView.reloadData()
     }
 
@@ -72,10 +70,22 @@ class SearchTableViewController: UITableViewController {
                 searchMessageCell.delegate = self;
             }
         } else if (indexPath as NSIndexPath).section == Section.resultsSection.rawValue {
-            cell.textLabel?.text = messages[(indexPath as NSIndexPath).row].text
-            cell.detailTextLabel?.text = messages[(indexPath as NSIndexPath).row].id
+            if let searchResultsCell = cell as? SearchResultsTableViewCell {
+                searchResultsCell.labelMessage.text = messages[(indexPath as NSIndexPath).row].text
+                searchResultsCell.labelReceiver.text = "Receiver: " + messages[(indexPath as NSIndexPath).row].receiverName
+                searchResultsCell.labelSender.text = "Sender: " + messages[(indexPath as NSIndexPath).row].senderName
+                // TODO: - add time here
+            }
         }
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath as NSIndexPath).section == Section.resultsSection.rawValue {
+            return 110
+        } else {
+            return 50
+        }
     }
 
     /*
@@ -127,10 +137,23 @@ class SearchTableViewController: UITableViewController {
 
 extension SearchTableViewController: SearchMessageCellProtocol {
     func searchClicked(_ sender: SearchMessageCell) {
-        let keyword = self.textFieldSearch?.text
-        self.messagesByUserRef.child(userId).queryOrdered(byChild: "text").queryEqual(toValue: keyword).observeSingleEvent(of: .value, with: { (snapshot) in
+        //let keyword = self.textFieldSearch?.text
+        self.messagesByUserRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
-                print(snapshot)
+                let retrievedMessages = snapshot.value as! NSDictionary
+                let ids = retrievedMessages.allKeys as! [String]
+                for id in ids {
+                    let messageContent = retrievedMessages[id] as! NSDictionary
+                    let text = messageContent["text"] as! String
+                    let senderId = messageContent["senderId"] as! String
+                    let senderName = messageContent["senderName"] as! String
+                    let receiverId = messageContent["receiverId"] as! String
+                    let receiverName = messageContent["receiverName"] as! String
+                    let message = Message(id: id, text: text, senderId: senderId, senderName: senderName, receiverId: receiverId, receiverName: receiverName)
+                    // TODO: - filter message locally
+                    self.messages.append(message)
+                    self.tableView.reloadData()
+                }
             }
         })
     }

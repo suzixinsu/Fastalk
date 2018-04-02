@@ -96,10 +96,13 @@ class ChatViewController: JSQMessagesViewController {
     {
         let itemRef = userMessagesRef!.childByAutoId()
         let date = getDate()
+        let receiverName = chat?.receiverName
+        let receiverId = chat?.receiverId
         let messageItem = [
             "senderId": self.senderId,
             "senderName": self.senderDisplayName,
-            "recieverName": chat?.receiverName,
+            "receiverName": receiverName!,
+            "receiverId": receiverId!,
             "text": text!,
             "timeStamp": date
         ]
@@ -107,7 +110,7 @@ class ChatViewController: JSQMessagesViewController {
         itemRef.setValue(messageItem)
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
         messagesByUserRef.child(userId).child(itemRef.key).setValue(messageItem)
-        //messagesByUserRef.child(userId).child(itemRef.key).setValue(messageItem)
+        messagesByUserRef.child(receiverId!).child(itemRef.key).setValue(messageItem)
         finishSendingMessage()
     }
     
