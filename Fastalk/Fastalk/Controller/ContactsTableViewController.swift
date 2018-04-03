@@ -65,10 +65,9 @@ class ContactsTableViewController: UITableViewController {
         return cell
     }
     
-    // TODO: - check if chat already exist
-    // if chat exist, not add
-    // if chat does not exist, but friend chat exist, get the chat Id
-    // if chat does not exist on both sides, add a new chat
+    // if user's chat exist, not add
+    // if user's chat does not exist, but friend's chat exist, get the chat Id
+    // if the chat does not exist on both sides, add a new chat
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let friendname = contacts[indexPath.row].username
         let friendId = contacts[indexPath.row].userId
@@ -85,10 +84,6 @@ class ContactsTableViewController: UITableViewController {
                 let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, timeStamp: timeStamp)
                 self.selectedChat = chatItem
                 self.performSegue(withIdentifier: "ContactsToChat", sender: self)
-//                print("id", id)
-//                print("receiverId", receiverId)
-//                print("receiverName", receiverName)
-//                print("timestamp", timeStamp)
             } else {
                 self.chatsRef.child(friendId).queryOrdered(byChild: "receiverId").queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
                     let date = self.getDate()
@@ -150,6 +145,7 @@ class ContactsTableViewController: UITableViewController {
         let contactItem = [
             "username": self.contactUsername!
         ]
+        // TODO: - add user to friend's contact and maybe a pop out
         self.userContactsRef!.child(self.contactUserId!).setValue(contactItem)
     }
     
