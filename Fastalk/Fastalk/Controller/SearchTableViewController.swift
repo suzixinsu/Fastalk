@@ -137,7 +137,7 @@ class SearchTableViewController: UITableViewController {
 
 extension SearchTableViewController: SearchMessageCellProtocol {
     func searchClicked(_ sender: SearchMessageCell) {
-        //let keyword = self.textFieldSearch?.text
+        let keyword = self.textFieldSearch!.text!
         self.messagesByUserRef.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
                 let retrievedMessages = snapshot.value as! NSDictionary
@@ -152,8 +152,9 @@ extension SearchTableViewController: SearchMessageCellProtocol {
                     let message = Message(id: id, text: text, senderId: senderId, senderName: senderName, receiverId: receiverId, receiverName: receiverName)
                     // TODO: - filter message locally
                     self.messages.append(message)
-                    self.tableView.reloadData()
                 }
+                self.messages = self.messages.filter { $0.text.lowercased().contains(keyword.lowercased()) }
+                self.tableView.reloadData()
             }
         })
     }
