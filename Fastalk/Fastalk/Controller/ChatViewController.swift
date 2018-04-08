@@ -29,7 +29,6 @@ class ChatViewController: JSQMessagesViewController {
     }()
     
     // TODO: - show username if group chat
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = chat?.receiverName
@@ -84,15 +83,23 @@ class ChatViewController: JSQMessagesViewController {
         return cell
     }
 
-//    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) -> NSAttributedString!
-//    {
-//        return messages[indexPath.item].senderId == senderId ? nil : NSAttributedString(string: messages[indexPath.item].senderDisplayName)
-//    }
-//
-//    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAt indexPath: IndexPath!) -> CGFloat
-//    {
-//        return messages[indexPath.item].senderId == senderId ? 0 : 15
-//    }
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForMessageBubbleTopLabelAt indexPath: IndexPath!) -> NSAttributedString!
+    {
+        let receiverId = chat?.receiverId
+        if (receiverId == "group") {
+            return messages[indexPath.item].senderId == senderId ? nil : NSAttributedString(string: messages[indexPath.item].senderDisplayName)
+        }
+        return nil
+    }
+
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForMessageBubbleTopLabelAt indexPath: IndexPath!) -> CGFloat
+    {
+        let receiverId = chat?.receiverId
+        if (receiverId == "group") {
+            return messages[indexPath.item].senderId == senderId ? 0 : 15
+        }
+        return 0
+    }
 
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!)
     {
