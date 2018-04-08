@@ -27,6 +27,8 @@ class ChatViewController: JSQMessagesViewController {
     lazy var incomingBubble: JSQMessagesBubbleImage = {
         return JSQMessagesBubbleImageFactory()!.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
     }()
+    
+    // TODO: - show username if group chat
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,8 +111,11 @@ class ChatViewController: JSQMessagesViewController {
         
         itemRef.setValue(messageItem)
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        // TODO: - 
         messagesByUserRef.child(userId).child(itemRef.key).setValue(messageItem)
-        messagesByUserRef.child(receiverId!).child(itemRef.key).setValue(messageItem)
+        if (receiverId != "group") {
+            messagesByUserRef.child(receiverId!).child(itemRef.key).setValue(messageItem)
+        }
         finishSendingMessage()
     }
     

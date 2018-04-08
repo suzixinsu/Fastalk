@@ -145,6 +145,22 @@
                                     <segue destination="SZg-EU-sv2" kind="show" id="OkP-5Y-bCQ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9nS-un-Gel">
+                                <rect key="frame" x="18" y="58" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="New Group"/>
+                                <connections>
+                                    <action selector="newGroupButtonClicked:" destination="xWJ-Ae-2it" eventType="touchUpInside" id="190-lx-awE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iA2-u6-JXy">
+                                <rect key="frame" x="18" y="96" width="112" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Join Group Chat"/>
+                                <connections>
+                                    <action selector="groupChatButtonClicked:" destination="xWJ-Ae-2it" eventType="touchUpInside" id="w7n-VQ-bcS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="XIw-6E-mAR"/>
@@ -592,7 +608,7 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="OkP-5Y-bCQ"/>
-        <segue reference="6YV-PZ-nTp"/>
+        <segue reference="ZmD-Ev-2f0"/>
         <segue reference="eGL-qm-X0I"/>
     </inferredMetricsTieBreakers>
 </document>
