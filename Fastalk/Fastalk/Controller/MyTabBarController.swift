@@ -12,7 +12,7 @@ class MyTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = "FasTalk"
         // Do any additional setup after loading the view.
     }
 
@@ -30,5 +30,23 @@ class MyTabBarController: UITabBarController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    @IBAction func AddClickedAction(_ sender: UIBarButtonItem) {
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "popoverViewController")
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.preferredContentSize = CGSize(width: 150, height: 240)
+        let popover = vc.popoverPresentationController!
+        popover.barButtonItem = sender
+        popover.delegate = self
+        present(vc, animated: true, completion:nil)
+    }
+    
 }
+
+
+extension MyTabBarController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+}
+

@@ -128,7 +128,7 @@ class ChatsListTableViewController: UITableViewController {
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "popoverViewController")
         vc.modalPresentationStyle = UIModalPresentationStyle.popover
-        vc.preferredContentSize = CGSize(width: 150, height: 160)
+        vc.preferredContentSize = CGSize(width: 150, height: 240)
         let popover = vc.popoverPresentationController!
         popover.barButtonItem = sender
         popover.delegate = self

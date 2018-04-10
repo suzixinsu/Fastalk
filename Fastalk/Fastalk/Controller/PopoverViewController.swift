@@ -20,9 +20,28 @@ class PopoverViewController: UIViewController {
     var joinGroupId: String?
     let userId = Auth.auth().currentUser!.uid
 
+    
+    //XIN: add action: commentes to be deletedd
+    var usernameTextField: UITextField?
+    var contactUsername: String?
+    var contactUserId: String?
+    private var userContactsRef: DatabaseReference?
+    private var userContactsRefHandle: DatabaseHandle?
+    private var usersRef = Constants.refs.databaseUsers
+    private var contactsRef = Constants.refs.databaseContacts
+    //let userId = Auth.auth().currentUser!.uid
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         userChatsRef = chatsRef.child(userId)
+        //startObserve()
+        self.userContactsRef = self.contactsRef.child(userId)
+    }
+    
+    deinit {
+        if let refHandle = userContactsRefHandle {
+            self.userContactsRef!.removeObserver(withHandle: refHandle)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -152,5 +171,81 @@ class PopoverViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    //XIN: add contacts moved to here
+    
+    @IBAction func buttonAddClickedAction(_ sender: Any) {
+        self.alertController = UIAlertController(title: "Add Contact", message: "Please provide the username", preferredStyle: UIAlertControllerStyle.alert)
+        
+        let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            //add user to contacts
+            self.addNewContact()
+        })
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
+        
+        alertController!.addAction(OKAction)
+        alertController!.addAction(cancelAction)
+        
+        self.alertController!.addTextField { (textField) -> Void in
+            self.usernameTextField = textField
+            self.usernameTextField?.placeholder = "Enter the username"
+        }
+        OKAction.isEnabled = false
+        actionToEnable = OKAction
+        present(self.alertController!, animated: true, completion:nil)
+        
+        self.usernameTextField!.addTarget(self, action: #selector(checkIfContactUsernameExists), for: .editingChanged)
+    }
+    
+    private func addNewContact() {
+        let contactItem = [
+            "username": self.contactUsername!
+        ]
+//        print(self.contactUsername!)
+//        print(self.contactUserId!)
+        // TODO: - add user to friend's contact and maybe a pop out
+       
+    self.userContactsRef!.child(self.contactUserId!).setValue(contactItem)
+        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+        let tabBar = storyboard.instantiateViewController(withIdentifier: "MyTabBarController") as? MyTabBarController
+        tabBar?.selectedIndex = 1
+        self.present(tabBar!, animated: true, completion: nil)
+        jumpTo(1)
+    }
 
+    @objc private func checkIfContactUsernameExists() {
+        let contactUsername = usernameTextField!.text
+        self.usersRef.queryOrdered(byChild: "username").queryEqual(toValue: contactUsername).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.exists() {
+                self.actionToEnable!.isEnabled = true
+                self.alertController?.message = "User Found"
+                let contact = snapshot.value as! NSDictionary
+                let keys = contact.allKeys as! [String]
+                let contactUserId = keys[0]
+                self.contactUserId = contactUserId
+                self.contactUsername = contactUsername
+            } else {
+                self.alertController?.message = "User does not exist"
+            }
+        })
+    }
+
+    @IBAction func jumpTo(_ sender: Any) {
+        //self.selectedIndex = 0;
+        self.tabBarController?.selectedIndex = 0
+    }
+    //new chat
+    @IBAction func newChat(_ sender: Any) {
+        jumpTo(0)
+    }
+    
+    private func jumpTo(_ index: Int) {
+        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+        let nav = storyboard.instantiateViewController(withIdentifier: "startNavigation")
+        nav.tabBarController?.selectedIndex = index
+        self.present(nav, animated: true, completion: nil)
+    }
+//    @IBAction func tryJump(_ sender: Any) {
+//        jumpTo(1)
+//    }
 }

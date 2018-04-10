@@ -24,7 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         var initialViewController = storyboard.instantiateViewController(withIdentifier: "LoginOrRegisterViewController")
         if Auth.auth().currentUser != nil {
-            initialViewController = storyboard.instantiateViewController(withIdentifier: "MyTabBarController")
+//            initialViewController = storyboard.instantiateViewController(withIdentifier: "MyTabBarController")
+            initialViewController = storyboard.instantiateViewController(withIdentifier: "startNavigation")
         }
         self.window?.rootViewController = initialViewController
         self.window?.makeKeyAndVisible()
