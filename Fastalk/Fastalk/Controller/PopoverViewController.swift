@@ -206,10 +206,10 @@ class PopoverViewController: UIViewController {
         // TODO: - add user to friend's contact and maybe a pop out
        
     self.userContactsRef!.child(self.contactUserId!).setValue(contactItem)
-        let storyboard = UIStoryboard(name: "Main", bundle:nil)
-        let tabBar = storyboard.instantiateViewController(withIdentifier: "MyTabBarController") as? MyTabBarController
-        tabBar?.selectedIndex = 1
-        self.present(tabBar!, animated: true, completion: nil)
+//        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+//        let tabBar = storyboard.instantiateViewController(withIdentifier: "MyTabBarController") as? MyTabBarController
+//        tabBar?.selectedIndex = 1
+//        self.present(tabBar!, animated: true, completion: nil)
         jumpTo(1)
     }
 

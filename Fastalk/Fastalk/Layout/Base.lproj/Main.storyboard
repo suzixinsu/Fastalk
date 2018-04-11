@@ -286,7 +286,7 @@
                             <outlet property="delegate" destination="ejX-RI-j3F" id="13E-xE-yQE"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Contacts" image="contact" selectedImage="contact" id="Hlh-ZO-SgG"/>
+                    <tabBarItem key="tabBarItem" title="Contacts" image="contact" selectedImage="social" id="Hlh-ZO-SgG"/>
                     <navigationItem key="navigationItem" id="lJb-iY-qfN"/>
                     <connections>
                         <segue destination="JKP-dC-ny3" kind="show" identifier="ContactsToChat" id="ZmD-Ev-2f0"/>
@@ -579,6 +579,7 @@
         <image name="contact" width="32" height="32"/>
         <image name="search" width="32" height="32"/>
         <image name="setting" width="32" height="32"/>
+        <image name="social" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ZmD-Ev-2f0"/>

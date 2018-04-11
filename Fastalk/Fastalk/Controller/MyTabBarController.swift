@@ -14,10 +14,10 @@ class MyTabBarController: UITabBarController {
         super.viewDidLoad()
         self.title = "FasTalk"
 //        self.tabBar.barTintColor = UIColor.brown
-//        self.tabBar.tintColor = UIColor.yellow
-        self.navigationController?.navigationBar.barTintColor = UIColor.green
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.orange]
-        
+        self.tabBar.tintColor = UIColor.yellow
+        //self.navigationController?.navigationBar.barTintColor = UIColor.green
+        //self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.orange]
+        //let fancySwiftColor = UIColor(red: 0x66, green: 0xA5, blue: 0)
         // Do any additional setup after loading the view.
     }
 
