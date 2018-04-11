@@ -210,7 +210,7 @@ class PopoverViewController: UIViewController {
 //        let tabBar = storyboard.instantiateViewController(withIdentifier: "MyTabBarController") as? MyTabBarController
 //        tabBar?.selectedIndex = 1
 //        self.present(tabBar!, animated: true, completion: nil)
-        jumpTo(1)
+        jumpTo()
     }
 
     @objc private func checkIfContactUsernameExists() {
@@ -230,22 +230,19 @@ class PopoverViewController: UIViewController {
         })
     }
 
-    @IBAction func jumpTo(_ sender: Any) {
-        //self.selectedIndex = 0;
-        self.tabBarController?.selectedIndex = 0
-    }
     //new chat
     @IBAction func newChat(_ sender: Any) {
-        jumpTo(1)
+        //jumpTo(1)
+        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+        let popContactList = storyboard.instantiateViewController(withIdentifier: "newList")
+        self.present(popContactList, animated: true, completion: nil)
     }
     
-    private func jumpTo(_ index: Int) {
+    private func jumpTo() {
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
         let nav = storyboard.instantiateViewController(withIdentifier: "startNavigation")
-        nav.tabBarController?.selectedIndex = index
+        //nav.tabBarController?.selectedIndex = index
         self.present(nav, animated: true, completion: nil)
     }
-//    @IBAction func tryJump(_ sender: Any) {
-//        jumpTo(1)
-//    }
+
 }

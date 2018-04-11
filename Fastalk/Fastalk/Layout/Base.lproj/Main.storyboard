@@ -263,6 +263,36 @@
             </objects>
             <point key="canvasLocation" x="330" y="132"/>
         </scene>
+        <!--New Chat Contacts View Controller-->
+        <scene sceneID="6oI-8d-Te6">
+            <objects>
+                <viewController storyboardIdentifier="newList" id="6yp-rk-ucK" customClass="NewChatContactsViewController" customModule="Fastalk" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Max-Yl-adg" customClass="newC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6e2-bH-GQ7">
+                                <rect key="frame" x="0.0" y="103" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Some Contacts" id="4Za-oo-1FZ">
+                                        <barButtonItem key="leftBarButtonItem" title="Back" id="z2z-sL-5g1">
+                                            <connections>
+                                                <action selector="actionBack:" destination="6yp-rk-ucK" id="1gD-tv-8Vs"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="rtg-ZF-v54"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SwJ-xY-qwG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-756" y="-1371"/>
+        </scene>
         <!--Contacts-->
         <scene sceneID="tGR-pF-zTt">
             <objects>
