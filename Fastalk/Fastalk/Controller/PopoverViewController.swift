@@ -236,7 +236,7 @@ class PopoverViewController: UIViewController {
     }
     //new chat
     @IBAction func newChat(_ sender: Any) {
-        jumpTo(0)
+        jumpTo(1)
     }
     
     private func jumpTo(_ index: Int) {
