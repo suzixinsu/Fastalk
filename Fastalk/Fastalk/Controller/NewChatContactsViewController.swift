@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewChatContactsViewController: UIViewController {
+class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +26,9 @@ class NewChatContactsViewController: UIViewController {
         parentVC = parentVC?.presentingViewController
         parentVC?.dismiss(animated: true, completion: nil)
     }
-    
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
+    }
     /*
     // MARK: - Navigation
 
