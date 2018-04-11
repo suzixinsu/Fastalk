@@ -13,6 +13,11 @@ class MyTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "FasTalk"
+//        self.tabBar.barTintColor = UIColor.brown
+//        self.tabBar.tintColor = UIColor.yellow
+        self.navigationController?.navigationBar.barTintColor = UIColor.green
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.orange]
+        
         // Do any additional setup after loading the view.
     }
 

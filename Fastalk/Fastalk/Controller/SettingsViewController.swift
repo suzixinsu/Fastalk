@@ -13,6 +13,7 @@ class SettingsViewController: UIViewController {
     private var usersRef = Constants.refs.databaseUsers
     var username: String?
     let userId = Auth.auth().currentUser?.uid
+    var colorId: Int?
     
     @IBOutlet weak var labelSignOutError: UILabel!
     @IBOutlet weak var labelUsername: UILabel!
@@ -54,9 +55,13 @@ class SettingsViewController: UIViewController {
         self.performSegue(withIdentifier: "LogOutToLogIn", sender: self)
     }
     
-    /*
-    // MARK: - Navigation
-
+    @IBAction func changeColor(_ sender: Any) {
+        self.navigationController?.navigationBar.barTintColor = UIColor.yellow
+        self.view.backgroundColor = UIColor.lightGray
+    }
+    
+     // MARK: - Navigation
+/*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
