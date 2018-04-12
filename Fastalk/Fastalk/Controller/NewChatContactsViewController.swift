@@ -7,18 +7,55 @@
 //
 
 import UIKit
+import Firebase
 
-class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate {
+class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,UITableViewDelegate, UITableViewDataSource  {
+    private var contacts: [Contact] = []
+    private var contactsRef = Constants.refs.databaseContacts
+    private var userContactsRef: DatabaseReference?
+    private var userContactsRefHandle: DatabaseHandle?
+    private var usersRef = Constants.refs.databaseUsers
+    private var friendChatsRef: DatabaseReference?
+    private var chatsRef = Constants.refs.databaseChats
+    let userId = Auth.auth().currentUser!.uid
+    var alertController: UIAlertController?
+    var username: String?
+    var selectedChat: Chat?
+    
+    @IBOutlet weak var addChatContactList: UITableView!
+    
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.title = "New Chats"
+        addChatContactList.delegate = self
+        addChatContactList.dataSource = self
+        getUsername()
+        startObserve()
         // Do any additional setup after loading the view.
+        //print(contacts.count)
+    }
+    deinit {
+        if let refHandle = userContactsRefHandle {
+            self.userContactsRef!.removeObserver(withHandle: refHandle)
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //print(contacts.count)
+        return contacts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let reuseIdentifier = "newExistingContacts"
+        let cell = self.addChatContactList.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+        cell.textLabel?.text = contacts[(indexPath as NSIndexPath).row].username
+        return cell
     }
     
     @IBAction func actionBack(_ sender: Any) {
@@ -29,14 +66,107 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate 
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return .topAttached
     }
-    /*
-    // MARK: - Navigation
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let friendname = contacts[indexPath.row].username
+        let friendId = contacts[indexPath.row].userId
+        //TODO: - change date to last message
+        
+        self.chatsRef.child(userId).queryOrdered(byChild: "receiverId").queryEqual(toValue: friendId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                let chat = snapshot.value as! NSDictionary
+                let id = chat.allKeys[0] as! String
+                let chatContent = chat[id] as! NSDictionary
+                let receiverId = chatContent["receiverId"] as! String
+                let receiverName = chatContent["receiverName"] as! String
+                let timeStamp = chatContent["timeStamp"] as! String
+                let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, timeStamp: timeStamp)
+                self.selectedChat = chatItem
+                self.performSegue(withIdentifier: "toChat", sender: self.addChatContactList)
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+            } else {
+                self.chatsRef.child(friendId).queryOrdered(byChild: "receiverId").queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
+                    let date = self.getDate()
+                    var chatId = "0"
+                    if (snapshot.exists()) {
+                        let chat = snapshot.value as! NSDictionary
+                        chatId = chat.allKeys[0] as! String
+                    } else {
+                        let friendChatItem = [
+                            "receiverName": self.username,
+                            "receiverId": self.userId,
+                            "timeStamp": date
+                        ]
+                        self.friendChatsRef = self.chatsRef.child(friendId)
+                        let friendNewChatRef = self.friendChatsRef!.childByAutoId()
+                        friendNewChatRef.setValue(friendChatItem)
+                        chatId = friendNewChatRef.key
+                    }
+                    let userNewChatRef = self.chatsRef.child(self.userId).child(chatId)
+                    let userChatItem = [
+                        "receiverName": friendname,
+                        "receiverId": friendId,
+                        "timeStamp": date
+                    ]
+                    userNewChatRef.setValue(userChatItem)
+                    let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, timeStamp: date)
+                    self.selectedChat = chatItem
+                    //print("START SEGUE")
+                    self.performSegue(withIdentifier: "toChat", sender: self.addChatContactList)
+                })
+            }
+        })
     }
-    */
+    // MARK: - Privage Methods
+    private func startObserve() {
+        let userId = Auth.auth().currentUser?.uid
+        self.userContactsRef = self.contactsRef.child(userId!)
+        self.userContactsRefHandle = self.userContactsRef!.observe(.childAdded, with: { (snapshot) -> Void in
+            let contactId = snapshot.key
+            let contactsData = snapshot.value as! Dictionary<String, AnyObject>
+            if let contactName = contactsData["username"] as! String!, contactName.count > 0 {
+                self.contacts.append(Contact(username: contactName, userId: contactId))
+                //print(self.contacts.count)
+                self.addChatContactList.reloadData()
+            } else {
+                print("Error! Could not decode contact data")
+            }
+        })
+        //TODO: reorder the tabel cells according to time
+    }
+    
+    private func getDate() -> String{
+        let currentDate = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm MM/dd/yy"
+        let convertedDate = dateFormatter.string(from: currentDate)
+        return convertedDate
+    }
 
+    private func getUsername() {
+        
+        self.usersRef.queryOrderedByKey().queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                let user = snapshot.value as! NSDictionary
+                let value = user[self.userId] as! NSDictionary
+                let username = value["username"] as! String
+                self.username = username
+            }
+        })
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let chatVc = segue.destination as! ChatViewController
+        chatVc.chat = self.selectedChat
+        chatVc.senderId = self.userId
+        chatVc.senderDisplayName = self.username
+        
+        let back = UIBarButtonItem()
+        back.title = "Back"
+        navigationItem.leftBarButtonItem = back
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
 }

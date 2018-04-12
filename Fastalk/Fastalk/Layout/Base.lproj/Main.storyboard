@@ -267,7 +267,7 @@
         <scene sceneID="6oI-8d-Te6">
             <objects>
                 <viewController storyboardIdentifier="newList" id="6yp-rk-ucK" customClass="NewChatContactsViewController" customModule="Fastalk" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Max-Yl-adg" customClass="newC">
+                    <view key="view" contentMode="scaleToFill" id="Max-Yl-adg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -283,19 +283,41 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="addTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="SEU-iL-qPT">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="newExistingContacts" id="T83-EI-rza" customClass="CustomTableViewCell" customModule="Fastalk" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="T83-EI-rza" id="cBB-nH-ArM">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="SEU-iL-qPT" firstAttribute="leading" secondItem="rtg-ZF-v54" secondAttribute="leading" id="4vw-cZ-cyy"/>
                             <constraint firstItem="6e2-bH-GQ7" firstAttribute="leading" secondItem="rtg-ZF-v54" secondAttribute="leading" id="7mD-yV-XRh"/>
+                            <constraint firstItem="SEU-iL-qPT" firstAttribute="trailing" secondItem="rtg-ZF-v54" secondAttribute="trailing" id="9km-HX-pgS"/>
+                            <constraint firstItem="SEU-iL-qPT" firstAttribute="top" secondItem="6e2-bH-GQ7" secondAttribute="bottom" id="D5T-bd-Z7u"/>
+                            <constraint firstItem="SEU-iL-qPT" firstAttribute="bottom" secondItem="rtg-ZF-v54" secondAttribute="bottom" id="iHu-73-9qV"/>
                             <constraint firstItem="6e2-bH-GQ7" firstAttribute="trailing" secondItem="rtg-ZF-v54" secondAttribute="trailing" id="l0c-NS-Tal"/>
                             <constraint firstItem="6e2-bH-GQ7" firstAttribute="top" secondItem="rtg-ZF-v54" secondAttribute="top" id="me8-8O-JDj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rtg-ZF-v54"/>
                     </view>
+                    <connections>
+                        <outlet property="addChatContactList" destination="SEU-iL-qPT" id="nnq-Kr-PEz"/>
+                        <segue destination="JKP-dC-ny3" kind="show" identifier="toChat" id="hP9-AT-6Cz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SwJ-xY-qwG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-756" y="-1371"/>
+            <point key="canvasLocation" x="-756" y="-1371.3643178410796"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="tGR-pF-zTt">
@@ -616,7 +638,7 @@
         <image name="social" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZmD-Ev-2f0"/>
+        <segue reference="hP9-AT-6Cz"/>
         <segue reference="s6L-RL-OHH"/>
     </inferredMetricsTieBreakers>
 </document>

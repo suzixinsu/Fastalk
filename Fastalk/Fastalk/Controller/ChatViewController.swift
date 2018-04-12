@@ -50,7 +50,10 @@ class ChatViewController: JSQMessagesViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
     // MARK: - Overriden Methods
+
+    
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData!
     {
         return messages[indexPath.item]

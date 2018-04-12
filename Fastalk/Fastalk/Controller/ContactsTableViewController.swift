@@ -20,7 +20,7 @@ class ContactsTableViewController: UITableViewController {
     let userId = Auth.auth().currentUser!.uid
     var alertController: UIAlertController?
 //    var usernameTextField: UITextField?
-    var actionToEnable: UIAlertAction?
+//    var actionToEnable: UIAlertAction?
 //    var contactUsername: String?
 //    var contactUserId: String?
     var username: String?
@@ -35,17 +35,17 @@ class ContactsTableViewController: UITableViewController {
         // self.clearsSelectionOnViewWillAppear = false
     }
 //
-//    deinit {
-//        if let refHandle = userContactsRefHandle {
-//            self.userContactsRef!.removeObserver(withHandle: refHandle)
-//        }
-//    }
+    deinit {
+        if let refHandle = userContactsRefHandle {
+            self.userContactsRef!.removeObserver(withHandle: refHandle)
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
     // MARK: - Overriden Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -131,6 +131,7 @@ class ContactsTableViewController: UITableViewController {
                 print("Error! Could not decode contact data")
             }
         })
+        //TODO: reorder the tabel cells according to time
     }
     
     private func getDate() -> String{
