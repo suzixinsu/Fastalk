@@ -13,12 +13,9 @@ class MyTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "FasTalk"
-//        self.tabBar.barTintColor = UIColor.brown
-        self.tabBar.tintColor = UIColor.yellow
-        //self.navigationController?.navigationBar.barTintColor = UIColor.green
-        //self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.orange]
-        //let fancySwiftColor = UIColor(red: 0x66, green: 0xA5, blue: 0)
-        // Do any additional setup after loading the view.
+        self.tabBar.backgroundColor = UIColor.white
+        self.tabBar.barTintColor = UIColor.white
+        colorChange(Config.colorScheme())
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,9 +43,14 @@ class MyTabBarController: UITabBarController {
         present(vc, animated: true, completion:nil)
     }
     
+    func colorChange( _ colorIdx:Int){
+        self.navigationController?.navigationBar.barTintColor = UIColor(named: navColor[colorIdx])
+        self.tabBar.tintColor = UIColor(named: tabTintColor[colorIdx])
+    }
+    
+
+    
 }
-
-
 extension MyTabBarController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none

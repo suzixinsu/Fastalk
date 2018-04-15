@@ -29,7 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         self.window?.rootViewController = initialViewController
         self.window?.makeKeyAndVisible()
-        
+        UINavigationBar.appearance().barStyle = .blackOpaque
+        //colorChange(Config.colorScheme())
         return true
     }
 

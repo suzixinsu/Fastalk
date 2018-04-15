@@ -243,6 +243,7 @@ class PopoverViewController: UIViewController {
         let nav = storyboard.instantiateViewController(withIdentifier: "startNavigation")
         //nav.tabBarController?.selectedIndex = index
         self.present(nav, animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 
 }

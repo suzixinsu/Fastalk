@@ -18,7 +18,7 @@ class ContactsTableViewController: UITableViewController {
     private var friendChatsRef: DatabaseReference?
     private var chatsRef = Constants.refs.databaseChats
     let userId = Auth.auth().currentUser!.uid
-    var alertController: UIAlertController?
+//    var alertController: UIAlertController?
 //    var usernameTextField: UITextField?
 //    var actionToEnable: UIAlertAction?
 //    var contactUsername: String?
@@ -83,7 +83,8 @@ class ContactsTableViewController: UITableViewController {
                 let timeStamp = chatContent["timeStamp"] as! String
                 let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, timeStamp: timeStamp)
                 self.selectedChat = chatItem
-                self.performSegue(withIdentifier: "ContactsToChat", sender: self)
+                //self.performSegue(withIdentifier: "ContactsToChat", sender: self)
+                self.getChat()
             } else {
                 self.chatsRef.child(friendId).queryOrdered(byChild: "receiverId").queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
                     let date = self.getDate()
@@ -111,7 +112,8 @@ class ContactsTableViewController: UITableViewController {
                     userNewChatRef.setValue(userChatItem)
                     let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, timeStamp: date)
                     self.selectedChat = chatItem
-                    self.performSegue(withIdentifier: "ContactsToChat", sender: self)
+                    //self.performSegue(withIdentifier: "ContactsToChat", sender: self)
+                    self.getChat()
                 })
             }
         })
@@ -202,11 +204,23 @@ class ContactsTableViewController: UITableViewController {
 //        self.usernameTextField!.addTarget(self, action: #selector(checkIfContactUsernameExists), for: .editingChanged)
 //    }
 //
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let chatVc = segue.destination as! ChatViewController
-        chatVc.chat = self.selectedChat
-        chatVc.senderId = self.userId
-        chatVc.senderDisplayName = self.username
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        let chatVc = segue.destination as! ChatViewController
+//        chatVc.chat = self.selectedChat
+//        chatVc.senderId = self.userId
+//        chatVc.senderDisplayName = self.username
+//    }
+//
+    private func getChat(){
+        
+        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+        let chatVC = storyboard.instantiateViewController(withIdentifier: "chatVC") as? ChatViewController
+        //let nav = UINavigationController(rootViewController: chatVC!)
+        chatVC?.chat = self.selectedChat
+        chatVC?.senderId = self.userId
+        chatVC?.senderDisplayName = self.username
+        self.present(chatVC!, animated: true, completion: nil)
+        //self dismissViewControllerAnimated:NO completion:nil
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

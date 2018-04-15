@@ -32,6 +32,7 @@
 		2C0C60C47A3A95B853633E5D /* Pods_Fastalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B12BDBBEECBFED4BBF45BF5 /* Pods_Fastalk.framework */; };
 		6A1DDCE9207DD72900BAAFE1 /* NewChatContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1DDCE8207DD72900BAAFE1 /* NewChatContactsViewController.swift */; };
 		6A1DDCEB207EAFA800BAAFE1 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1DDCEA207EAFA800BAAFE1 /* CustomTableViewCell.swift */; };
+		6A5D4F882081742400C3EBE5 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A5D4F872081742400C3EBE5 /* Helper.swift */; };
 		6AF04C0B2054C2A7002DAE48 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AF04C0A2054C2A7002DAE48 /* AVFoundation.framework */; };
 		6AF04C0F2054C58A002DAE48 /* moments.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6AF04C0E2054C58A002DAE48 /* moments.mp4 */; };
 /* End PBXBuildFile section */
@@ -67,6 +68,7 @@
 		664D00B332CD5FC3A820582F /* Pods-Fastalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fastalk.release.xcconfig"; path = "Pods/Target Support Files/Pods-Fastalk/Pods-Fastalk.release.xcconfig"; sourceTree = "<group>"; };
 		6A1DDCE8207DD72900BAAFE1 /* NewChatContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChatContactsViewController.swift; sourceTree = "<group>"; };
 		6A1DDCEA207EAFA800BAAFE1 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		6A5D4F872081742400C3EBE5 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		6AF04C0A2054C2A7002DAE48 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6AF04C0E2054C58A002DAE48 /* moments.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = moments.mp4; path = Fastalk/Assets.xcassets/moments.mp4; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -101,6 +103,7 @@
 				0825C5372071BB9E00CF29ED /* SearchResultsTableViewCell.swift */,
 				6A1DDCE8207DD72900BAAFE1 /* NewChatContactsViewController.swift */,
 				6A1DDCEA207EAFA800BAAFE1 /* CustomTableViewCell.swift */,
+				6A5D4F872081742400C3EBE5 /* Helper.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				0825C52E206F472500CF29ED /* SearchTableViewController.swift in Sources */,
 				6A1DDCEB207EAFA800BAAFE1 /* CustomTableViewCell.swift in Sources */,
 				080F6C7B204B951C008A5C98 /* LoginOrRegisterViewController.swift in Sources */,
+				6A5D4F882081742400C3EBE5 /* Helper.swift in Sources */,
 				08CDD058204BB423007439F5 /* ChatsListTableViewController.swift in Sources */,
 				086C8EFB205236B700F74AAF /* Contact.swift in Sources */,
 				08E31AE1204CDD940033A7BD /* SetUsernameViewController.swift in Sources */,
@@ -485,6 +489,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Fastalk/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iosgroup7.Fastalk;
@@ -501,6 +506,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Fastalk/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iosgroup7.Fastalk;

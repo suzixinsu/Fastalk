@@ -60,8 +60,10 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
     
     @IBAction func actionBack(_ sender: Any) {
         var parentVC = self.presentingViewController
+//        parentVC?.dismiss(animated: true, completion: nil)
         parentVC = parentVC?.presentingViewController
         parentVC?.dismiss(animated: true, completion: nil)
+        //self.dismiss(animated: true, completion: nil)
     }
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return .topAttached
@@ -82,7 +84,9 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
                 let timeStamp = chatContent["timeStamp"] as! String
                 let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, timeStamp: timeStamp)
                 self.selectedChat = chatItem
-                self.performSegue(withIdentifier: "toChat", sender: self.addChatContactList)
+//                self.performSegue(withIdentifier: "toChat", sender: self.addChatContactList)
+                self.getChat()
+                
 
             } else {
                 self.chatsRef.child(friendId).queryOrdered(byChild: "receiverId").queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -112,7 +116,8 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
                     let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, timeStamp: date)
                     self.selectedChat = chatItem
                     //print("START SEGUE")
-                    self.performSegue(withIdentifier: "toChat", sender: self.addChatContactList)
+//                    self.performSegue(withIdentifier: "toChat", sender: self.addChatContactList)
+                    self.getChat()
                 })
             }
         })
@@ -154,17 +159,24 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
             }
         })
     }
+    
+    private func getChat(){
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let chatVc = segue.destination as! ChatViewController
-        chatVc.chat = self.selectedChat
-        chatVc.senderId = self.userId
-        chatVc.senderDisplayName = self.username
-        
-        let back = UIBarButtonItem()
-        back.title = "Back"
-        navigationItem.leftBarButtonItem = back
+        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+        let chatVC = storyboard.instantiateViewController(withIdentifier: "chatVC") as? ChatViewController
+        //let nav = UINavigationController(rootViewController: chatVC!)
+        chatVC?.chat = self.selectedChat
+        chatVC?.senderId = self.userId
+        chatVC?.senderDisplayName = self.username
+        self.present(chatVC!, animated: true, completion: nil)
+        //self dismissViewControllerAnimated:NO completion:nil
     }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        let chatVc = segue.destination as! ChatViewController
+//        chatVc.chat = self.selectedChat
+//        chatVc.senderId = self.userId
+//        chatVc.senderDisplayName = self.username
+//    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80

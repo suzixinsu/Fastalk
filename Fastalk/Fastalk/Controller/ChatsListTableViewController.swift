@@ -17,13 +17,19 @@ class ChatsListTableViewController: UITableViewController {
     private var currentUserChatsRef: DatabaseReference?
     var username: String?
     let userId = Auth.auth().currentUser?.uid
+   var selectedChat: Chat?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Chats"
         self.currentUserChatsRef = self.chatsRef.child(self.userId!)
-        observeChats()
+        //self.tableview.delegate = self
+        //self.tableView.dataSource = self
+        //self.tableView.allowsSelection = true
+        //self.tableView.isUserInteractionEnabled = true
+        //tableView.allowsSelection = true
         getUsername()
+        observeChats()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
     }
@@ -69,6 +75,28 @@ class ChatsListTableViewController: UITableViewController {
         let config = UISwipeActionsConfiguration(actions:[delete])
         config.performsFirstActionWithFullSwipe = false
         return config
+    }
+    func tableview(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+        print(tableView.indexPathForSelectedRow)
+        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+                if let indexPath = tableView.indexPathForSelectedRow{
+                    let selectedRow = indexPath.row
+                    //let chatVc = segue.destination as! ChatViewController
+                    //let chatVC =  storyboard.instantiateViewController(withIdentifier: "chatVC")
+                    let chatVC = ChatViewController()
+                    let selectedChat = chats[selectedRow]
+                    chatVC.chat = selectedChat
+                    chatVC.senderId = self.userId
+                    chatVC.senderDisplayName = self.username
+                    self.present(chatVC, animated: true, completion: nil)
+                }
+        //print(indexPath)
+        //if let indexPath = tableView.indexPathForSelectedRow{
+
+        //print(selectedRow)
+
+        //let chatVC = storyboard.instantiateViewController(withIdentifier: "chatVC") as? ChatViewController
+
     }
     
     // MARK: - Privage Methods
@@ -124,38 +152,51 @@ class ChatsListTableViewController: UITableViewController {
     }
 
     // MARK: - UI Actions
-    @IBAction func AddClickedAction(_ sender: UIBarButtonItem) {
-        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "popoverViewController")
-        vc.modalPresentationStyle = UIModalPresentationStyle.popover
-        vc.preferredContentSize = CGSize(width: 150, height: 240)
-        let popover = vc.popoverPresentationController!
-        popover.barButtonItem = sender
-        popover.delegate = self
-        present(vc, animated: true, completion:nil)
-    }
-    
+//    @IBAction func AddClickedAction(_ sender: UIBarButtonItem) {
+//        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "popoverViewController")
+//        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+//        vc.preferredContentSize = CGSize(width: 150, height: 240)
+//        let popover = vc.popoverPresentationController!
+//        popover.barButtonItem = sender
+//        popover.delegate = self
+//        present(vc, animated: true, completion:nil)
+//    }
+//
     // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let indexPath = tableView.indexPathForSelectedRow{
-            let selectedRow = indexPath.row
-            let chatVc = segue.destination as! ChatViewController
-            let selectedChat = chats[selectedRow]
-            chatVc.chat = selectedChat
-            chatVc.senderId = self.userId
-            chatVc.senderDisplayName = self.username
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if let indexPath = tableView.indexPathForSelectedRow{
+//            let selectedRow = indexPath.row
+//            let chatVc = segue.destination as! ChatViewController
+//            let selectedChat = chats[selectedRow]
+//            chatVc.chat = selectedChat
+//            chatVc.senderId = self.userId
+//            chatVc.senderDisplayName = self.username
+//        }
+//    }
     //set height
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
-
+//
+//    private func getChat(){
+//
+//        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+//        let chatVC = storyboard.instantiateViewController(withIdentifier: "chatVC") as? ChatViewController
+//        //let nav = UINavigationController(rootViewController: chatVC!)
+//        chatVC?.chat = self.selectedChat
+//        chatVC?.senderId = self.userId
+//        chatVC?.senderDisplayName = self.username
+//        self.present(chatVC!, animated: true, completion: nil)
+//        //self dismissViewControllerAnimated:NO completion:nil
+//    }
 }
 
-extension ChatsListTableViewController: UIPopoverPresentationControllerDelegate {
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
-    }
-}
+
+//
+//extension ChatsListTableViewController: UIPopoverPresentationControllerDelegate {
+//    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+//        return UIModalPresentationStyle.none
+//    }
+//}
 

@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import JSQMessagesViewController
 
-class ChatViewController: JSQMessagesViewController {
+class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     var chat: Chat?
     var userId = Auth.auth().currentUser!.uid
     let messagesRef = Constants.refs.databaseMessagesByChat
@@ -19,9 +19,9 @@ class ChatViewController: JSQMessagesViewController {
     private var messagesRefHandle: DatabaseHandle?
     var messages = [JSQMessage]()
     let usersRef = Constants.refs.databaseUsers
+    //var navigationBar : UINavigationBar?
     var fontSize = SettingsViewController.global.font
     
-
     lazy var outgoingBubble: JSQMessagesBubbleImage = {
         return JSQMessagesBubbleImageFactory()!.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
     }()
@@ -33,7 +33,7 @@ class ChatViewController: JSQMessagesViewController {
     // TODO: - show username if group chat
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = chat?.receiverName
+        //self.title = chat?.receiverName
         self.userMessagesRef = messagesRef.child(chat!.id)
         observeMessages()
         
@@ -45,9 +45,14 @@ class ChatViewController: JSQMessagesViewController {
         let tapRecognizer = UITapGestureRecognizer()
         tapRecognizer.addTarget(self, action: #selector(ChatViewController.tapToDismissKeyboard(_:)))
         view.addGestureRecognizer(tapRecognizer)
-        
+        addNavBar()
+        topContentAdditionalInset = 60
     }
-
+//nav
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -80,16 +85,17 @@ class ChatViewController: JSQMessagesViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
         let message = messages[indexPath.item]
-        if fontSize == 0{
-            fontSize = 20
-        }
-        let font = CGFloat(fontSize)
-        cell.textView?.font = UIFont.systemFont(ofSize:font)
+        
         if message.senderId == senderId {
             cell.textView?.textColor = UIColor.white
         } else {
             cell.textView?.textColor = UIColor.black
         }
+        if fontSize == 0{
+            fontSize = 20
+        }
+        let font = CGFloat(fontSize)
+        cell.textView?.font = UIFont.systemFont(ofSize:font)
         return cell
     }
 
@@ -169,6 +175,50 @@ class ChatViewController: JSQMessagesViewController {
     @objc func tapToDismissKeyboard(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
-
+    @IBAction func backToStart(_ sender: Any) {
+        //jumpTo(1)
+        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+        let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
+        self.present(initialView, animated: true, completion: nil)
+    }
+    
+    func addNavBar() {
+        
+        let navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: UIScreen.main.bounds.width, height:50)) // Offset by 20 pixels vertically to take the status bar into account
+        navigationBar.prefersLargeTitles = true
+        navigationBar.barTintColor = UIColor.black
+        navigationBar.tintColor = UIColor.white
+        
+        navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
+        //navigationBar.titleTextAttributes
+        
+        // Create a navigation item with a title
+        let navigationItem = UINavigationItem()
+        navigationItem.title = chat?.receiverName
+        
+        // Create left and right button for navigation item
+        let leftButton =  UIBarButtonItem(title: "Back", style:   .plain, target: self, action: #selector(btn_clicked(_:)))
+        
+        let rightButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(btn_clicked(_:)))
+        
+        // Create two buttons for the navigation item
+        navigationItem.leftBarButtonItem = leftButton
+        navigationItem.rightBarButtonItem = rightButton
+        
+        // Assign the navigation item to the navigation bar
+        navigationBar.items = [navigationItem]
+        
+        // Make the navigation bar a subview of the current view controller
+        self.view.addSubview(navigationBar)
+    }
+    
+    @objc func btn_clicked(_ sender: UIBarButtonItem) {
+        // Do something
+        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+        let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
+        self.present(initialView, animated: true, completion: nil)
+    }
+    
+    
 }
 

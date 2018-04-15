@@ -117,8 +117,8 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
     private func saveUser() {
         let userId = Auth.auth().currentUser?.uid
         let email = Auth.auth().currentUser?.email
-        Config.setUserId(userId!)
-        Config.setEmail(email!)
+//        Config.setUserId(userId!)
+//        Config.setEmail(email!)
     }
     
     // MARK: - UI Actions

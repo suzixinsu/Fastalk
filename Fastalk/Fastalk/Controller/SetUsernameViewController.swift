@@ -68,7 +68,7 @@ class SetUsernameViewController: UIViewController {
         ]
         self.usersRef.child(self.userId!).setValue(userItem)
         
-        Config.setUsername(self.username!)
+        //Config.setUsername(self.username!)
     }
     
     @objc func checkIfUserExists() {
