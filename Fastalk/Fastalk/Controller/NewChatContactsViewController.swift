@@ -23,6 +23,7 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
     var selectedChat: Chat?
     
     @IBOutlet weak var addChatContactList: UITableView!
+    @IBOutlet weak var navBar: UINavigationBar!
     
 
 
@@ -35,6 +36,8 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
         startObserve()
         // Do any additional setup after loading the view.
         //print(contacts.count)
+        self.navBar.barTintColor = UIColor(named: navColor[Config.colorScheme()])
+
     }
     deinit {
         if let refHandle = userContactsRefHandle {
@@ -129,7 +132,7 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
         self.userContactsRefHandle = self.userContactsRef!.observe(.childAdded, with: { (snapshot) -> Void in
             let contactId = snapshot.key
             let contactsData = snapshot.value as! Dictionary<String, AnyObject>
-            if let contactName = contactsData["username"] as! String!, contactName.count > 0 {
+            if let contactName = contactsData["username"] as! String?, contactName.count > 0 {
                 self.contacts.append(Contact(username: contactName, userId: contactId))
                 //print(self.contacts.count)
                 self.addChatContactList.reloadData()
@@ -181,4 +184,5 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
+
 }

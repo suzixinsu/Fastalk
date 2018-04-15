@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="k0w-Wm-fiM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="k0w-Wm-fiM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -102,7 +102,7 @@
                         <outlet property="textFieldEmail" destination="9DR-cf-yTB" id="opU-ja-KeW"/>
                         <outlet property="textFieldPassword" destination="Bfn-Wf-Oub" id="KqN-ez-f5i"/>
                         <segue destination="q9P-3I-RK8" kind="show" identifier="RegisterToSetUsername" id="8RP-XQ-W5e"/>
-                        <segue destination="pMI-hm-Ycd" kind="show" identifier="LoginToChat" id="7xC-n3-k8o"/>
+                        <segue destination="xog-aP-fzu" kind="show" identifier="LoginToChat" id="qBE-Kp-yyb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nJ-97-bWn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -192,7 +192,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PMb-27-MPR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="329" y="-638"/>
+            <point key="canvasLocation" x="-98" y="-665"/>
         </scene>
         <!--Chats-->
         <scene sceneID="VSf-bB-5u2">
@@ -255,8 +255,15 @@
                                 <items>
                                     <navigationItem title="Title" id="MVu-BS-rnc">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="FjG-Os-S6t">
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <connections>
                                                 <action selector="backToStart:" destination="JKP-dC-ny3" id="uue-cE-wbP"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" title="Done" id="zM8-wA-fYY">
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <connections>
+                                                <action selector="exit:" destination="JKP-dC-ny3" id="v3T-gZ-HdR"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -275,7 +282,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvf-S2-iRQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1169" y="195"/>
+            <point key="canvasLocation" x="-97" y="218"/>
         </scene>
         <!--New Chat Contacts View Controller-->
         <scene sceneID="6oI-8d-Te6">
@@ -288,8 +295,9 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6e2-bH-GQ7">
                                 <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <items>
-                                    <navigationItem title="Some Contacts" id="4Za-oo-1FZ">
+                                    <navigationItem title="Contacts" id="4Za-oo-1FZ">
                                         <barButtonItem key="leftBarButtonItem" title="Back" id="z2z-sL-5g1">
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <connections>
                                                 <action selector="actionBack:" destination="6yp-rk-ucK" id="1gD-tv-8Vs"/>
                                             </connections>
@@ -326,6 +334,7 @@
                     </view>
                     <connections>
                         <outlet property="addChatContactList" destination="SEU-iL-qPT" id="nnq-Kr-PEz"/>
+                        <outlet property="navBar" destination="6e2-bH-GQ7" id="ALD-Zz-1s3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SwJ-xY-qwG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -412,7 +421,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Done"/>
                                 <connections>
-                                    <segue destination="pMI-hm-Ycd" kind="show" id="eGL-qm-X0I"/>
+                                    <segue destination="xog-aP-fzu" kind="show" id="NS4-D7-ZTv"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -443,7 +452,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BHU-wJ-XIy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2911" y="-389"/>
+            <point key="canvasLocation" x="-2911.1999999999998" y="-389.05547226386807"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ws3-QS-LB4">
@@ -459,7 +468,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LyO-NB-cCL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1900" y="-638"/>
+            <point key="canvasLocation" x="-1901" y="-872"/>
         </scene>
         <!--Settings-->
         <scene sceneID="GTF-Iv-sFQ">
@@ -740,6 +749,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="s6L-RL-OHH"/>
+        <segue reference="qBE-Kp-yyb"/>
     </inferredMetricsTieBreakers>
 </document>

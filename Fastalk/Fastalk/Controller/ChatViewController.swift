@@ -176,17 +176,24 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         view.endEditing(true)
     }
     @IBAction func backToStart(_ sender: Any) {
-        //jumpTo(1)
+        
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
         let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
         self.present(initialView, animated: true, completion: nil)
+    }
+    @IBAction func exit(_ sender: Any) {
+        self.dismiss(animated: false) {
+            let storyboard = UIStoryboard(name: "Main", bundle:nil)
+            let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
+            self.present(initialView, animated: false, completion: nil)
+        }
     }
     
     func addNavBar() {
         
         let navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: UIScreen.main.bounds.width, height:50)) // Offset by 20 pixels vertically to take the status bar into account
         navigationBar.prefersLargeTitles = true
-        navigationBar.barTintColor = UIColor.black
+        navigationBar.barTintColor = UIColor(named: navColor[Config.colorScheme()])
         navigationBar.tintColor = UIColor.white
         
         navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]

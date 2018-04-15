@@ -23,11 +23,7 @@ class ChatsListTableViewController: UITableViewController {
         super.viewDidLoad()
         self.title = "Chats"
         self.currentUserChatsRef = self.chatsRef.child(self.userId!)
-        //self.tableview.delegate = self
-        //self.tableView.dataSource = self
-        //self.tableView.allowsSelection = true
-        //self.tableView.isUserInteractionEnabled = true
-        //tableView.allowsSelection = true
+
         getUsername()
         observeChats()
         // Uncomment the following line to preserve selection between presentations
@@ -76,7 +72,7 @@ class ChatsListTableViewController: UITableViewController {
         config.performsFirstActionWithFullSwipe = false
         return config
     }
-    func tableview(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         print(tableView.indexPathForSelectedRow)
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
                 if let indexPath = tableView.indexPathForSelectedRow{
