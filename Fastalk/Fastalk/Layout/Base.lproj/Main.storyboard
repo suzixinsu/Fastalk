@@ -258,6 +258,7 @@
                         <viewLayoutGuide key="safeArea" id="gSc-sg-ob6"/>
                     </view>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="v68-cB-xY8"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dvf-S2-iRQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -510,6 +511,36 @@
                                     <action selector="changeColor:" destination="Nwt-cX-hD8" eventType="touchUpInside" id="q29-Mr-b4q"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Font Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cqe-ee-qwL">
+                                <rect key="frame" x="58" y="366" width="92" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="20" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fbg-ku-dav">
+                                <rect key="frame" x="246" y="366" width="38" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kpC-TE-Wjs">
+                                <rect key="frame" x="172" y="361" width="37" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="-"/>
+                                <connections>
+                                    <action selector="fontMinus:" destination="Nwt-cX-hD8" eventType="touchUpInside" id="MDx-6F-xio"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IGd-Sm-I5z">
+                                <rect key="frame" x="292" y="370" width="67" height="13"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="+"/>
+                                <connections>
+                                    <action selector="fontAdd:" destination="Nwt-cX-hD8" eventType="touchUpInside" id="7mh-j7-1MQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="miV-rz-ugQ"/>
@@ -517,6 +548,7 @@
                     <tabBarItem key="tabBarItem" title="Settings" image="setting" id="4oN-RB-LIV"/>
                     <navigationItem key="navigationItem" id="4uH-vE-eeG"/>
                     <connections>
+                        <outlet property="fontSize" destination="fbg-ku-dav" id="oh2-5R-OqE"/>
                         <outlet property="labelEmail" destination="C3a-8F-ZTw" id="rQV-Hs-LRc"/>
                         <outlet property="labelSignOutError" destination="ZVD-Zf-wT7" id="1mk-Gy-F30"/>
                         <outlet property="labelUsername" destination="dha-4q-XBj" id="zxq-Pq-z8i"/>
@@ -638,7 +670,7 @@
         <image name="social" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hP9-AT-6Cz"/>
-        <segue reference="s6L-RL-OHH"/>
+        <segue reference="6YV-PZ-nTp"/>
+        <segue reference="7xC-n3-k8o"/>
     </inferredMetricsTieBreakers>
 </document>

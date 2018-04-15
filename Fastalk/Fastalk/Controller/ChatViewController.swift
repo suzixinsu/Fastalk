@@ -19,6 +19,8 @@ class ChatViewController: JSQMessagesViewController {
     private var messagesRefHandle: DatabaseHandle?
     var messages = [JSQMessage]()
     let usersRef = Constants.refs.databaseUsers
+    var fontSize = SettingsViewController.global.font
+    
 
     lazy var outgoingBubble: JSQMessagesBubbleImage = {
         return JSQMessagesBubbleImageFactory()!.outgoingMessagesBubbleImage(with: UIColor.jsq_messageBubbleBlue())
@@ -43,6 +45,7 @@ class ChatViewController: JSQMessagesViewController {
         let tapRecognizer = UITapGestureRecognizer()
         tapRecognizer.addTarget(self, action: #selector(ChatViewController.tapToDismissKeyboard(_:)))
         view.addGestureRecognizer(tapRecognizer)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -77,7 +80,11 @@ class ChatViewController: JSQMessagesViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
         let message = messages[indexPath.item]
-        
+        if fontSize == 0{
+            fontSize = 20
+        }
+        let font = CGFloat(fontSize)
+        cell.textView?.font = UIFont.systemFont(ofSize:font)
         if message.senderId == senderId {
             cell.textView?.textColor = UIColor.white
         } else {

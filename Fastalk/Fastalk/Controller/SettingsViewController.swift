@@ -18,6 +18,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var labelSignOutError: UILabel!
     @IBOutlet weak var labelUsername: UILabel!
     @IBOutlet weak var labelEmail: UILabel!
+    @IBOutlet weak var fontSize: UILabel!
     
 
     override func viewDidLoad() {
@@ -60,6 +61,26 @@ class SettingsViewController: UIViewController {
         self.view.backgroundColor = UIColor.lightGray
     }
     
+    
+    @IBAction func fontAdd(_ sender: Any) {
+        if let k = self.fontSize?.text{
+            self.fontSize.text = String(Int(k)!+1)
+            global.font = Int(k)!
+        }
+    }
+    
+    @IBAction func fontMinus(_ sender: Any) {
+        if let k = self.fontSize?.text{
+            self.fontSize.text = String(Int(k)!-1)
+            global.font = Int(k)!
+        }
+    }
+    
+    struct global{
+        static var font = Int()
+        }
+}
+    
      // MARK: - Navigation
 /*
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -68,5 +89,3 @@ class SettingsViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
-}
