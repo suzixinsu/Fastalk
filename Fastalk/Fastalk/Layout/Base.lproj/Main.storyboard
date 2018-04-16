@@ -204,29 +204,46 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExistingChats" textLabel="Hog-MZ-YQx" detailTextLabel="dBg-j8-ag2" style="IBUITableViewCellStyleValue1" id="3Fy-xT-f2B">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExistingChats" rowHeight="90" id="3Fy-xT-f2B" customClass="ChatsListTableViewCell" customModule="Fastalk" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3Fy-xT-f2B" id="y6V-Gr-Czw">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hog-MZ-YQx">
-                                            <rect key="frame" x="16" y="12" width="33.5" height="20.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receiver" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VYg-qI-9P5">
+                                            <rect key="frame" x="16" y="11" width="75.5" height="24"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kml-kx-OAw">
+                                            <rect key="frame" x="321" y="11" width="38" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dBg-j8-ag2">
-                                            <rect key="frame" x="315" y="12" width="44" height="20.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Hz-vr-9Pk">
+                                            <rect key="frame" x="16" y="52" width="106" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="4Hz-vr-9Pk" firstAttribute="top" secondItem="VYg-qI-9P5" secondAttribute="bottom" constant="17" id="9Sy-eH-kKg"/>
+                                        <constraint firstItem="Kml-kx-OAw" firstAttribute="top" secondItem="y6V-Gr-Czw" secondAttribute="topMargin" id="aoF-sk-wmv"/>
+                                        <constraint firstItem="Kml-kx-OAw" firstAttribute="trailing" secondItem="y6V-Gr-Czw" secondAttribute="trailingMargin" id="fjo-z4-cRL"/>
+                                        <constraint firstItem="VYg-qI-9P5" firstAttribute="top" secondItem="y6V-Gr-Czw" secondAttribute="topMargin" id="pDe-HT-KTg"/>
+                                        <constraint firstItem="VYg-qI-9P5" firstAttribute="leading" secondItem="y6V-Gr-Czw" secondAttribute="leadingMargin" id="tH5-Lw-iPO"/>
+                                        <constraint firstItem="4Hz-vr-9Pk" firstAttribute="leading" secondItem="y6V-Gr-Czw" secondAttribute="leadingMargin" id="v9X-v2-Exf"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="labelLastMessage" destination="4Hz-vr-9Pk" id="JnN-zW-QWG"/>
+                                    <outlet property="labelReceiver" destination="VYg-qI-9P5" id="3Rz-sh-UVH"/>
+                                    <outlet property="labelTime" destination="Kml-kx-OAw" id="pLl-80-2ft"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -241,7 +258,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XWi-iW-nrm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-756" y="131"/>
+            <point key="canvasLocation" x="-756" y="130.88455772113943"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="sqI-8X-tMM">

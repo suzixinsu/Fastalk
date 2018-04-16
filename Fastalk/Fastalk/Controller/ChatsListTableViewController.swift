@@ -53,9 +53,10 @@ class ChatsListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reuseIdentifier = "ExistingChats"
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-        cell.textLabel?.text = chats[(indexPath as NSIndexPath).row].receiverName
-        cell.detailTextLabel?.text = chats[(indexPath as NSIndexPath).row].timeStamp
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! ChatsListTableViewCell
+        cell.labelReceiver.text = chats[(indexPath as NSIndexPath).row].receiverName
+        cell.labelLastMessage.text = chats[(indexPath as NSIndexPath).row].lastMessage
+        cell.labelTime.text = chats[(indexPath as NSIndexPath).row].timeStamp
         return cell
     }
     
@@ -72,6 +73,7 @@ class ChatsListTableViewController: UITableViewController {
         config.performsFirstActionWithFullSwipe = false
         return config
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         print(tableView.indexPathForSelectedRow)
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
@@ -117,8 +119,28 @@ class ChatsListTableViewController: UITableViewController {
         chatsRefHandle = self.currentUserChatsRef?.observe(.childAdded, with: { (snapshot) -> Void in
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
             let chatId = snapshot.key
-            if let receiverId = chatsData["receiverId"] as! String!, let receiverName = chatsData["receiverName"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, receiverId.count > 0 {
-                self.chats.insert(Chat(id: chatId, receiverId: receiverId, receiverName: receiverName, timeStamp: timeStamp), at: 0)
+            if let receiverId = chatsData["receiverId"] as! String!, let receiverName = chatsData["receiverName"] as! String!, let lastMessage = chatsData["lastMessage"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, receiverId.count > 0 {
+                self.chats.insert(Chat(id: chatId, receiverId: receiverId, receiverName: receiverName, lastMessage: lastMessage, timeStamp: timeStamp), at: 0)
+                self.tableView.reloadData()
+            } else {
+                print("Error! Could not decode chat data")
+            }
+        })
+        //TODO: -show new messages
+        chatsRefHandle = self.currentUserChatsRef?.observe(.childChanged, with: { (snapshot) in
+            //find the chat in the array
+            //move it to the top
+            //show time and message
+            let chatsData = snapshot.value as? Dictionary<String, AnyObject>
+            let chatId = snapshot.key
+            print("new Snapshot", snapshot)
+            if let lastMessage = chatsData?["lastMessage"] as? String, let timeStamp = chatsData?["timeStamp"] as? String {
+                let index = self.chats.index(where: { (item) -> Bool in
+                    item.id == chatId
+                })
+                print("index", index)
+                self.chats[index!].setLastMessage(lastMessage)
+                self.chats[index!].setTimeStamp(timeStamp)
                 self.tableView.reloadData()
             } else {
                 print("Error! Could not decode chat data")

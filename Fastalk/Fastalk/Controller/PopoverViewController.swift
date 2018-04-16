@@ -80,6 +80,7 @@ class PopoverViewController: UIViewController {
             let groupChatItem = [
                 "receiverId": "group",
                 "receiverName" : groupName,
+                "lastMessage": "",
                 "timeStamp": date
             ]
             self.userChatsRef!.child(currentGroupId).setValue(groupChatItem)
@@ -110,6 +111,7 @@ class PopoverViewController: UIViewController {
             let groupChatItem = [
                 "receiverId": "group",
                 "receiverName" : groupName,
+                "lastMessage": "",
                 "timeStamp": date
             ]
             self.userChatsRef!.child(self.joinGroupId!).setValue(groupChatItem)

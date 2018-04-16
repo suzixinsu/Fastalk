@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		080C2EC52084549100F0C5C9 /* ChatsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080C2EC42084549100F0C5C9 /* ChatsListTableViewCell.swift */; };
 		080F6C7B204B951C008A5C98 /* LoginOrRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */; };
 		0825C52E206F472500CF29ED /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0825C52D206F472500CF29ED /* SearchTableViewController.swift */; };
 		0825C532206F4C5A00CF29ED /* SearchMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0825C531206F4C5A00CF29ED /* SearchMessageCell.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		080C2EC42084549100F0C5C9 /* ChatsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsListTableViewCell.swift; sourceTree = "<group>"; };
 		080F6C7A204B951C008A5C98 /* LoginOrRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrRegisterViewController.swift; sourceTree = "<group>"; };
 		0825C52D206F472500CF29ED /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		0825C531206F4C5A00CF29ED /* SearchMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMessageCell.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				6A1DDCE8207DD72900BAAFE1 /* NewChatContactsViewController.swift */,
 				6A1DDCEA207EAFA800BAAFE1 /* CustomTableViewCell.swift */,
 				6A5D4F872081742400C3EBE5 /* Helper.swift */,
+				080C2EC42084549100F0C5C9 /* ChatsListTableViewCell.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				6A5D4F882081742400C3EBE5 /* Helper.swift in Sources */,
 				08CDD058204BB423007439F5 /* ChatsListTableViewController.swift in Sources */,
 				086C8EFB205236B700F74AAF /* Contact.swift in Sources */,
+				080C2EC52084549100F0C5C9 /* ChatsListTableViewCell.swift in Sources */,
 				08E31AE1204CDD940033A7BD /* SetUsernameViewController.swift in Sources */,
 				08957DCA204E536800EB10F7 /* PopoverViewController.swift in Sources */,
 				08E31AE3204CE2620033A7BD /* Config.swift in Sources */,

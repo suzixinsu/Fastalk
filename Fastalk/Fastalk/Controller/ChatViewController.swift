@@ -16,6 +16,8 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     let messagesRef = Constants.refs.databaseMessagesByChat
     let messagesByUserRef = Constants.refs.databaseMessagesByUser
     var userMessagesRef: DatabaseReference?
+    var userChatRef: DatabaseReference?
+    var friendChatRef: DatabaseReference?
     private var messagesRefHandle: DatabaseHandle?
     var messages = [JSQMessage]()
     let usersRef = Constants.refs.databaseUsers
@@ -35,6 +37,11 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         super.viewDidLoad()
         //self.title = chat?.receiverName
         self.userMessagesRef = messagesRef.child(chat!.id)
+        self.userChatRef = Constants.refs.databaseChats.child(userId).child(chat!.id)
+        let receiverId = self.chat?.receiverId
+        if (receiverId != "group") {
+            self.friendChatRef = Constants.refs.databaseChats.child(chat!.receiverId).child(chat!.id)
+        }
         observeMessages()
         
         edgesForExtendedLayout = []
@@ -148,9 +155,14 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         let messageQuery = userMessagesRef!.queryLimited(toLast:25)
         messagesRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
             let messageData = snapshot.value as! Dictionary<String, String>
-            if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {
+            if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, let receiverId = messageData["receiverId"] as String!, let timeStamp = messageData["timeStamp"], text.count > 0 {
                 self.addMessage(withId: id, name: name, text: text)
-                
+                self.userChatRef?.updateChildValues(["timeStamp" : timeStamp])
+                self.userChatRef?.updateChildValues(["lastMessage" : text])
+                if (receiverId != "group") {
+                    self.friendChatRef?.updateChildValues(["timeStamp" : timeStamp])
+                    self.friendChatRef?.updateChildValues(["lastMessage" : text])
+                }
                 self.finishReceivingMessage()
             } else {
                 print("Error! Could not decode message data")
@@ -175,12 +187,14 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     @objc func tapToDismissKeyboard(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
+    
     @IBAction func backToStart(_ sender: Any) {
         
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
         let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
         self.present(initialView, animated: true, completion: nil)
     }
+    
     @IBAction func exit(_ sender: Any) {
         self.dismiss(animated: false) {
             let storyboard = UIStoryboard(name: "Main", bundle:nil)

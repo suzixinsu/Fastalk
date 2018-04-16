@@ -149,7 +149,8 @@ extension SearchTableViewController: SearchMessageCellProtocol {
                     let senderName = messageContent["senderName"] as! String
                     let receiverId = messageContent["receiverId"] as! String
                     let receiverName = messageContent["receiverName"] as! String
-                    let message = Message(id: id, text: text, senderId: senderId, senderName: senderName, receiverId: receiverId, receiverName: receiverName)
+                    let timeStamp = messageContent["timeStamp"] as! String
+                    let message = Message(id: id, text: text, senderId: senderId, senderName: senderName, receiverId: receiverId, receiverName: receiverName, timeStamp: timeStamp)
                     self.messages.append(message)
                 }
                 self.messages = self.messages.filter { $0.text.lowercased().contains(keyword.lowercased()) }

@@ -80,8 +80,9 @@ class ContactsTableViewController: UITableViewController {
                 let chatContent = chat[id] as! NSDictionary
                 let receiverId = chatContent["receiverId"] as! String
                 let receiverName = chatContent["receiverName"] as! String
+                let lastMessage = chatContent["lastMessage"] as! String
                 let timeStamp = chatContent["timeStamp"] as! String
-                let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, timeStamp: timeStamp)
+                let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, lastMessage: lastMessage, timeStamp: timeStamp)
                 self.selectedChat = chatItem
                 //self.performSegue(withIdentifier: "ContactsToChat", sender: self)
                 self.getChat()
@@ -96,6 +97,7 @@ class ContactsTableViewController: UITableViewController {
                         let friendChatItem = [
                             "receiverName": self.username,
                             "receiverId": self.userId,
+                            "lastMessage": "",
                             "timeStamp": date
                         ]
                         self.friendChatsRef = self.chatsRef.child(friendId)
@@ -107,10 +109,11 @@ class ContactsTableViewController: UITableViewController {
                     let userChatItem = [
                         "receiverName": friendname,
                         "receiverId": friendId,
+                        "lastMessage": "",
                         "timeStamp": date
                     ]
                     userNewChatRef.setValue(userChatItem)
-                    let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, timeStamp: date)
+                    let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, lastMessage: "", timeStamp: date)
                     self.selectedChat = chatItem
                     //self.performSegue(withIdentifier: "ContactsToChat", sender: self)
                     self.getChat()
