@@ -14,6 +14,10 @@ class SettingsViewController: UIViewController {
     var username: String?
     let userId = Auth.auth().currentUser?.uid
     //var colorId: Int?
+    var alertController:UIAlertController? = nil
+    var passwordTextField: UITextField?
+    var actionToEnable: UIAlertAction?
+    var password = ""
     
     @IBOutlet weak var labelSignOutError: UILabel!
     @IBOutlet weak var labelUsername: UILabel!
@@ -132,4 +136,68 @@ class SettingsViewController: UIViewController {
     struct global{
         static var font = Int()
     }
+    
+    //change password
+    private func presentAlert() {
+        self.alertController = UIAlertController(title: "Change Password", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        self.alertController!.addTextField { (textField) -> Void in
+            self.passwordTextField = textField
+            self.passwordTextField?.isSecureTextEntry = true
+            self.passwordTextField?.placeholder = "Enter new password"
+        }
+        let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
+            Auth.auth().currentUser?.updatePassword(to: self.password) { (error) in
+                if let err = error {
+                    self.presentError(err: err)
+                }
+                self.presentSuccess()
+            }
+        })
+        
+        OKAction.isEnabled = false
+        actionToEnable = OKAction
+        self.alertController!.addAction(OKAction)
+        self.present(self.alertController!, animated: true, completion:nil)
+        
+        self.passwordTextField!.addTarget(self, action: #selector(checkPassword), for: .editingChanged)
+    }
+    
+    private func presentError(err: Error) {
+        self.alertController = UIAlertController(title: "Error", message: "\(err.localizedDescription)", preferredStyle: UIAlertControllerStyle.alert)
+        
+        let OKAction = UIAlertAction(title: "Try Again", style: UIAlertActionStyle.default)
+        self.alertController!.addAction(OKAction)
+        
+        self.present(self.alertController!, animated: true, completion:nil)
+    }
+    
+    private func presentSuccess() {
+        self.alertController = UIAlertController(title: "Success", message: "Successfully changed password", preferredStyle: UIAlertControllerStyle.alert)
+        
+        let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
+        self.alertController!.addAction(OKAction)
+        
+        self.present(self.alertController!, animated: true, completion:nil)
+    }
+    
+    @objc func checkPassword() {
+        self.alertController?.message = ""
+        let tempPassword = self.passwordTextField!.text!
+        if (tempPassword.isEmpty) {
+            self.alertController?.message = "Password cannot be empty"
+            return
+        } else if (tempPassword.count < 6) {
+            self.alertController?.message = "Password too short"
+            return
+        } else {
+            self.alertController?.message = "Nice password"
+            self.password = tempPassword
+            self.actionToEnable!.isEnabled = true
+        }
+    }
+    
+    @IBAction func buttonChangePasswordClicked(_ sender: Any) {
+        self.presentAlert();
+    }
+    
 }
