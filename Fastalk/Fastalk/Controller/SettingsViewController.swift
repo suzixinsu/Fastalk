@@ -88,13 +88,10 @@ class SettingsViewController: UIViewController {
     }
     @IBAction func actionLove(_ sender: Any) {
         colorChange(1)
-        lvBtn.backgroundColor = UIColor(named: tabTintColor[Config.colorScheme()])
-        
         
     }
     @IBAction func actionPeace(_ sender: Any) {
         colorChange(2)
-        pBtn.backgroundColor =  UIColor(named: tabTintColor[Config.colorScheme()])
     }
     @IBAction func actionTradition(_ sender: Any) {
         colorChange(3)
