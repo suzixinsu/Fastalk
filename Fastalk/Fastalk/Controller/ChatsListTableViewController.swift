@@ -41,7 +41,6 @@ class ChatsListTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
-    
     // MARK: - Table view data source
     // MARK: - Overriden Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -51,7 +50,6 @@ class ChatsListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return chats.count
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let reuseIdentifier = "ExistingChats"
@@ -66,7 +64,6 @@ class ChatsListTableViewController: UITableViewController {
         }
         return cell
     }
-    
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let delete = UIContextualAction(style: .destructive, title:"Delete"){
@@ -134,6 +131,7 @@ class ChatsListTableViewController: UITableViewController {
             let chatId = snapshot.key
             if let receiverId = chatsData["receiverId"] as! String!, let receiverName = chatsData["receiverName"] as! String!, let lastMessage = chatsData["lastMessage"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, let hasNewMessage = chatsData["hasNewMessage"] as! Bool!, receiverId.count > 0 {
                 self.chats.insert(Chat(id: chatId, receiverId: receiverId, receiverName: receiverName, lastMessage: lastMessage, timeStamp: timeStamp, hasNewMessage: hasNewMessage), at: 0)
+                self.chats = self.chats.sorted(by: { $0.timeStamp > $1.timeStamp })
                 self.tableView.reloadData()
             } else {
                 print("Error! Could not decode chat data")
@@ -176,7 +174,6 @@ class ChatsListTableViewController: UITableViewController {
                     item.id == chatId
                 })
                 if let fromIndex = index {
-                    print("index", fromIndex)
                     self.chats[fromIndex].setLastMessage(lastMessage)
                     self.chats[fromIndex].setTimeStamp(timeStamp)
                     self.chats[fromIndex].setHasNewMessage(true)
@@ -187,6 +184,7 @@ class ChatsListTableViewController: UITableViewController {
                     let userChatRef = Constants.refs.databaseChats.child(self.userId!).child(chatId)
                     userChatRef.updateChildValues(["timeStamp" : timeStamp])
                     userChatRef.updateChildValues(["lastMessage" : lastMessage])
+                    userChatRef.updateChildValues(["hasNewMessage" : true])
                     self.tableView.reloadData()
                 }
             } else {

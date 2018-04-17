@@ -56,7 +56,11 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         addNavBar()
         topContentAdditionalInset = 60
     }
-//nav
+
+    override func viewWillDisappear(_ animated: Bool) {
+        self.userChatRef!.updateChildValues(["hasNewMessage" : false])
+    }
+    
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return .topAttached
     }
@@ -174,7 +178,6 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
             let messageData = snapshot.value as! Dictionary<String, String>
             if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {
                 self.addMessage(withId: id, name: name, text: text)
-                self.userChatRef!.updateChildValues(["hasNewMessage" : false])
                 self.finishReceivingMessage()
             } else {
                 print("Error! Could not decode message data")
@@ -185,7 +188,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     private func getDate() -> String{
         let currentDate = Date()
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm MM/dd/yy"
+        dateFormatter.dateFormat = "HH:mm MM/dd/yy"
         let convertedDate = dateFormatter.string(from: currentDate)
         return convertedDate
     }

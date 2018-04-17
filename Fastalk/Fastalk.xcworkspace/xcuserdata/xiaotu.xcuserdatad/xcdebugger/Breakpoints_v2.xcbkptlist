@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Fastalk/Controller/PopoverViewController.swift"
-            timestampString = "545681738.999997"
+            timestampString = "545684514.649384"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
             landmarkName = "groupChatButtonClicked(_:)"
             landmarkType = "7">
             <Locations>

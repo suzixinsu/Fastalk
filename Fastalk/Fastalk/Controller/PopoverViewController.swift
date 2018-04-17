@@ -48,14 +48,6 @@ class PopoverViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
-    private func getDate() -> String{
-        let currentDate = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm MM/dd/yy"
-        let convertedDate = dateFormatter.string(from: currentDate)
-        return convertedDate
-    }
-    
     @IBAction func newGroupButtonClicked(_ sender: Any) {
         self.alertController = UIAlertController(title: "New Group", message: "Please provide the group name", preferredStyle: UIAlertControllerStyle.alert)
         
@@ -67,13 +59,12 @@ class PopoverViewController: UIViewController {
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let groupName = self.groupNameTextField!.text!
             //TODO: - change date to last message
-            let date = self.getDate()
             
             let groupItem = [
                 "groupName" : groupName,
                 "ownerId": self.userId,
                 "lastMessage": "",
-                "timeStamp": date,
+                "timeStamp": "",
                 "hasNewMessage": false
                 ] as [String : Any]
             
@@ -85,7 +76,7 @@ class PopoverViewController: UIViewController {
                 "receiverId": "group",
                 "receiverName" : groupName,
                 "lastMessage": "",
-                "timeStamp": date,
+                "timeStamp": "",
                 "hasNewMessage": false
                 ] as [String : Any]
             self.userChatsRef!.child(currentGroupId).setValue(groupChatItem)
@@ -112,12 +103,11 @@ class PopoverViewController: UIViewController {
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let groupName = self.groupNameTextField!.text!
             //TODO: - change date to last message
-            let date = self.getDate()
             let groupChatItem = [
                 "receiverId": "group",
                 "receiverName" : groupName,
                 "lastMessage": "",
-                "timeStamp": date,
+                "timeStamp": "",
                 "hasNewMessage": false
                 ] as [String : Any]
             self.userChatsRef!.child(self.joinGroupId!).setValue(groupChatItem)
