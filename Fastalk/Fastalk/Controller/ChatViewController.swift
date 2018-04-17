@@ -154,12 +154,14 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
                 "lastMessage" : text,
                 "receiverId" : self.senderId,
                 "receiverName" : self.senderDisplayName,
-                "timeStamp" : date
-            ]
+                "timeStamp" : date,
+                "hasNewMessage": true
+                ] as [String : Any]
             self.friendChatRef?.setValue(chatItem)
         } else {
             self.groupChatsRef.child(self.chat!.id).updateChildValues(["timeStamp" : date])
             self.groupChatsRef.child(self.chat!.id).updateChildValues(["lastMessage" : text])
+            self.groupChatsRef.child(self.chat!.id).updateChildValues(["hasNewMessage" : true])
         }
         
         finishSendingMessage()
@@ -172,6 +174,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
             let messageData = snapshot.value as! Dictionary<String, String>
             if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {
                 self.addMessage(withId: id, name: name, text: text)
+                self.userChatRef!.updateChildValues(["hasNewMessage" : false])
                 self.finishReceivingMessage()
             } else {
                 print("Error! Could not decode message data")

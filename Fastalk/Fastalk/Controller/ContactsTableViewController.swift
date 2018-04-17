@@ -72,7 +72,8 @@ class ContactsTableViewController: UITableViewController {
                 let receiverName = chatContent["receiverName"] as! String
                 let lastMessage = chatContent["lastMessage"] as! String
                 let timeStamp = chatContent["timeStamp"] as! String
-                let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, lastMessage: lastMessage, timeStamp: timeStamp)
+                let hasNewMessage = chatContent["hasNewMessage"] as! Bool
+                let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, lastMessage: lastMessage, timeStamp: timeStamp, hasNewMessage: hasNewMessage)
                 self.selectedChat = chatItem
                 //self.performSegue(withIdentifier: "ContactsToChat", sender: self)
                 self.getChat()
@@ -87,8 +88,9 @@ class ContactsTableViewController: UITableViewController {
                             "receiverName": self.username,
                             "receiverId": self.userId,
                             "lastMessage": "",
-                            "timeStamp": ""
-                        ]
+                            "timeStamp": "",
+                            "hasNewMessage": false
+                            ] as [String : Any]
                         self.friendChatsRef = self.chatsRef.child(friendId)
                         let friendNewChatRef = self.friendChatsRef!.childByAutoId()
                         friendNewChatRef.setValue(friendChatItem)
@@ -99,10 +101,11 @@ class ContactsTableViewController: UITableViewController {
                         "receiverName": friendname,
                         "receiverId": friendId,
                         "lastMessage": "",
-                        "timeStamp": ""
-                    ]
+                        "timeStamp": "",
+                        "hasNewMessage": false
+                        ] as [String : Any]
                     userNewChatRef.setValue(userChatItem)
-                    let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, lastMessage: "", timeStamp: "")
+                    let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, lastMessage: "", timeStamp: "", hasNewMessage: false)
                     self.selectedChat = chatItem
                     //self.performSegue(withIdentifier: "ContactsToChat", sender: self)
                     self.getChat()

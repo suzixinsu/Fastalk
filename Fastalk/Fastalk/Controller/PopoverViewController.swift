@@ -73,8 +73,9 @@ class PopoverViewController: UIViewController {
                 "groupName" : groupName,
                 "ownerId": self.userId,
                 "lastMessage": "",
-                "timeStamp": date
-            ]
+                "timeStamp": date,
+                "hasNewMessage": false
+                ] as [String : Any]
             
             let currentGroupRef = self.groupsRef.childByAutoId()
             currentGroupRef.setValue(groupItem)
@@ -84,8 +85,9 @@ class PopoverViewController: UIViewController {
                 "receiverId": "group",
                 "receiverName" : groupName,
                 "lastMessage": "",
-                "timeStamp": date
-            ]
+                "timeStamp": date,
+                "hasNewMessage": false
+                ] as [String : Any]
             self.userChatsRef!.child(currentGroupId).setValue(groupChatItem)
         })
         
@@ -115,8 +117,9 @@ class PopoverViewController: UIViewController {
                 "receiverId": "group",
                 "receiverName" : groupName,
                 "lastMessage": "",
-                "timeStamp": date
-            ]
+                "timeStamp": date,
+                "hasNewMessage": false
+                ] as [String : Any]
             self.userChatsRef!.child(self.joinGroupId!).setValue(groupChatItem)
         })
         

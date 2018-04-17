@@ -85,11 +85,21 @@ class ChatsListTableViewController: UITableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
                 if let indexPath = tableView.indexPathForSelectedRow{
                     let selectedRow = indexPath.row
-                    chats[selectedRow].setHasNewMessage(false)
+                    let selectedChat = chats[selectedRow]
+                    selectedChat.setHasNewMessage(false)
+                    
+                    //update chat hasNewMessage in database
+                    if (selectedChat.receiverName != "group") {
+                        let chatId = selectedChat.id
+                        let userChatRef = Constants.refs.databaseChats.child(self.userId!).child(chatId)
+                        userChatRef.updateChildValues(["hasNewMessage" : false])
+                    } else {
+                        self.groupChatsRef.child(selectedChat.id).updateChildValues(["hasNewMessage" : true])
+                    }
+                    
                     //let chatVc = segue.destination as! ChatViewController
                     //let chatVC =  storyboard.instantiateViewController(withIdentifier: "chatVC")
                     let chatVC = ChatViewController()
-                    let selectedChat = chats[selectedRow]
                     chatVC.chat = selectedChat
                     chatVC.senderId = self.userId
                     chatVC.senderDisplayName = self.username
@@ -122,8 +132,8 @@ class ChatsListTableViewController: UITableViewController {
         chatsRefHandle = self.currentUserChatsRef?.observe(.childAdded, with: { (snapshot) -> Void in
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
             let chatId = snapshot.key
-            if let receiverId = chatsData["receiverId"] as! String!, let receiverName = chatsData["receiverName"] as! String!, let lastMessage = chatsData["lastMessage"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, receiverId.count > 0 {
-                self.chats.insert(Chat(id: chatId, receiverId: receiverId, receiverName: receiverName, lastMessage: lastMessage, timeStamp: timeStamp), at: 0)
+            if let receiverId = chatsData["receiverId"] as! String!, let receiverName = chatsData["receiverName"] as! String!, let lastMessage = chatsData["lastMessage"] as! String!, let timeStamp = chatsData["timeStamp"] as! String!, let hasNewMessage = chatsData["hasNewMessage"] as! Bool!, receiverId.count > 0 {
+                self.chats.insert(Chat(id: chatId, receiverId: receiverId, receiverName: receiverName, lastMessage: lastMessage, timeStamp: timeStamp, hasNewMessage: hasNewMessage), at: 0)
                 self.tableView.reloadData()
             } else {
                 print("Error! Could not decode chat data")

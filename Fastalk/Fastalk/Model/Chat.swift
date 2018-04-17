@@ -16,13 +16,13 @@ internal class Chat {
     internal var lastMessage: String
     internal var hasNewMessage: Bool
     
-    init(id: String, receiverId: String, receiverName: String, lastMessage: String, timeStamp: String) {
+    init(id: String, receiverId: String, receiverName: String, lastMessage: String, timeStamp: String, hasNewMessage: Bool) {
         self.id = id
         self.receiverId = receiverId
         self.receiverName = receiverName
         self.lastMessage = lastMessage
         self.timeStamp = timeStamp
-        self.hasNewMessage = false
+        self.hasNewMessage = hasNewMessage
     }
     
     func setLastMessage(_ lastMessage: String) {

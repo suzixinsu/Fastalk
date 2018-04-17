@@ -86,7 +86,8 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
                 let receiverName = chatContent["receiverName"] as! String
                 let lastMessage = chatContent["lastMessage"] as! String
                 let timeStamp = chatContent["timeStamp"] as! String
-                let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, lastMessage: lastMessage, timeStamp: timeStamp)
+                let hasNewMessage = chatContent["hasNewMessage"] as! Bool
+                let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, lastMessage: lastMessage, timeStamp: timeStamp, hasNewMessage: hasNewMessage)
                 self.selectedChat = chatItem
 //                self.performSegue(withIdentifier: "toChat", sender: self.addChatContactList)
                 self.getChat()
@@ -101,8 +102,9 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
                             "receiverName": self.username,
                             "receiverId": self.userId,
                             "lastMessage": "",
-                            "timeStamp": ""
-                        ]
+                            "timeStamp": "",
+                            "hasNewMessage": false
+                            ] as [String : Any]
                         self.friendChatsRef = self.chatsRef.child(friendId)
                         let friendNewChatRef = self.friendChatsRef!.childByAutoId()
                         friendNewChatRef.setValue(friendChatItem)
@@ -113,10 +115,11 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
                         "receiverName": friendname,
                         "receiverId": friendId,
                         "lastMessage": "",
-                        "timeStamp": ""
-                    ]
+                        "timeStamp": "",
+                        "hasNewMessage": false
+                        ] as [String : Any]
                     userNewChatRef.setValue(userChatItem)
-                    let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, lastMessage: "", timeStamp: "")
+                    let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, lastMessage: "", timeStamp: "", hasNewMessage: false)
                     self.selectedChat = chatItem
                     //print("START SEGUE")
 //                    self.performSegue(withIdentifier: "toChat", sender: self.addChatContactList)
@@ -125,6 +128,7 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
             }
         })
     }
+    
     // MARK: - Privage Methods
     private func startObserve() {
         let userId = Auth.auth().currentUser?.uid
