@@ -21,6 +21,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     private var messagesRefHandle: DatabaseHandle?
     var messages = [JSQMessage]()
     let usersRef = Constants.refs.databaseUsers
+    let groupChatsRef = Constants.refs.databaseGroups
     //var navigationBar : UINavigationBar?
     var fontSize = SettingsViewController.global.font
     
@@ -141,7 +142,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         
         itemRef.setValue(messageItem)
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
-        // TODO: - 
+
         messagesByUserRef.child(userId).child(itemRef.key).setValue(messageItem)
         if (receiverId != "group") {
             messagesByUserRef.child(receiverId!).child(itemRef.key).setValue(messageItem)
@@ -162,6 +163,9 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
                 if (receiverId != "group") {
                     self.friendChatRef?.updateChildValues(["timeStamp" : timeStamp])
                     self.friendChatRef?.updateChildValues(["lastMessage" : text])
+                } else {
+                    self.groupChatsRef.child(self.chat!.id).updateChildValues(["timeStamp" : timeStamp])
+                    self.groupChatsRef.child(self.chat!.id).updateChildValues(["lastMessage" : text])
                 }
                 self.finishReceivingMessage()
             } else {

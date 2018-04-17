@@ -15,6 +15,7 @@ class ChatsListTableViewController: UITableViewController {
     private var usersRef = Constants.refs.databaseUsers
     private var chatsRefHandle: DatabaseHandle?
     private var currentUserChatsRef: DatabaseReference?
+    private var groupChatsRef = Constants.refs.databaseGroups
     var username: String?
     let userId = Auth.auth().currentUser?.uid
    var selectedChat: Chat?
@@ -75,7 +76,7 @@ class ChatsListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        print(tableView.indexPathForSelectedRow)
+        //print(tableView.indexPathForSelectedRow)
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
                 if let indexPath = tableView.indexPathForSelectedRow{
                     let selectedRow = indexPath.row
@@ -126,11 +127,31 @@ class ChatsListTableViewController: UITableViewController {
                 print("Error! Could not decode chat data")
             }
         })
-        //TODO: -show new messages
+        //TODO: -show new messages reminder
+        //TODO: -reorder the array
+        
+        //show new message for individual chat
         chatsRefHandle = self.currentUserChatsRef?.observe(.childChanged, with: { (snapshot) in
             //find the chat in the array
             //move it to the top
-            //show time and message
+            let chatsData = snapshot.value as? Dictionary<String, AnyObject>
+            let chatId = snapshot.key
+            print("new Snapshot", snapshot)
+            if let lastMessage = chatsData?["lastMessage"] as? String, let timeStamp = chatsData?["timeStamp"] as? String {
+                let index = self.chats.index(where: { (item) -> Bool in
+                    item.id == chatId
+                })
+                print("index", index)
+                self.chats[index!].setLastMessage(lastMessage)
+                self.chats[index!].setTimeStamp(timeStamp)
+                self.tableView.reloadData()
+            } else {
+                print("Error! Could not decode chat data")
+            }
+        })
+        
+        //show new message for group chat
+        chatsRefHandle = self.groupChatsRef.child(self.userId!).observe(.childChanged, with: { (snapshot) in
             let chatsData = snapshot.value as? Dictionary<String, AnyObject>
             let chatId = snapshot.key
             print("new Snapshot", snapshot)

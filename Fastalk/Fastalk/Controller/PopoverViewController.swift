@@ -71,8 +71,11 @@ class PopoverViewController: UIViewController {
             
             let groupItem = [
                 "groupName" : groupName,
-                "ownerId": self.userId
+                "ownerId": self.userId,
+                "lastMessage": "",
+                "timeStamp": date
             ]
+            
             let currentGroupRef = self.groupsRef.childByAutoId()
             currentGroupRef.setValue(groupItem)
             let currentGroupId = currentGroupRef.key
