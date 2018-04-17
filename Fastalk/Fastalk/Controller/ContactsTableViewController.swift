@@ -78,7 +78,6 @@ class ContactsTableViewController: UITableViewController {
                 self.getChat()
             } else {
                 self.chatsRef.child(friendId).queryOrdered(byChild: "receiverId").queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
-                    let date = self.getDate()
                     var chatId = "0"
                     if (snapshot.exists()) {
                         let chat = snapshot.value as! NSDictionary
@@ -88,7 +87,7 @@ class ContactsTableViewController: UITableViewController {
                             "receiverName": self.username,
                             "receiverId": self.userId,
                             "lastMessage": "",
-                            "timeStamp": date
+                            "timeStamp": ""
                         ]
                         self.friendChatsRef = self.chatsRef.child(friendId)
                         let friendNewChatRef = self.friendChatsRef!.childByAutoId()
@@ -100,10 +99,10 @@ class ContactsTableViewController: UITableViewController {
                         "receiverName": friendname,
                         "receiverId": friendId,
                         "lastMessage": "",
-                        "timeStamp": date
+                        "timeStamp": ""
                     ]
                     userNewChatRef.setValue(userChatItem)
-                    let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, lastMessage: "", timeStamp: date)
+                    let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, lastMessage: "", timeStamp: "")
                     self.selectedChat = chatItem
                     //self.performSegue(withIdentifier: "ContactsToChat", sender: self)
                     self.getChat()
@@ -127,14 +126,6 @@ class ContactsTableViewController: UITableViewController {
             }
         })
         //TODO: reorder the tabel cells according to time
-    }
-    
-    private func getDate() -> String{
-        let currentDate = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm MM/dd/yy"
-        let convertedDate = dateFormatter.string(from: currentDate)
-        return convertedDate
     }
     
     private func getUsername() {

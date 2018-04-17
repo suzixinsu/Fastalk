@@ -145,6 +145,23 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         if (receiverId != "group") {
             messagesByUserRef.child(receiverId!).child(itemRef.key).setValue(messageItem)
         }
+        
+        //update chat
+        self.userChatRef!.updateChildValues(["timeStamp" : date])
+        self.userChatRef!.updateChildValues(["lastMessage" : text])
+        if (receiverId != "group") {
+            let chatItem = [
+                "lastMessage" : text,
+                "receiverId" : self.senderId,
+                "receiverName" : self.senderDisplayName,
+                "timeStamp" : date
+            ]
+            self.friendChatRef?.setValue(chatItem)
+        } else {
+            self.groupChatsRef.child(self.chat!.id).updateChildValues(["timeStamp" : date])
+            self.groupChatsRef.child(self.chat!.id).updateChildValues(["lastMessage" : text])
+        }
+        
         finishSendingMessage()
     }
     
@@ -153,23 +170,8 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         let messageQuery = userMessagesRef!.queryLimited(toLast:25)
         messagesRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
             let messageData = snapshot.value as! Dictionary<String, String>
-            if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, let receiverId = messageData["receiverId"] as String!, let timeStamp = messageData["timeStamp"], text.count > 0 {
+            if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {
                 self.addMessage(withId: id, name: name, text: text)
-                self.userChatRef?.updateChildValues(["timeStamp" : timeStamp])
-                self.userChatRef?.updateChildValues(["lastMessage" : text])
-                
-                if (receiverId != "group") {
-                    let chatItem = [
-                        "lastMessage" : text,
-                        "receiverId" : id,
-                        "receiverName" : name,
-                        "timeStamp" : timeStamp
-                    ]
-                    self.friendChatRef?.setValue(chatItem)
-                } else {
-                    self.groupChatsRef.child(self.chat!.id).updateChildValues(["timeStamp" : timeStamp])
-                    self.groupChatsRef.child(self.chat!.id).updateChildValues(["lastMessage" : text])
-                }
                 self.finishReceivingMessage()
             } else {
                 print("Error! Could not decode message data")

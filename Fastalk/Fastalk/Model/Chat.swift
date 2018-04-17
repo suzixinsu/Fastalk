@@ -14,6 +14,7 @@ internal class Chat {
     internal let receiverName: String
     internal var timeStamp: String
     internal var lastMessage: String
+    internal var hasNewMessage: Bool
     
     init(id: String, receiverId: String, receiverName: String, lastMessage: String, timeStamp: String) {
         self.id = id
@@ -21,6 +22,7 @@ internal class Chat {
         self.receiverName = receiverName
         self.lastMessage = lastMessage
         self.timeStamp = timeStamp
+        self.hasNewMessage = false
     }
     
     func setLastMessage(_ lastMessage: String) {
@@ -29,5 +31,9 @@ internal class Chat {
     
     func setTimeStamp(_ timeStamp: String) {
         self.timeStamp = timeStamp
+    }
+    
+    func setHasNewMessage(_ hasNewMessage: Bool) {
+        self.hasNewMessage = hasNewMessage
     }
 }

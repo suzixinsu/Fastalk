@@ -229,8 +229,8 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="Q1v-fF-0Nv">
-                                            <rect key="frame" x="313" y="49" width="46" height="27"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Notification" translatesAutoresizingMaskIntoConstraints="NO" id="Q1v-fF-0Nv">
+                                            <rect key="frame" x="334" y="48" width="25" height="25"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <accessibility key="accessibilityConfiguration">
                                                 <accessibilityTraits key="traits" image="YES" notEnabled="YES" updatesFrequently="YES"/>
@@ -247,6 +247,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="imageBell" destination="Q1v-fF-0Nv" id="K5z-YL-pSq"/>
                                     <outlet property="labelLastMessage" destination="4Hz-vr-9Pk" id="JnN-zW-QWG"/>
                                     <outlet property="labelReceiver" destination="VYg-qI-9P5" id="3Rz-sh-UVH"/>
                                     <outlet property="labelTime" destination="Kml-kx-OAw" id="pLl-80-2ft"/>
@@ -817,6 +818,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Notification" width="32" height="32"/>
         <image name="chat" width="32" height="32"/>
         <image name="search" width="32" height="32"/>
         <image name="setting" width="32" height="32"/>

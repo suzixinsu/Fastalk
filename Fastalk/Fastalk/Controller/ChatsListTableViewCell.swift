@@ -12,6 +12,8 @@ class ChatsListTableViewCell: UITableViewCell {
     @IBOutlet weak var labelReceiver: UILabel!
     @IBOutlet weak var labelLastMessage: UILabel!
     @IBOutlet weak var labelTime: UILabel!
+    @IBOutlet weak var imageBell: UIImageView!
+    var hasNewMessage = false
     
     override func awakeFromNib() {
         super.awakeFromNib()

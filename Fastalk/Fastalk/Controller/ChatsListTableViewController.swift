@@ -18,7 +18,7 @@ class ChatsListTableViewController: UITableViewController {
     private var groupChatsRef = Constants.refs.databaseGroups
     var username: String?
     let userId = Auth.auth().currentUser?.uid
-   var selectedChat: Chat?
+    var selectedChat: Chat?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +41,7 @@ class ChatsListTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
     }
     
+    
     // MARK: - Table view data source
     // MARK: - Overriden Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -58,6 +59,11 @@ class ChatsListTableViewController: UITableViewController {
         cell.labelReceiver.text = chats[(indexPath as NSIndexPath).row].receiverName
         cell.labelLastMessage.text = chats[(indexPath as NSIndexPath).row].lastMessage
         cell.labelTime.text = chats[(indexPath as NSIndexPath).row].timeStamp
+        if chats[indexPath.row].hasNewMessage {
+            cell.imageBell.isHidden = false
+        } else {
+            cell.imageBell.isHidden = true
+        }
         return cell
     }
     
@@ -79,6 +85,7 @@ class ChatsListTableViewController: UITableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
                 if let indexPath = tableView.indexPathForSelectedRow{
                     let selectedRow = indexPath.row
+                    chats[selectedRow].setHasNewMessage(false)
                     //let chatVc = segue.destination as! ChatViewController
                     //let chatVC =  storyboard.instantiateViewController(withIdentifier: "chatVC")
                     let chatVC = ChatViewController()
@@ -134,11 +141,11 @@ class ChatsListTableViewController: UITableViewController {
             if let lastMessage = chatsData?["lastMessage"] as? String, let timeStamp = chatsData?["timeStamp"] as? String {
                 let index = self.chats.index(where: { (item) -> Bool in
                     item.id == chatId
-                    
                 })
                 if let fromIndex = index {
                     self.chats[fromIndex].setLastMessage(lastMessage)
                     self.chats[fromIndex].setTimeStamp(timeStamp)
+                    self.chats[fromIndex].setHasNewMessage(true)
                     if fromIndex != 0 {
                         let changedChat = self.chats.remove(at: fromIndex)
                         self.chats.insert(changedChat, at: 0)
@@ -159,12 +166,17 @@ class ChatsListTableViewController: UITableViewController {
                     item.id == chatId
                 })
                 if let fromIndex = index {
+                    print("index", fromIndex)
                     self.chats[fromIndex].setLastMessage(lastMessage)
                     self.chats[fromIndex].setTimeStamp(timeStamp)
+                    self.chats[fromIndex].setHasNewMessage(true)
                     if fromIndex != 0 {
                         let changedChat = self.chats.remove(at: fromIndex)
                         self.chats.insert(changedChat, at: 0)
                     }
+                    let userChatRef = Constants.refs.databaseChats.child(self.userId!).child(chatId)
+                    userChatRef.updateChildValues(["timeStamp" : timeStamp])
+                    userChatRef.updateChildValues(["lastMessage" : lastMessage])
                     self.tableView.reloadData()
                 }
             } else {
