@@ -160,9 +160,15 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
                 self.addMessage(withId: id, name: name, text: text)
                 self.userChatRef?.updateChildValues(["timeStamp" : timeStamp])
                 self.userChatRef?.updateChildValues(["lastMessage" : text])
+                
                 if (receiverId != "group") {
-                    self.friendChatRef?.updateChildValues(["timeStamp" : timeStamp])
-                    self.friendChatRef?.updateChildValues(["lastMessage" : text])
+                    let chatItem = [
+                        "lastMessage" : text,
+                        "receiverId" : id,
+                        "receiverName" : name,
+                        "timeStamp" : timeStamp
+                    ]
+                    self.friendChatRef?.setValue(chatItem)
                 } else {
                     self.groupChatsRef.child(self.chat!.id).updateChildValues(["timeStamp" : timeStamp])
                     self.groupChatsRef.child(self.chat!.id).updateChildValues(["lastMessage" : text])
