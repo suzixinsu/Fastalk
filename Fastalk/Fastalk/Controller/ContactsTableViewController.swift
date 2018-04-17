@@ -18,11 +18,6 @@ class ContactsTableViewController: UITableViewController {
     private var friendChatsRef: DatabaseReference?
     private var chatsRef = Constants.refs.databaseChats
     let userId = Auth.auth().currentUser!.uid
-//    var alertController: UIAlertController?
-//    var usernameTextField: UITextField?
-//    var actionToEnable: UIAlertAction?
-//    var contactUsername: String?
-//    var contactUserId: String?
     var username: String?
     var selectedChat: Chat?
 
@@ -31,10 +26,8 @@ class ContactsTableViewController: UITableViewController {
         self.title = "Contacts"
         getUsername()
         startObserve()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
     }
-//
+
     deinit {
         if let refHandle = userContactsRefHandle {
             self.userContactsRef!.removeObserver(withHandle: refHandle)
@@ -43,18 +36,15 @@ class ContactsTableViewController: UITableViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // MARK: - Table view data source
     // MARK: - Overriden Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return contacts.count
     }
 
@@ -146,15 +136,7 @@ class ContactsTableViewController: UITableViewController {
         let convertedDate = dateFormatter.string(from: currentDate)
         return convertedDate
     }
-//
-//    private func addNewContact() {
-//        let contactItem = [
-//            "username": self.contactUsername!
-//        ]
-//        // TODO: - add user to friend's contact and maybe a pop out
-//        self.userContactsRef!.child(self.contactUserId!).setValue(contactItem)
-//    }
-//
+    
     private func getUsername() {
         self.usersRef.queryOrderedByKey().queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
@@ -165,55 +147,7 @@ class ContactsTableViewController: UITableViewController {
             }
         })
     }
-//
-//    @objc private func checkIfContactUsernameExists() {
-//        let contactUsername = usernameTextField!.text
-//        self.usersRef.queryOrdered(byChild: "username").queryEqual(toValue: contactUsername).observeSingleEvent(of: .value, with: { (snapshot) in
-//            if snapshot.exists() {
-//                self.actionToEnable!.isEnabled = true
-//                self.alertController?.message = "User Found"
-//                let contact = snapshot.value as! NSDictionary
-//                let keys = contact.allKeys as! [String]
-//                let contactUserId = keys[0]
-//                self.contactUserId = contactUserId
-//                self.contactUsername = contactUsername
-//            } else {
-//                self.alertController?.message = "User does not exist"
-//            }
-//        })
-//    }
-    
-//    @IBAction func buttonAddClickedAction(_ sender: Any) {
-//        self.alertController = UIAlertController(title: "Add Contact", message: "Please provide the username", preferredStyle: UIAlertControllerStyle.alert)
-//
-//        let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
-//            //add user to contacts
-//            self.addNewContact()
-//        })
-//
-//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
-//
-//        alertController!.addAction(OKAction)
-//        alertController!.addAction(cancelAction)
-//
-//        self.alertController!.addTextField { (textField) -> Void in
-//            self.usernameTextField = textField
-//            self.usernameTextField?.placeholder = "Enter the username"
-//        }
-//        OKAction.isEnabled = false
-//        actionToEnable = OKAction
-//        present(self.alertController!, animated: true, completion:nil)
-//
-//        self.usernameTextField!.addTarget(self, action: #selector(checkIfContactUsernameExists), for: .editingChanged)
-//    }
-//
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        let chatVc = segue.destination as! ChatViewController
-//        chatVc.chat = self.selectedChat
-//        chatVc.senderId = self.userId
-//        chatVc.senderDisplayName = self.username
-//    }
-//
+
     private func getChat(){
         
         let storyboard = UIStoryboard(name: "Main", bundle:nil)

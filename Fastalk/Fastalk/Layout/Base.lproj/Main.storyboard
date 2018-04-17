@@ -229,6 +229,13 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="Q1v-fF-0Nv">
+                                            <rect key="frame" x="313" y="49" width="46" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <accessibility key="accessibilityConfiguration">
+                                                <accessibilityTraits key="traits" image="YES" notEnabled="YES" updatesFrequently="YES"/>
+                                            </accessibility>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="4Hz-vr-9Pk" firstAttribute="top" secondItem="VYg-qI-9P5" secondAttribute="bottom" constant="17" id="9Sy-eH-kKg"/>

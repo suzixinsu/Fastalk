@@ -63,10 +63,8 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-    
-    
+
     // MARK: - Overriden Methods
 
     
@@ -151,7 +149,6 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     }
     
     // MARK: - Private Methods
-    
     private func observeMessages() {
         let messageQuery = userMessagesRef!.queryLimited(toLast:25)
         messagesRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in

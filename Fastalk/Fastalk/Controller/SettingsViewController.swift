@@ -36,7 +36,6 @@ class SettingsViewController: UIViewController {
         self.title = "Settings"
         getAndSetUsername()
         self.labelEmail.text = Auth.auth().currentUser?.email
-        // Do any additional setup after loading the view.
         
         defaultBtn.layer.cornerRadius = 16;
         lvBtn.layer.cornerRadius = 16;
@@ -48,7 +47,6 @@ class SettingsViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     private func getAndSetUsername() {
@@ -72,16 +70,6 @@ class SettingsViewController: UIViewController {
         }
         self.performSegue(withIdentifier: "LogOutToLogIn", sender: self)
     }
-    
-
-     // MARK: - Navigation
-/*
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     @IBAction func actionDefault(_ sender: Any) {
         colorChange(0)

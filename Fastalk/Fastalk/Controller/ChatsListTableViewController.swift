@@ -76,7 +76,6 @@ class ChatsListTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        //print(tableView.indexPathForSelectedRow)
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
                 if let indexPath = tableView.indexPathForSelectedRow{
                     let selectedRow = indexPath.row
@@ -89,11 +88,6 @@ class ChatsListTableViewController: UITableViewController {
                     chatVC.senderDisplayName = self.username
                     self.present(chatVC, animated: true, completion: nil)
                 }
-        //print(indexPath)
-        //if let indexPath = tableView.indexPathForSelectedRow{
-
-        //print(selectedRow)
-
         //let chatVC = storyboard.instantiateViewController(withIdentifier: "chatVC") as? ChatViewController
 
     }
@@ -116,6 +110,7 @@ class ChatsListTableViewController: UITableViewController {
         }
     }
     */
+    
     private func observeChats() {
         chatsRefHandle = self.currentUserChatsRef?.observe(.childAdded, with: { (snapshot) -> Void in
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
