@@ -405,36 +405,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Username:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="424-WW-4CL">
-                                <rect key="frame" x="54" y="271" width="84" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="424-WW-4CL">
+                                <rect key="frame" x="54" y="227" width="84" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c50-8y-0eT">
-                                <rect key="frame" x="268" y="267" width="30" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c50-8y-0eT">
+                                <rect key="frame" x="268" y="223" width="30" height="30"/>
                                 <state key="normal" title="Set"/>
                                 <connections>
                                     <action selector="setClickedAction:" destination="q9P-3I-RK8" eventType="touchUpInside" id="lfb-eD-KhT"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yLP-Gy-lYR">
-                                <rect key="frame" x="133" y="90" width="125" height="128"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yLP-Gy-lYR">
+                                <rect key="frame" x="133" y="46" width="125" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="aOs-7C-5RQ"/>
+                                    <constraint firstAttribute="width" constant="125" id="tVa-bR-XZg"/>
+                                </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="&lt;New User&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Efu-6z-rlk">
-                                <rect key="frame" x="151" y="271" width="97" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;New User&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Efu-6z-rlk">
+                                <rect key="frame" x="151" y="227" width="97" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Email:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dO3-j4-BCP">
-                                <rect key="frame" x="54" y="323" width="46" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dO3-j4-BCP">
+                                <rect key="frame" x="54" y="279" width="46" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YOz-sZ-xFv">
-                                <rect key="frame" x="119" y="319" width="202" height="29"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YOz-sZ-xFv">
+                                <rect key="frame" x="119" y="300" width="202" height="0.0"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="202" id="eMR-nQ-ffN"/>
                                 </constraints>
@@ -447,7 +451,16 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Done"/>
                                 <connections>
+                                    <action selector="buttonDone:" destination="q9P-3I-RK8" eventType="touchUpInside" id="azO-tX-tTe"/>
                                     <segue destination="xog-aP-fzu" kind="show" id="NS4-D7-ZTv"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pMk-6h-EIG">
+                                <rect key="frame" x="144" y="512" width="102" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Upload Picture"/>
+                                <connections>
+                                    <action selector="uploadPic:" destination="q9P-3I-RK8" eventType="touchUpInside" id="uyf-cZ-snx"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -470,10 +483,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="XS8-8v-sJY"/>
                     <connections>
-                        <outlet property="buttonDone" destination="DKh-3h-ibU" id="25C-AJ-KKm"/>
                         <outlet property="buttonSet" destination="c50-8y-0eT" id="9s6-Nm-1hj"/>
                         <outlet property="labelEmail" destination="YOz-sZ-xFv" id="8Tr-YM-bDR"/>
                         <outlet property="labelUsername" destination="Efu-6z-rlk" id="rpJ-6r-MIK"/>
+                        <outlet property="photo" destination="yLP-Gy-lYR" id="AT2-c2-sfn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BHU-wJ-XIy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -831,6 +844,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="qBE-Kp-yyb"/>
+        <segue reference="NS4-D7-ZTv"/>
     </inferredMetricsTieBreakers>
 </document>
