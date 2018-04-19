@@ -219,7 +219,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     }
     
     func addNavBar() {
-        
+        addCover()
         let navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: UIScreen.main.bounds.width, height:50)) // Offset by 20 pixels vertically to take the status bar into account
         navigationBar.prefersLargeTitles = true
         navigationBar.barTintColor = UIColor(named: navColor[Config.colorScheme()])
@@ -247,14 +247,28 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         // Make the navigation bar a subview of the current view controller
         self.view.addSubview(navigationBar)
     }
-    
+    func addCover(){
+        let squarePath = UIBezierPath()
+        squarePath.move(to: CGPoint(x: 0, y: 0))
+        
+        squarePath.addLine(to: CGPoint(x: UIScreen.main.bounds.width, y: 0))
+        squarePath.addLine(to: CGPoint(x: UIScreen.main.bounds.width, y: 20))
+        squarePath.addLine(to: CGPoint(x: 0, y: 20))
+        squarePath.close()
+        let square = CAShapeLayer()
+        square.path = squarePath.cgPath
+        square.fillColor = UIColor(named: navColor[Config.colorScheme()])?.cgColor
+        self.view.layer.addSublayer(square)
+    }
     @objc func btn_clicked(_ sender: UIBarButtonItem) {
         // Do something
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
         let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
         self.present(initialView, animated: true, completion: nil)
     }
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
 }
 
