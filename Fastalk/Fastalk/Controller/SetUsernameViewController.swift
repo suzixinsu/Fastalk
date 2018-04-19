@@ -65,8 +65,7 @@ class SetUsernameViewController: UIViewController, UINavigationControllerDelegat
     private func updateUserInfo() {
         let userItem = [
             "username": self.username!,
-            "email": self.email,
-            "URL": self.URL!
+            "email": self.email
         ]
         self.usersRef.child(self.userId!).setValue(userItem)
         
@@ -75,7 +74,7 @@ class SetUsernameViewController: UIViewController, UINavigationControllerDelegat
     
     private func uploadFirebase() {
         let storage = Storage.storage()
-        let storageRef = storage.reference().child("\(email!)")
+        let storageRef = storage.reference().child("\(username!)")
         if let uploadData = UIImagePNGRepresentation(self.photo.image!) {
             storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                 if error != nil {
@@ -123,10 +122,10 @@ class SetUsernameViewController: UIViewController, UINavigationControllerDelegat
             photo.image = image
         }
         self.dismiss(animated: true, completion: nil)
-        uploadFirebase()
     }
     
     @IBAction func buttonDone(_ sender: Any) {
+        uploadFirebase()
         self.updateUserInfo()
     }
     /*

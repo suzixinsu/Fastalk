@@ -12,6 +12,7 @@ import Firebase
 class SettingsViewController: UIViewController {
     private var usersRef = Constants.refs.databaseUsers
     var username: String?
+    var URL: String?
     let userId = Auth.auth().currentUser?.uid
     //var colorId: Int?
     var alertController:UIAlertController? = nil
@@ -30,6 +31,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var colorLb: UILabel!
 
     @IBOutlet weak var fontSize: UILabel!
+    @IBOutlet weak var profilePic: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,9 +59,33 @@ class SettingsViewController: UIViewController {
                 let username = value["username"] as! String
                 self.username = username
                 self.labelUsername.text = username
+                self.loadPic()
             }
         })
     }
+    
+    func loadPic() {
+        let imageName = "\(self.labelUsername.text!)"
+        let imageURL = Storage.storage().reference(forURL: "gs://fastalkapp.appspot.com").child(imageName)
+        imageURL.downloadURL(completion: { (url, error) in
+            if error != nil {
+                print(error?.localizedDescription)
+                return
+            }
+            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+                if error != nil {
+                    print(error)
+                    return
+                }
+                guard let imageData = UIImage(data: data!) else { return}
+                DispatchQueue.main.async {
+                    self.profilePic.image = imageData
+                }
+            }).resume()
+            
+        })
+    }
+
     
     @IBAction func buttonLogOutClickedAction(_ sender: Any) {
         let firebaseAuth = Auth.auth()

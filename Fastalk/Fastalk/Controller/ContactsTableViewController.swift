@@ -52,6 +52,26 @@ class ContactsTableViewController: UITableViewController {
         let reuseIdentifier = "ExistingContacts"
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
         cell.textLabel?.text = contacts[(indexPath as NSIndexPath).row].username
+        cell.imageView?.image = UIImage(named: "AppIcon")
+        let imageName = contacts[(indexPath as NSIndexPath).row].username
+        let imageURL = Storage.storage().reference(forURL: "gs://fastalkapp.appspot.com").child(imageName)
+        imageURL.downloadURL(completion: { (url, error) in
+            if error != nil {
+                print(error?.localizedDescription)
+                return
+            }
+            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+                if error != nil {
+                    print(error)
+                    return
+                }
+                guard let imageData = UIImage(data: data!) else { return}
+                DispatchQueue.main.async {
+                    cell.imageView?.image = imageData
+                }
+            }).resume()
+            
+        })
         return cell
     }
     

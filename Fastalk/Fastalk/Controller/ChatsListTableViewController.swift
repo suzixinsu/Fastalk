@@ -62,6 +62,8 @@ class ChatsListTableViewController: UITableViewController {
         } else {
             cell.imageBell.isHidden = true
         }
+        //cell.imageView?.image = UIImage(named: "AppIcon")
+        
         return cell
     }
     
