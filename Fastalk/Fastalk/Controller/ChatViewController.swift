@@ -150,7 +150,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         ]
         
         itemRef.setValue(messageItem)
-        //JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        JSQSystemSoundPlayer.jsq_playMessageSentSound()
 
         messagesByUserRef.child(userId).child(itemRef.key).setValue(messageItem)
         if (receiverId != "group") {
@@ -189,7 +189,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         }
         present(picker, animated: true, completion: nil)
-        print("checkpoint end")
+        print("camera end")
         
     }
     // MARK: - Private Methods
@@ -203,6 +203,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
             }
             else if let id = messageData["senderId"] as String?,
                 let photoURL = messageData["photoURL"] as String? { // 1
+                print("show photo")
                 // 2
                 if let mediaItem = JSQPhotoMediaItem(maskAsOutgoing: id == self.senderId) {
                     // 3
@@ -324,12 +325,17 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     func sendPhotoMessage() -> String? {
         let itemRef = messagesRef.childByAutoId()
         let date = getDate()
-        
+        let hint = "[Photo]"
         let messageItem = [
+            "lastMessage" : hint,
             "photoURL": imageURLNotSetKey,
-            "senderId": senderId!,
-            "timeStamp": date
-        ]
+            //"senderId": senderId!,
+            "receiverId" : self.senderId,
+            "receiverName" : self.senderDisplayName,
+            "timeStamp" : date,
+            "hasNewMessage": true
+            
+            ] as! [String : String]
         
         itemRef.setValue(messageItem)
         
@@ -370,7 +376,6 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
                                      clearsPhotoMessageMapOnSuccessForKey key: String?) {
         // get a reference to the stored image
         let storageRef = Storage.storage().reference(forURL: photoURL)
-
         // 2 get the image data from the storage
         storageRef.getData(maxSize: INT64_MAX, completion: { (data, error) in
             if let error = error {
@@ -383,7 +388,6 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
                     print("Error downloading metadata: \(error)")
                     return
                 }
-                
                 // 4 if the metadata suggests that the images is a gif you use
                 // a category on uiimage that was pulled in via the swiftgiforigin cocapod
                 if (metadata?.contentType == "image/gif") {
@@ -391,17 +395,15 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
                 } else {
                     mediaItem.image = UIImage.init(data: data!)
                 }
+                print("reload after getting data")
                 self.collectionView.reloadData()
-                
                 // 5remove the key from the photomessagemap nowthat you've fetched the image data
                 guard key != nil else {
                     return
                 }
                 self.photoMessageMap.removeValue(forKey: key!)
             })
-            
         })
-        
     }
  
     deinit {
@@ -419,7 +421,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         picker.dismiss(animated: true, completion: nil)
         //info[UIImagePickerControllerReferenceURL]
         print(info[UIImagePickerControllerPHAsset]!)
-        //MARK: 这句话有问题
+        //MARK: 这句话现在应该没问题了
          //if let photoReferenceUrl = info[UIImagePickerControllerPHAsset] as? URL{
         if let photoReferenceUrl = info[UIImagePickerControllerReferenceURL] as? URL{
             //Handle picking a photo from the Photo Librar
@@ -446,6 +448,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                             print("Error uploading photo: \(error.localizedDescription)")
                         }
                         self.setImageURL(self.storageRef.child((metadata?.path)!).description, forPhotoMessageWithKey: key)
+                        print("set ImageURL")
                     }
                 })
             }
