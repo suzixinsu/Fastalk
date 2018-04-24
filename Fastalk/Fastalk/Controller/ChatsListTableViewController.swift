@@ -134,7 +134,7 @@ class ChatsListTableViewController: UITableViewController {
                 self.chats = self.chats.sorted(by: { $0.timeStamp > $1.timeStamp })
                 self.tableView.reloadData()
             } else {
-                print("Error! Could not decode chat data")
+                print("Error! Could not decode chat data1")
             }
         })
         
@@ -161,7 +161,7 @@ class ChatsListTableViewController: UITableViewController {
                     self.tableView.reloadData()
                 }
             } else {
-                print("Error! Could not decode chat data")
+                print("Error! Could not decode chat data2")
             }
         })
         
@@ -188,7 +188,7 @@ class ChatsListTableViewController: UITableViewController {
                     self.tableView.reloadData()
                 }
             } else {
-                print("Error! Could not decode chat data")
+                print("Error! Could not decode chat data3")
             }
         })
     }
