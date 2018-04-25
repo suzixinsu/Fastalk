@@ -136,6 +136,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
 
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!)
     {
+        print("start didPressSend")
         let itemRef = userMessagesRef!.childByAutoId()
         let date = getDate()
         let receiverName = chat?.receiverName
@@ -174,7 +175,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
             self.groupChatsRef.child(self.chat!.id).updateChildValues(["lastMessage" : text])
             self.groupChatsRef.child(self.chat!.id).updateChildValues(["hasNewMessage" : true])
         }
-        
+        print("end didPressSend")
         finishSendingMessage()
     }
  
@@ -189,7 +190,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         }
         present(picker, animated: true, completion: nil)
-        print("camera end")
+        print("camera/photo end")
         
     }
     // MARK: - Private Methods
@@ -198,6 +199,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         messagesRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
             let messageData = snapshot.value as! Dictionary<String, String>
             if let id = messageData["senderId"] as String?, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {
+                print("show message")
                 self.addMessage(withId: id, name: name, text: text)
                 self.finishReceivingMessage()
             }
@@ -234,7 +236,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
                 print("Error! Could not decode message data")
             }
         })
-
+        print("end observe")
     }
     
     private func getDate() -> String{
@@ -255,20 +257,20 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         view.endEditing(true)
     }
     
-    @IBAction func backToStart(_ sender: Any) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle:nil)
-        let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
-        self.present(initialView, animated: true, completion: nil)
-    }
-    
-    @IBAction func exit(_ sender: Any) {
-        self.dismiss(animated: false) {
-            let storyboard = UIStoryboard(name: "Main", bundle:nil)
-            let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
-            self.present(initialView, animated: false, completion: nil)
-        }
-    }
+//    @IBAction func backToStart(_ sender: Any) {
+//
+//        let storyboard = UIStoryboard(name: "Main", bundle:nil)
+//        let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
+//        self.present(initialView, animated: true, completion: nil)
+//    }
+//
+//    @IBAction func exit(_ sender: Any) {
+//        self.dismiss(animated: false) {
+//            let storyboard = UIStoryboard(name: "Main", bundle:nil)
+//            let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
+//            self.present(initialView, animated: false, completion: nil)
+//        }
+//    }
     
     func addNavBar() {
         addCover()
@@ -279,14 +281,11 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         
         navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor:UIColor.white]
         //navigationBar.titleTextAttributes
-        
         // Create a navigation item with a title
         let navigationItem = UINavigationItem()
         navigationItem.title = chat?.receiverName
-        
         // Create left and right button for navigation item
         let leftButton =  UIBarButtonItem(title: "Back", style:   .plain, target: self, action: #selector(btn_clicked(_:)))
-        
         let rightButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(btn_clicked(_:)))
         
         // Create two buttons for the navigation item
@@ -323,24 +322,51 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     
     //Photo
     func sendPhotoMessage() -> String? {
+        print("start sendPhotoMessage()")
         let itemRef = messagesRef.childByAutoId()
+        //let itemRef = userMessagesRef!.childByAutoId()
         let date = getDate()
+        let receiverName = chat?.receiverName
+        let receiverId = chat?.receiverId
         let hint = "[Photo]"
         let messageItem = [
-            "lastMessage" : hint,
-            "photoURL": imageURLNotSetKey,
-            //"senderId": senderId!,
-            "receiverId" : self.senderId,
-            "receiverName" : self.senderDisplayName,
-            "timeStamp" : date,
-            "hasNewMessage": true
             
-            ] as! [String : String]
+            "senderId": self.senderId,
+            "senderName": self.senderDisplayName,
+            "receiverName": receiverName!,
+            "receiverId": receiverId!,
+//            "text": text!,
+            "photoURL": imageURLNotSetKey,
+            "timeStamp": date
+            ]
         
         itemRef.setValue(messageItem)
         
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
+        //??
+        messagesByUserRef.child(userId).child(itemRef.key).setValue(messageItem)
+        if(receiverId != "group"){
+            messagesByUserRef.child(receiverId!).child(itemRef.key).setValue(messageItem)
+        }
+        //update Chat
+        self.userChatRef!.updateChildValues(["timeStamp" : date])
+        self.userChatRef!.updateChildValues(["lastMessage" : hint])
         
+        if(receiverId != "group"){
+            let chatItem = [
+                "lastMessage" : hint,
+                "receiverId" : self.senderId,
+                "receiverName" : self.senderDisplayName,
+                "timeStamp" : date,
+                "hasNewMessage" : true
+                ] as [String : Any]
+        }else{
+
+            self.groupChatsRef.child(self.chat!.id).updateChildValues(["timeStamp" : date])
+            self.groupChatsRef.child(self.chat!.id).updateChildValues(["lastMessage" : hint])
+            self.groupChatsRef.child(self.chat!.id).updateChildValues(["hasNewMessage" : true])
+        }
+        //end update
         finishSendingMessage()
         print("check finish sendings")
         
@@ -348,8 +374,10 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     }
     
     func setImageURL(_ url: String, forPhotoMessageWithKey key: String){
+        print("setImageURL()")
         let itemRef = messagesRef.child(key)
         itemRef.updateChildValues(["photoURL":url])
+        print("END setImageURL()")
     }
 
 
@@ -357,6 +385,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     //store theJSQPhotoMediaItem in the new property if the image key hasn't yet been set
     //retrive it and update the message when the image is set later on
     private func addPhotoMessage(withId id: String, key: String, mediaItem: JSQPhotoMediaItem){
+        print("START addPhotoMessage")
         if let message = JSQMessage(senderId: id, displayName: "", media: mediaItem)//??id?
         {
             messages.append(message)
@@ -366,7 +395,9 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
             }
             
             collectionView.reloadData()
+            //print
         }
+        print("END addPhotoMessage")
     }
     //COPY AND PASTE:
     //fetch the image data from the fire base storage to display it in the ui
@@ -375,6 +406,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     private func fetchImageDataAtURL(_ photoURL: String, forMediaItem mediaItem: JSQPhotoMediaItem,
                                      clearsPhotoMessageMapOnSuccessForKey key: String?) {
         // get a reference to the stored image
+        print("fetch data")
         let storageRef = Storage.storage().reference(forURL: photoURL)
         // 2 get the image data from the storage
         storageRef.getData(maxSize: INT64_MAX, completion: { (data, error) in
@@ -416,42 +448,44 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     }
 }
 
-extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         picker.dismiss(animated: true, completion: nil)
-        //info[UIImagePickerControllerReferenceURL]
+        print("START :image Picker")
         print(info[UIImagePickerControllerPHAsset]!)
         //MARK: 这句话现在应该没问题了
-         //if let photoReferenceUrl = info[UIImagePickerControllerPHAsset] as? URL{
         if let photoReferenceUrl = info[UIImagePickerControllerReferenceURL] as? URL{
             //Handle picking a photo from the Photo Librar
             let assets = PHAsset.fetchAssets(withALAssetURLs: [photoReferenceUrl],
                                                 options: nil)
             print("checkpoint2")
-            //let assets = PHAsset.fetchAssets(withALAssetURLs: [photoReferenceUrl], options: nil)
            // let assets = PHAsset.fetchassets
             let asset = assets.firstObject
             print("checkpoint3")
             if let key = sendPhotoMessage(){
                 //get the file url for the image
-                
                 print(key)
                 asset?.requestContentEditingInput(with: nil, completionHandler: {(contentEditingInput, info) in
                     let imageFileURL = contentEditingInput?.fullSizeImageURL
                     print("checkpoint4")
                     //create a unique path based on the user's unique id and the current time
-                    let path = "\(Auth.auth().currentUser?.uid)/\(Int(Date.timeIntervalSinceReferenceDate*1000))/\(photoReferenceUrl.lastPathComponent)"
+                    //let path = "\(Auth.auth().currentUser?.uid)/\(Int(Date.timeIntervalSinceReferenceDate*1000))/\(photoReferenceUrl.lastPathComponent)"
+                    let path = "\(Auth.auth().currentUser?.uid)/\(Int(Date.timeIntervalSinceReferenceDate * 1000))/\(photoReferenceUrl.lastPathComponent)"
                     //save the image file to firebase storage
                     print("path:" + path)
+                    //这附近的哪里有毛病。到底他喵的是哪里有毛病
                     self.storageRef.child(path).putFile(from: imageFileURL!, metadata: nil){(metadata, error) in
                         if let error = error{
                             print("Error uploading photo: \(error.localizedDescription)")
+                            return
                         }
+                        
                         self.setImageURL(self.storageRef.child((metadata?.path)!).description, forPhotoMessageWithKey: key)
-                        print("set ImageURL")
+                        print("set ImageURL at the end of photoReferendeUrl")
                     }
                 })
             }
+            print("end if")
         }else{
             //Handle picking a Photo from the Camera -TODO
             //grab the image from the info dictionary
@@ -467,7 +501,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
                 //save the photo to storage
-                storageRef.child(imagePath).putData(imageData!, metadata: metadata, completion: {
+                storageRef.child(imagePath).putData(imageData!, metadata: metadata) {
                     (metadata,error) in
                     if let error = error{
                         print("Error uploading photo: \(error)")
@@ -475,12 +509,14 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                     }
                     //once the image has been saved, you call setimageurl again
                     self.setImageURL(self.storageRef.child((metadata?.path)!).description, forPhotoMessageWithKey: key)
-                })
+                }
             }
+            print("end else")
         }
+        print("End Phto or Camera")
     }
     
-    @objc func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
 
