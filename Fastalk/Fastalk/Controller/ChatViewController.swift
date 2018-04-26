@@ -11,7 +11,8 @@ import Firebase
 import JSQMessagesViewController
 import Photos
 
-class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
+
+class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
     var chat: Chat?
     var userId = Auth.auth().currentUser!.uid
     let messagesRef = Constants.refs.databaseMessagesByChat
@@ -190,8 +191,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         }
         present(picker, animated: true, completion: nil)
-        print("camera/photo end")
-        
+        print("End didPressAccessoryButton")
     }
     // MARK: - Private Methods
     private func observeMessages() {
@@ -256,22 +256,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
     @objc func tapToDismissKeyboard(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
-    
-//    @IBAction func backToStart(_ sender: Any) {
-//
-//        let storyboard = UIStoryboard(name: "Main", bundle:nil)
-//        let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
-//        self.present(initialView, animated: true, completion: nil)
-//    }
-//
-//    @IBAction func exit(_ sender: Any) {
-//        self.dismiss(animated: false) {
-//            let storyboard = UIStoryboard(name: "Main", bundle:nil)
-//            let initialView = storyboard.instantiateViewController(withIdentifier: "startNavigation")
-//            self.present(initialView, animated: false, completion: nil)
-//        }
-//    }
-    
+  
     func addNavBar() {
         addCover()
         let navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 20, width: UIScreen.main.bounds.width, height:50)) // Offset by 20 pixels vertically to take the status bar into account
@@ -409,19 +394,21 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
         print("fetch data")
         let storageRef = Storage.storage().reference(forURL: photoURL)
         // 2 get the image data from the storage
-        storageRef.getData(maxSize: INT64_MAX, completion: { (data, error) in
+        storageRef.getData(maxSize: INT64_MAX) { data, error in
             if let error = error {
                 print("Error downloading image data: \(error)")
                 return
             }
-            storageRef.getMetadata(completion: {
-                (metadata, metadataErr) in
+            // 3
+            storageRef.getMetadata { metadata, metadataErr in
+//            storageRef.getMetadata(completion: { (metadata, metadataErr) in
                 if let error = metadataErr {
                     print("Error downloading metadata: \(error)")
                     return
                 }
+                
                 // 4 if the metadata suggests that the images is a gif you use
-                // a category on uiimage that was pulled in via the swiftgiforigin cocapod
+                //a category on uiimage that was pulled in via the swiftgiforigin cocapod
                 if (metadata?.contentType == "image/gif") {
                     mediaItem.image = UIImage.gif(data: data!)
                 } else {
@@ -429,13 +416,16 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
                 }
                 print("reload after getting data")
                 self.collectionView.reloadData()
-                // 5remove the key from the photomessagemap nowthat you've fetched the image data
+                
+                // 5 remove the key from the photomessagemap nowthat you've fetched the image data
                 guard key != nil else {
                     return
                 }
                 self.photoMessageMap.removeValue(forKey: key!)
-            })
-        })
+            }
+        }
+// added delegate method
+    
     }
  
     deinit {
@@ -449,12 +439,15 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate  {
 }
 
 extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        picker.dismiss(animated: true, completion: nil)
+    @objc internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
         print("START :image Picker")
-        print(info[UIImagePickerControllerPHAsset]!)
-        //MARK: 这句话现在应该没问题了
-        if let photoReferenceUrl = info[UIImagePickerControllerReferenceURL] as? URL{
+        checkPermission()
+        //picker.dismiss(animated: true, completion: nil)
+        /*
+        print(info[UIImagePickerControllerReferenceURL])
+        print(info[UIImagePickerControllerPHAsset] )
+        
+            if let photoReferenceUrl = info[UIImagePickerControllerReferenceURL] as? URL{
             //Handle picking a photo from the Photo Librar
             let assets = PHAsset.fetchAssets(withALAssetURLs: [photoReferenceUrl],
                                                 options: nil)
@@ -470,18 +463,20 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                     print("checkpoint4")
                     //create a unique path based on the user's unique id and the current time
                     //let path = "\(Auth.auth().currentUser?.uid)/\(Int(Date.timeIntervalSinceReferenceDate*1000))/\(photoReferenceUrl.lastPathComponent)"
-                    let path = "\(Auth.auth().currentUser?.uid)/\(Int(Date.timeIntervalSinceReferenceDate * 1000))/\(photoReferenceUrl.lastPathComponent)"
+                    let path = "\(Auth.auth().currentUser!.uid)/\(Int(Date.timeIntervalSinceReferenceDate * 1000))/\(photoReferenceUrl.lastPathComponent)"
                     //save the image file to firebase storage
                     print("path:" + path)
-                    //这附近的哪里有毛病。到底他喵的是哪里有毛病
-                    self.storageRef.child(path).putFile(from: imageFileURL!, metadata: nil){(metadata, error) in
+                    //MARK: 这整个extension都有毛病
+                    self.storageRef.child(path).putFile(from: imageFileURL!, metadata: nil){metadata, error in
                         if let error = error{
                             print("Error uploading photo: \(error.localizedDescription)")
                             return
                         }
-                        
-                        self.setImageURL(self.storageRef.child((metadata?.path)!).description, forPhotoMessageWithKey: key)
-                        print("set ImageURL at the end of photoReferendeUrl")
+                        else{
+                            print("else and put data")
+                            self.setImageURL(self.storageRef.child((metadata?.path)!).description, forPhotoMessageWithKey: key)
+                            print("set ImageURL at the end of photoReferendeUrl")
+                        }
                     }
                 })
             }
@@ -501,24 +496,46 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
                 //save the photo to storage
+                
                 storageRef.child(imagePath).putData(imageData!, metadata: metadata) {
                     (metadata,error) in
                     if let error = error{
                         print("Error uploading photo: \(error)")
                         return
                     }
-                    //once the image has been saved, you call setimageurl again
+                    //once the image has been saved, you call set imageurl again
                     self.setImageURL(self.storageRef.child((metadata?.path)!).description, forPhotoMessageWithKey: key)
                 }
             }
             print("end else")
+        }*/
+        
+        
+        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
+        
+        dismiss(animated: true, completion: nil)
         print("End Phto or Camera")
     }
     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    @objc internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
+    func checkPermission() {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+        switch photoAuthorizationStatus {
+        case .authorized: print("Access is granted by user")
+        case .notDetermined: PHPhotoLibrary.requestAuthorization({
+            (newStatus) in print("status is \(newStatus)")
+            if newStatus == PHAuthorizationStatus.authorized { print("success") }
+            })
+            case .restricted:
+                print("User do not have access to photo album.")
+            case .denied:
+                print("User has denied the permission.")
+            }
+        }
 
 }
 
