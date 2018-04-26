@@ -12,7 +12,7 @@ import JSQMessagesViewController
 import Photos
 
 
-class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
+class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     var chat: Chat?
     var userId = Auth.auth().currentUser!.uid
     let messagesRef = Constants.refs.databaseMessagesByChat
@@ -40,11 +40,13 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
     private let imageURLNotSetKey = "NOTSET"
     private var photoMessageMap = [String: JSQPhotoMediaItem]()
     private var updatedMessageRefHandle: DatabaseHandle?
-
+    let picker = UIImagePickerController()
     // TODO: - show username if group chat
     override func viewDidLoad() {
         super.viewDidLoad()
         //self.title = chat?.receiverName
+        
+
         self.userMessagesRef = messagesRef.child(chat!.id)
         self.userChatRef = Constants.refs.databaseChats.child(userId).child(chat!.id)
         let receiverId = self.chat?.receiverId
@@ -63,6 +65,8 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
         view.addGestureRecognizer(tapRecognizer)
         addNavBar()
         topContentAdditionalInset = 60
+       
+        picker.delegate = self
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -181,16 +185,32 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
     }
  
     override func didPressAccessoryButton(_ sender: UIButton!) {
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)){
-            
-            picker.sourceType = UIImagePickerControllerSourceType.camera
-        }else{
-            print("checkpoint1")
-            picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        }
-        present(picker, animated: true, completion: nil)
+//        let picker = UIImagePickerController()
+//        picker.delegate = self
+//        if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)){
+//
+//            picker.sourceType = UIImagePickerControllerSourceType.camera
+//        }else{
+//            print("checkpoint1")
+//            picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+//        }
+//        present(picker, animated: true, completion: nil)
+        
+        let sheet = UIAlertController(title: nil, message: "Select the source", preferredStyle: .actionSheet)
+        let cameraAction = UIAlertAction(title: "Camera", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.openPhotoPickerWith(source: .camera)
+        })
+        let photoAction = UIAlertAction(title: "Gallery", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.openPhotoPickerWith(source: .library)
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        sheet.addAction(cameraAction)
+        sheet.addAction(photoAction)
+        sheet.addAction(cancelAction)
+        self.present(sheet, animated: true, completion: nil)
+        
         print("End didPressAccessoryButton")
     }
     // MARK: - Private Methods
@@ -425,9 +445,128 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
             }
         }
 // added delegate method
-    
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            picker.dismiss(animated: true, completion: nil)
+        }
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
+            print("START :image Picker")
+            checkPermission()
+            picker.dismiss(animated: true, completion: nil)
+            /*
+             print(info[UIImagePickerControllerReferenceURL])
+             print(info[UIImagePickerControllerPHAsset] )
+             
+             if let photoReferenceUrl = info[UIImagePickerControllerReferenceURL] as? URL{
+             //Handle picking a photo from the Photo Librar
+             let assets = PHAsset.fetchAssets(withALAssetURLs: [photoReferenceUrl],
+             options: nil)
+             print("checkpoint2")
+             // let assets = PHAsset.fetchassets
+             let asset = assets.firstObject
+             print("checkpoint3")
+             if let key = sendPhotoMessage(){
+             //get the file url for the image
+             print(key)
+             asset?.requestContentEditingInput(with: nil, completionHandler: {(contentEditingInput, info) in
+             let imageFileURL = contentEditingInput?.fullSizeImageURL
+             print("checkpoint4")
+             //create a unique path based on the user's unique id and the current time
+             //let path = "\(Auth.auth().currentUser?.uid)/\(Int(Date.timeIntervalSinceReferenceDate*1000))/\(photoReferenceUrl.lastPathComponent)"
+             let path = "\(Auth.auth().currentUser!.uid)/\(Int(Date.timeIntervalSinceReferenceDate * 1000))/\(photoReferenceUrl.lastPathComponent)"
+             //save the image file to firebase storage
+             print("path:" + path)
+             //MARK: 这整个extension都有毛病
+             self.storageRef.child(path).putFile(from: imageFileURL!, metadata: nil){metadata, error in
+             if let error = error{
+             print("Error uploading photo: \(error.localizedDescription)")
+             return
+             }
+             else{
+             print("else and put data")
+             self.setImageURL(self.storageRef.child((metadata?.path)!).description, forPhotoMessageWithKey: key)
+             print("set ImageURL at the end of photoReferendeUrl")
+             }
+             }
+             })
+             }
+             print("end if")
+             }else{
+             //Handle picking a Photo from the Camera -TODO
+             //grab the image from the info dictionary
+             let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+             //call the method to save the fake image url to firebase
+             if let key = sendPhotoMessage(){
+             print("masaka")
+             //get the jpeg representation to the poto, ready to be sent to firebase storage
+             let imageData = UIImageJPEGRepresentation(image, 1.0)
+             //create a unique url
+             let imagePath = Auth.auth().currentUser!.uid + "/\(Int(Date.timeIntervalSinceReferenceDate*1000)).jpg"
+             //create a storagemetadate obj and set the metadata to image/jpeg
+             let metadata = StorageMetadata()
+             metadata.contentType = "image/jpeg"
+             //save the photo to storage
+             
+             storageRef.child(imagePath).putData(imageData!, metadata: metadata) {
+             (metadata,error) in
+             if let error = error{
+             print("Error uploading photo: \(error)")
+             return
+             }
+             //once the image has been saved, you call set imageurl again
+             self.setImageURL(self.storageRef.child((metadata?.path)!).description, forPhotoMessageWithKey: key)
+             }
+             }
+             print("end else")
+             }*/
+            
+            
+            guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+                fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+            }
+            
+            dismiss(animated: true, completion: nil)
+            print("End Phto or Camera")
+        }
+        
+        
+        func checkPermission() {
+            let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+            switch photoAuthorizationStatus {
+            case .authorized: print("Access is granted by user")
+            case .notDetermined: PHPhotoLibrary.requestAuthorization({
+                (newStatus) in print("status is \(newStatus)")
+                if newStatus == PHAuthorizationStatus.authorized { print("success") }
+            })
+            case .restricted:
+                print("User do not have access to photo album.")
+            case .denied:
+                print("User has denied the permission.")
+            }
+        }
+
     }
- 
+
+    func openPhotoPickerWith(source: PhotoSource) {
+        switch source {
+        case .camera:
+            let status = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
+            if (status == .authorized || status == .notDetermined) {
+                self.picker.sourceType = .camera
+                self.picker.allowsEditing = true
+                self.present(self.picker, animated: true, completion: nil)
+            }
+        case .library:
+            let status = PHPhotoLibrary.authorizationStatus()
+            if (status == .authorized || status == .notDetermined) {
+                self.picker.sourceType = .savedPhotosAlbum
+                self.picker.allowsEditing = true
+                self.present(self.picker, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    
     deinit {
         if let refHandle = messagesRefHandle{
             messagesRef.removeObserver(withHandle: refHandle)
@@ -437,9 +576,13 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
         }
     }
 }
-
+/*
 extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    @objc internal func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]){
         print("START :image Picker")
         checkPermission()
         //picker.dismiss(animated: true, completion: nil)
@@ -519,9 +662,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         print("End Phto or Camera")
     }
     
-    @objc internal func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
+
     func checkPermission() {
         let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
         switch photoAuthorizationStatus {
@@ -537,5 +678,10 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
             }
         }
 
+}*/
+enum PhotoSource {
+    case library
+    case camera
 }
+
 
