@@ -198,6 +198,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
         let messageQuery = userMessagesRef!.queryLimited(toLast:25)
         messagesRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
             let messageData = snapshot.value as! Dictionary<String, String>
+            
             if let id = messageData["senderId"] as String?, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.count > 0 {
                 print("show message")
                 self.addMessage(withId: id, name: name, text: text)
@@ -209,9 +210,11 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
                 // 2
                 if let mediaItem = JSQPhotoMediaItem(maskAsOutgoing: id == self.senderId) {
                     // 3
+                    
                     self.addPhotoMessage(withId: id, key: snapshot.key, mediaItem: mediaItem)
                     // 4
                     if photoURL.hasPrefix("gs://") {
+                        print(photoURL)
                         self.fetchImageDataAtURL(photoURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: nil)
                     }
                 }
@@ -219,21 +222,27 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
                 // changes to existing messages.
                 // We use this to be notified when a photo has been stored
                 // to the Firebase Storage, so we can update the message data
-                self.updatedMessageRefHandle = self.messagesRef.observe(.childChanged, with: { (snapshot) in
-                    let key = snapshot.key
-                    let messageData = snapshot.value as! Dictionary<String, String> // 1
-                    
-                    if let photoURL = messageData["photoURL"] as String! { // 2
-                        // The photo has been updated.
-                        if let mediaItem = self.photoMessageMap[key] { // 3
-                            self.fetchImageDataAtURL(photoURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: key) // 4
-                        }
-                    }
-                })
-                
+
+                print("end show photo")
             }
             else {
                 print("Error! Could not decode message data")
+            }
+        })
+        self.updatedMessageRefHandle = self.userMessagesRef?.observe(.childChanged, with: { (snapshot) in
+        //self.updatedMessageRefHandle = self.messagesRef.observe(.childChanged, with: { (snapshot) in
+            let key = snapshot.key
+            //MARK:一个新的问题诞生了
+            print("update message ref handle")
+            let messageData = snapshot.value as! Dictionary<String, String> // 1
+            
+            if let photoURL = messageData["photoURL"] as String! { // 2
+                // The photo has been updated.
+                print("messageData")
+                if let mediaItem = self.photoMessageMap[key] { // 3
+                    print("mediaItem")
+                    self.fetchImageDataAtURL(photoURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: key) // 4
+                }
             }
         })
         print("end observe")
@@ -308,8 +317,11 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
     //Photo
     func sendPhotoMessage() -> String? {
         print("start sendPhotoMessage()")
-        let itemRef = messagesRef.childByAutoId()
-        //let itemRef = userMessagesRef!.childByAutoId()
+        //MARK:这里可能搞的有点晕
+        //let itemRef = messagesRef.childByAutoId()
+        
+        
+        let itemRef = userMessagesRef!.childByAutoId()
         let date = getDate()
         let receiverName = chat?.receiverName
         let receiverId = chat?.receiverId
@@ -320,7 +332,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
             "senderName": self.senderDisplayName,
             "receiverName": receiverName!,
             "receiverId": receiverId!,
-//            "text": text!,
+            "text": "",
             "photoURL": imageURLNotSetKey,
             "timeStamp": date
             ]
@@ -360,8 +372,10 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
     
     func setImageURL(_ url: String, forPhotoMessageWithKey key: String){
         print("setImageURL()")
-        let itemRef = messagesRef.child(key)
-        itemRef.updateChildValues(["photoURL":url])
+        //MARK: this is the problem
+        //let itemRef = messagesRef.child(key)
+        let itemRef = userMessagesRef?.child(key)
+        itemRef?.updateChildValues(["photoURL":url])
         print("END setImageURL()")
     }
 
@@ -373,9 +387,11 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
         print("START addPhotoMessage")
         if let message = JSQMessage(senderId: id, displayName: "", media: mediaItem)//??id?
         {
+            print("append a photo")
             messages.append(message)
             
             if(mediaItem.image == nil){
+                print("key:\(key)")
                 photoMessageMap[key] = mediaItem
             }
             
@@ -384,9 +400,8 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
         }
         print("END addPhotoMessage")
     }
-    //COPY AND PASTE:
+
     //fetch the image data from the fire base storage to display it in the ui
-    
     //TODO: fetchimagedataaturl
     private func fetchImageDataAtURL(_ photoURL: String, forMediaItem mediaItem: JSQPhotoMediaItem,
                                      clearsPhotoMessageMapOnSuccessForKey key: String?) {
@@ -443,7 +458,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         print("START :image Picker")
         checkPermission()
         //picker.dismiss(animated: true, completion: nil)
-        /*
+        
         print(info[UIImagePickerControllerReferenceURL])
         print(info[UIImagePickerControllerPHAsset] )
         
@@ -462,7 +477,6 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                     let imageFileURL = contentEditingInput?.fullSizeImageURL
                     print("checkpoint4")
                     //create a unique path based on the user's unique id and the current time
-                    //let path = "\(Auth.auth().currentUser?.uid)/\(Int(Date.timeIntervalSinceReferenceDate*1000))/\(photoReferenceUrl.lastPathComponent)"
                     let path = "\(Auth.auth().currentUser!.uid)/\(Int(Date.timeIntervalSinceReferenceDate * 1000))/\(photoReferenceUrl.lastPathComponent)"
                     //save the image file to firebase storage
                     print("path:" + path)
@@ -508,9 +522,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                 }
             }
             print("end else")
-        }*/
-        
-        
+        }
         guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
         }
