@@ -68,7 +68,7 @@ class SearchTableViewController: UITableViewController {
                 searchResultsCell.labelMessage.text = messages[(indexPath as NSIndexPath).row].text
                 searchResultsCell.labelReceiver.text = "Receiver: " + messages[(indexPath as NSIndexPath).row].receiverName
                 searchResultsCell.labelSender.text = "Sender: " + messages[(indexPath as NSIndexPath).row].senderName
-                // TODO: - add time here
+                searchResultsCell.labelTime.text = "Time: " + messages[(indexPath as NSIndexPath).row].timeStamp
             }
         }
         return cell
