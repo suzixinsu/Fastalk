@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     private var usersRef = Constants.refs.databaseUsers
     var username: String?
     var URL: String?
@@ -19,6 +19,8 @@ class SettingsViewController: UIViewController {
     var passwordTextField: UITextField?
     var actionToEnable: UIAlertAction?
     var password = ""
+    var tap = UITapGestureRecognizer()
+
     
     @IBOutlet weak var labelSignOutError: UILabel!
     @IBOutlet weak var labelUsername: UILabel!
@@ -45,10 +47,49 @@ class SettingsViewController: UIViewController {
         tBtn.layer.cornerRadius = 16;
         
         colorChange(Config.colorScheme())
+        
+        if let k = self.fontSize?.text{
+            global.font = Int(k)!
+        }
+        profilePic.isUserInteractionEnabled = true
     }
+    
 
+    @IBAction func tap(_ sender: UITapGestureRecognizer) {
+        let image = UIImagePickerController()
+        image.delegate = self
+        image.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        image.allowsEditing = true
+        self.present(image, animated: true){
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            profilePic.image = image
+            uploadFirebase()
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    private func uploadFirebase() {
+        let storage = Storage.storage()
+        let username = labelUsername.text!
+        let storageRef = storage.reference().child("\(username)")
+        if let uploadData = UIImagePNGRepresentation(self.profilePic.image!) {
+            print("2")
+            storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                if error != nil {
+                    print(error)
+                    print("1")
+                    return
+                }
+            })
+        }
     }
     
     private func getAndSetUsername() {

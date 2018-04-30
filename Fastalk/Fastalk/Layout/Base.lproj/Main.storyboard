@@ -532,6 +532,7 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YWP-Sa-gas">
                                 <rect key="frame" x="50" y="159" width="91" height="21"/>
+                                <gestureRecognizers/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -651,9 +652,14 @@
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GRa-wO-efs">
                                 <rect key="frame" x="117" y="64" width="140" height="87"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Whe-Mw-Fph" appends="YES" id="rpl-qc-gn4"/>
+                                </connections>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="miV-rz-ugQ" firstAttribute="bottom" secondItem="ZVD-Zf-wT7" secondAttribute="bottom" constant="24" id="0We-eA-2go"/>
                             <constraint firstItem="dha-4q-XBj" firstAttribute="leading" secondItem="C3a-8F-ZTw" secondAttribute="leading" id="1ct-0Q-CV1"/>
@@ -729,6 +735,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lLP-Ff-by6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Whe-Mw-Fph">
+                    <connections>
+                        <action selector="tap:" destination="Nwt-cX-hD8" id="QED-yP-4WN"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-3452" y="869.41529235382313"/>
         </scene>
