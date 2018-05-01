@@ -103,7 +103,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
             cell.textView?.textColor = UIColor.black
         }
         if fontSize == 0{
-            fontSize = 20
+            fontSize = 18
         }
         let font = CGFloat(fontSize)
         cell.textView?.font = UIFont.systemFont(ofSize:font)

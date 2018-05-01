@@ -46,9 +46,12 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         tBtn.layer.cornerRadius = 16;
         
         colorChange(Config.colorScheme())
-        
-        if let k = self.fontSize?.text{
-            global.font = Int(k)!
+        if global.font == 0{
+            if let k = self.fontSize?.text{
+                global.font = Int(k)!
+            }
+        }else{
+                fontSize?.text = String(global.font)
         }
         profilePic.isUserInteractionEnabled = true
     }
