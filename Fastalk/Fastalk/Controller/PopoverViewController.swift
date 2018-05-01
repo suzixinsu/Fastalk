@@ -17,6 +17,7 @@ class PopoverViewController: UIViewController {
     private var groupsRef = Constants.refs.databaseGroups
     private var chatsRef = Constants.refs.databaseChats
     private var userChatsRef: DatabaseReference?
+    var username: String?
     var joinGroupId: String?
     let userId = Auth.auth().currentUser!.uid
     
@@ -25,6 +26,7 @@ class PopoverViewController: UIViewController {
     var contactUsername: String?
     var contactUserId: String?
     private var userContactsRef: DatabaseReference?
+    private var friendContactsRef: DatabaseReference?
     private var userContactsRefHandle: DatabaseHandle?
     private var usersRef = Constants.refs.databaseUsers
     private var contactsRef = Constants.refs.databaseContacts
@@ -33,6 +35,8 @@ class PopoverViewController: UIViewController {
         super.viewDidLoad()
         userChatsRef = chatsRef.child(userId)
         self.userContactsRef = self.contactsRef.child(userId)
+        self.friendContactsRef = self.contactsRef
+        getUsername()
     }
     
     deinit {
@@ -158,7 +162,6 @@ class PopoverViewController: UIViewController {
     }
     
     // TODO: - Dismiss Popover after click
-    
     //XIN: add contacts moved to here
     @IBAction func buttonAddClickedAction(_ sender: Any) {
         self.alertController = UIAlertController(title: "Add Contact", message: "Please provide the username", preferredStyle: UIAlertControllerStyle.alert)
@@ -188,8 +191,23 @@ class PopoverViewController: UIViewController {
         let contactItem = [
             "username": self.contactUsername!
         ]
+        let friendContactItem = [
+            "username": self.username!
+        ]
         self.userContactsRef!.child(self.contactUserId!).setValue(contactItem)
+        self.friendContactsRef!.child(self.contactUserId!).child(userId).setValue(friendContactItem)
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    private func getUsername() {
+        self.usersRef.queryOrderedByKey().queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
+            if (snapshot.exists()) {
+                let user = snapshot.value as! NSDictionary
+                let value = user[self.userId] as! NSDictionary
+                let username = value["username"] as! String
+                self.username = username
+            }
+        })
     }
 
     @objc private func checkIfContactUsernameExists() {
@@ -215,6 +233,4 @@ class PopoverViewController: UIViewController {
         let popContactList = storyboard.instantiateViewController(withIdentifier: "newList")
         self.present(popContactList, animated: true, completion: nil)
     }
-
-
 }
