@@ -104,7 +104,7 @@ class ContactsTableViewController: UITableViewController {
                         chatId = chat.allKeys[0] as! String
                     } else {
                         let friendChatItem = [
-                            "receiverName": self.username,
+                            "receiverName": self.username!,
                             "receiverId": self.userId,
                             "lastMessage": "",
                             "timeStamp": "",

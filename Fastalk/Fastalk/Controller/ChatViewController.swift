@@ -130,7 +130,6 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!)
     {
-        print("start didPressSend")
         let itemRef = userMessagesRef!.childByAutoId()
         let date = getDate()
         let receiverName = chat?.receiverName
@@ -174,15 +173,12 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
     override func didPressAccessoryButton(_ sender: UIButton!) {
         let picker = UIImagePickerController()
         picker.delegate = self
-        if(UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)){
-            
+        if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)){
             picker.sourceType = UIImagePickerControllerSourceType.camera
-        }else{
-            print("checkpoint1")
+        } else{
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         }
         present(picker, animated: true, completion: nil)
-        print("End didPressAccessoryButton")
     }
     
     // MARK: - Private Methods
@@ -196,14 +192,9 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
                 self.finishReceivingMessage()
             }
             else if let id = messageData["senderId"] as String?,
-                let photoURL = messageData["photoURL"] as String? { // 1
-                print("show photo")
-                // 2
+                let photoURL = messageData["photoURL"] as String? {
                 if let mediaItem = JSQPhotoMediaItem(maskAsOutgoing: id == self.senderId) {
-                    // 3
-                    
                     self.addPhotoMessage(withId: id, key: snapshot.key, mediaItem: mediaItem)
-                    // 4
                     if photoURL.hasPrefix("gs://") {
                         self.fetchImageDataAtURL(photoURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: nil)
                     }
@@ -338,7 +329,6 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
         }
         //end update
         finishSendingMessage()
-        print("check finish sendings")
         
         return itemRef.key
     }
@@ -368,7 +358,6 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
     private func fetchImageDataAtURL(_ photoURL: String, forMediaItem mediaItem: JSQPhotoMediaItem,
                                      clearsPhotoMessageMapOnSuccessForKey key: String?) {
         // get a reference to the stored image
-        print("fetch data")
         let storageRef = Storage.storage().reference(forURL: photoURL)
         // get the image data from the storage
         storageRef.getData(maxSize: INT64_MAX) { data, error in
@@ -383,7 +372,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
                     return
                 }
                 
-                // 4 if the metadata suggests that the images is a gif you use
+                //if the metadata suggests that the images is a gif you use
                 //a category on uiimage that was pulled in via the swiftgiforigin cocapod
                 if (metadata?.contentType == "image/gif") {
                     mediaItem.image =                    
@@ -394,7 +383,7 @@ class ChatViewController: JSQMessagesViewController,UIBarPositioningDelegate {
                 print("reload after getting data")
                 self.collectionView.reloadData()
                 
-                // 5 remove the key from the photomessagemap nowthat you've fetched the image data
+                //remove the key from the photomessagemap nowthat you've fetched the image data
                 guard key != nil else {
                     return
                 }

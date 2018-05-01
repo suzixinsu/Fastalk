@@ -95,7 +95,6 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
             if let err = error {
                 self.presentAlert(err: err)
             } else {
-                self.saveUser()
                 self.performSegue(withIdentifier: "LoginToChat", sender: self)
             }
         }
@@ -106,15 +105,9 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
             if let err = error {
                 self.presentAlert(err: err)
             } else {
-                self.saveUser()
                 self.performSegue(withIdentifier: "RegisterToSetUsername", sender: self)
             }
         }
-    }
-    
-    private func saveUser() {
-        let userId = Auth.auth().currentUser?.uid
-        let email = Auth.auth().currentUser?.email
     }
     
     // MARK: - UI Actions
@@ -128,7 +121,6 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
         let checkResults = check()
         if (checkResults) {
             if (currentOption == 0) {
-                //success = login(finish: hanlderBlock)
                 login()
             } else {
                 register()
