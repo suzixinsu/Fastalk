@@ -10,5 +10,3 @@ import Foundation
 
 let navColor = ["navDefault", "navL","navP","navT"]
 let tabTintColor = ["tabTintDefault","tabTintL", "tabTintP","tabTintT"]
-
-

@@ -81,7 +81,6 @@ class ContactsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let friendname = contacts[indexPath.row].username
         let friendId = contacts[indexPath.row].userId
-        //TODO: - change date to last message
         
         self.chatsRef.child(userId).queryOrdered(byChild: "receiverId").queryEqual(toValue: friendId).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
@@ -148,7 +147,6 @@ class ContactsTableViewController: UITableViewController {
                 print("Error! Could not decode contact data")
             }
         })
-        //TODO: reorder the tabel cells according to time
     }
     
     private func getUsername() {
@@ -166,12 +164,10 @@ class ContactsTableViewController: UITableViewController {
         
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
         let chatVC = storyboard.instantiateViewController(withIdentifier: "chatVC") as? ChatViewController
-        //let nav = UINavigationController(rootViewController: chatVC!)
         chatVC?.chat = self.selectedChat
         chatVC?.senderId = self.userId
         chatVC?.senderDisplayName = self.username
         self.present(chatVC!, animated: true, completion: nil)
-        //self dismissViewControllerAnimated:NO completion:nil
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

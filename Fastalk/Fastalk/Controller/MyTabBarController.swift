@@ -22,15 +22,6 @@ class MyTabBarController: UITabBarController {
         super.didReceiveMemoryWarning()
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     @IBAction func AddClickedAction(_ sender: UIBarButtonItem) {
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "popoverViewController")
@@ -47,9 +38,8 @@ class MyTabBarController: UITabBarController {
         self.tabBar.tintColor = UIColor(named: tabTintColor[colorIdx])
     }
     
-
-    
 }
+
 extension MyTabBarController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none

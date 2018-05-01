@@ -33,14 +33,11 @@ class SetUsernameViewController: UIViewController, UINavigationControllerDelegat
         //self.buttonDone.isEnabled = false
     }
     
-    // TODO: - Require username
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
     // MARK: - Private Methods
-    
     private func presentAlert() {
         self.alertController = UIAlertController(title: "Set Username", message: "", preferredStyle: UIAlertControllerStyle.alert)
         self.alertController!.addTextField { (textField) -> Void in
@@ -68,8 +65,6 @@ class SetUsernameViewController: UIViewController, UINavigationControllerDelegat
             "email": self.email
         ]
         self.usersRef.child(self.userId!).setValue(userItem)
-        
-        //Config.setUsername(self.username!)
     }
     
     private func uploadFirebase() {
@@ -128,12 +123,5 @@ class SetUsernameViewController: UIViewController, UINavigationControllerDelegat
         uploadFirebase()
         self.updateUserInfo()
     }
-    /*
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

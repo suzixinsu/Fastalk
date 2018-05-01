@@ -19,7 +19,6 @@ class PopoverViewController: UIViewController {
     private var userChatsRef: DatabaseReference?
     var joinGroupId: String?
     let userId = Auth.auth().currentUser!.uid
-
     
     //XIN: add action: commentes to be deletedd
     var usernameTextField: UITextField?
@@ -29,12 +28,10 @@ class PopoverViewController: UIViewController {
     private var userContactsRefHandle: DatabaseHandle?
     private var usersRef = Constants.refs.databaseUsers
     private var contactsRef = Constants.refs.databaseContacts
-    //let userId = Auth.auth().currentUser!.uid
     
     override func viewDidLoad() {
         super.viewDidLoad()
         userChatsRef = chatsRef.child(userId)
-        //startObserve()
         self.userContactsRef = self.contactsRef.child(userId)
     }
     
@@ -58,8 +55,6 @@ class PopoverViewController: UIViewController {
         
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let groupName = self.groupNameTextField!.text!
-            //TODO: - change date to last message
-            
             let groupItem = [
                 "groupName" : groupName,
                 "ownerId": self.userId,
@@ -102,7 +97,6 @@ class PopoverViewController: UIViewController {
         
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
             let groupName = self.groupNameTextField!.text!
-            //TODO: - change date to last message
             let groupChatItem = [
                 "receiverId": "group",
                 "receiverName" : groupName,
@@ -159,16 +153,8 @@ class PopoverViewController: UIViewController {
         })
     }
     
-    
     // TODO: - Dismiss Popover after click
-
-    /*
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
     //XIN: add contacts moved to here
     
     @IBAction func buttonAddClickedAction(_ sender: Any) {
@@ -200,10 +186,6 @@ class PopoverViewController: UIViewController {
             "username": self.contactUsername!
         ]
         self.userContactsRef!.child(self.contactUserId!).setValue(contactItem)
-//        let storyboard = UIStoryboard(name: "Main", bundle:nil)
-//        let tabBar = storyboard.instantiateViewController(withIdentifier: "MyTabBarController") as? MyTabBarController
-//        tabBar?.selectedIndex = 1
-//        self.present(tabBar!, animated: true, completion: nil)
         jumpTo()
     }
 
@@ -226,7 +208,6 @@ class PopoverViewController: UIViewController {
 
     //new chat
     @IBAction func newChat(_ sender: Any) {
-        //jumpTo(1)
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
         let popContactList = storyboard.instantiateViewController(withIdentifier: "newList")
         self.present(popContactList, animated: true, completion: nil)
@@ -235,7 +216,6 @@ class PopoverViewController: UIViewController {
     private func jumpTo() {
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
         let nav = storyboard.instantiateViewController(withIdentifier: "startNavigation")
-        //nav.tabBarController?.selectedIndex = index
         self.present(nav, animated: true, completion: nil)
         self.dismiss(animated: true, completion: nil)
     }

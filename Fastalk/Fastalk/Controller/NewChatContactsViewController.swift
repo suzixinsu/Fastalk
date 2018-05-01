@@ -34,11 +34,10 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
         addChatContactList.dataSource = self
         getUsername()
         startObserve()
-        // Do any additional setup after loading the view.
-        //print(contacts.count)
         self.navBar.barTintColor = UIColor(named: navColor[Config.colorScheme()])
 
     }
+    
     deinit {
         if let refHandle = userContactsRefHandle {
             self.userContactsRef!.removeObserver(withHandle: refHandle)
@@ -47,10 +46,9 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //print(contacts.count)
         return contacts.count
     }
     
@@ -63,11 +61,10 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
     
     @IBAction func actionBack(_ sender: Any) {
         var parentVC = self.presentingViewController
-//        parentVC?.dismiss(animated: true, completion: nil)
         parentVC = parentVC?.presentingViewController
         parentVC?.dismiss(animated: true, completion: nil)
-        //self.dismiss(animated: true, completion: nil)
     }
+    
     func position(for bar: UIBarPositioning) -> UIBarPosition {
         return .topAttached
     }
@@ -75,7 +72,6 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let friendname = contacts[indexPath.row].username
         let friendId = contacts[indexPath.row].userId
-        //TODO: - change date to last message
         
         self.chatsRef.child(userId).queryOrdered(byChild: "receiverId").queryEqual(toValue: friendId).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
@@ -89,7 +85,6 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
                 let hasNewMessage = chatContent["hasNewMessage"] as! Bool
                 let chatItem = Chat(id: id, receiverId: receiverId, receiverName: receiverName, lastMessage: lastMessage, timeStamp: timeStamp, hasNewMessage: hasNewMessage)
                 self.selectedChat = chatItem
-//                self.performSegue(withIdentifier: "toChat", sender: self.addChatContactList)
                 self.getChat()
             } else {
                 self.chatsRef.child(friendId).queryOrdered(byChild: "receiverId").queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -121,8 +116,6 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
                     userNewChatRef.setValue(userChatItem)
                     let chatItem = Chat(id: chatId, receiverId: friendId, receiverName: friendname, lastMessage: "", timeStamp: "", hasNewMessage: false)
                     self.selectedChat = chatItem
-                    //print("START SEGUE")
-//                    self.performSegue(withIdentifier: "toChat", sender: self.addChatContactList)
                     self.getChat()
                 })
             }
@@ -138,17 +131,14 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
             let contactsData = snapshot.value as! Dictionary<String, AnyObject>
             if let contactName = contactsData["username"] as! String?, contactName.count > 0 {
                 self.contacts.append(Contact(username: contactName, userId: contactId))
-                //print(self.contacts.count)
                 self.addChatContactList.reloadData()
             } else {
                 print("Error! Could not decode contact data")
             }
         })
-        //TODO: reorder the tabel cells according to time
     }
 
     private func getUsername() {
-        
         self.usersRef.queryOrderedByKey().queryEqual(toValue: self.userId).observeSingleEvent(of: .value, with: { (snapshot) in
             if (snapshot.exists()) {
                 let user = snapshot.value as! NSDictionary
@@ -163,19 +153,11 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
 
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
         let chatVC = storyboard.instantiateViewController(withIdentifier: "chatVC") as? ChatViewController
-        //let nav = UINavigationController(rootViewController: chatVC!)
         chatVC?.chat = self.selectedChat
         chatVC?.senderId = self.userId
         chatVC?.senderDisplayName = self.username
         self.present(chatVC!, animated: true, completion: nil)
-        //self dismissViewControllerAnimated:NO completion:nil
     }
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        let chatVc = segue.destination as! ChatViewController
-//        chatVc.chat = self.selectedChat
-//        chatVc.senderId = self.userId
-//        chatVc.senderDisplayName = self.username
-//    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80

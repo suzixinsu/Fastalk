@@ -14,7 +14,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     var username: String?
     var URL: String?
     let userId = Auth.auth().currentUser?.uid
-    //var colorId: Int?
     var alertController:UIAlertController? = nil
     var passwordTextField: UITextField?
     var actionToEnable: UIAlertAction?
@@ -126,7 +125,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
             
         })
     }
-
     
     @IBAction func buttonLogOutClickedAction(_ sender: Any) {
         let firebaseAuth = Auth.auth()
@@ -141,13 +139,15 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
     @IBAction func actionDefault(_ sender: Any) {
         colorChange(0)
     }
+    
     @IBAction func actionLove(_ sender: Any) {
         colorChange(1)
-        
     }
+    
     @IBAction func actionPeace(_ sender: Any) {
         colorChange(2)
     }
+    
     @IBAction func actionTradition(_ sender: Any) {
         colorChange(3)
     }
@@ -171,7 +171,6 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
         self.navigationController?.navigationBar.barTintColor = UIColor(named: navColor[colorIdx])
         self.tabBarController?.tabBar.tintColor = UIColor(named: tabTintColor[colorIdx])
     }
-    
 
     @IBAction func fontAdd(_ sender: Any) {
         if let k = self.fontSize?.text{
@@ -179,12 +178,14 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
             global.font = Int(k)!
         }
     }
+    
     @IBAction func fontMinus(_ sender: Any) {
         if let k = self.fontSize?.text{
             self.fontSize.text = String(Int(k)!-1)
             global.font = Int(k)!
         }
     }
+    
     struct global{
         static var font = Int()
     }

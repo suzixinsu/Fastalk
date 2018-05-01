@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-//new import
 import AVFoundation
 
 class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
@@ -116,8 +115,6 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
     private func saveUser() {
         let userId = Auth.auth().currentUser?.uid
         let email = Auth.auth().currentUser?.email
-//        Config.setUserId(userId!)
-//        Config.setEmail(email!)
     }
     
     // MARK: - UI Actions
@@ -138,11 +135,4 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-    
-    // MARK: - Navigation
-    /*
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    }
-    */
-    
 }

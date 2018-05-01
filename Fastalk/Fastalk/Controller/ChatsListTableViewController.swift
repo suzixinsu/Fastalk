@@ -27,8 +27,6 @@ class ChatsListTableViewController: UITableViewController {
 
         getUsername()
         observeChats()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
     }
     
     deinit {
@@ -62,8 +60,6 @@ class ChatsListTableViewController: UITableViewController {
         } else {
             cell.imageBell.isHidden = true
         }
-        //cell.imageView?.image = UIImage(named: "AppIcon")
-        
         return cell
     }
     
@@ -73,60 +69,36 @@ class ChatsListTableViewController: UITableViewController {
             self.deleteChat(indexPath)
             completion(true)
         }
-        //delete.backgroundColor = color.red
-        
         let config = UISwipeActionsConfiguration(actions:[delete])
         config.performsFirstActionWithFullSwipe = false
         return config
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
-        let storyboard = UIStoryboard(name: "Main", bundle:nil)
-                if let indexPath = tableView.indexPathForSelectedRow{
-                    let selectedRow = indexPath.row
-                    let selectedChat = chats[selectedRow]
-                    selectedChat.setHasNewMessage(false)
-                    
-                    //update chat hasNewMessage in database
-                    if (selectedChat.receiverName != "group") {
-                        let chatId = selectedChat.id
-                        let userChatRef = Constants.refs.databaseChats.child(self.userId!).child(chatId)
-                        userChatRef.updateChildValues(["hasNewMessage" : false])
-                    } else {
-                        self.groupChatsRef.child(selectedChat.id).updateChildValues(["hasNewMessage" : true])
-                    }
-                    
-                    //let chatVc = segue.destination as! ChatViewController
-                    //let chatVC =  storyboard.instantiateViewController(withIdentifier: "chatVC")
-                    let chatVC = ChatViewController()
-                    chatVC.chat = selectedChat
-                    chatVC.senderId = self.userId
-                    chatVC.senderDisplayName = self.username
-                    self.present(chatVC, animated: true, completion: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let indexPath = tableView.indexPathForSelectedRow{
+                let selectedRow = indexPath.row
+                let selectedChat = chats[selectedRow]
+                selectedChat.setHasNewMessage(false)
+                
+                //update chat hasNewMessage in database
+                if (selectedChat.receiverName != "group") {
+                    let chatId = selectedChat.id
+                    let userChatRef = Constants.refs.databaseChats.child(self.userId!).child(chatId)
+                    userChatRef.updateChildValues(["hasNewMessage" : false])
+                } else {
+                    self.groupChatsRef.child(selectedChat.id).updateChildValues(["hasNewMessage" : true])
                 }
-        //let chatVC = storyboard.instantiateViewController(withIdentifier: "chatVC") as? ChatViewController
-
+                
+                let chatVC = ChatViewController()
+                chatVC.chat = selectedChat
+                chatVC.senderId = self.userId
+                chatVC.senderDisplayName = self.username
+                self.present(chatVC, animated: true, completion: nil)
+            }
     }
     
     // MARK: - Privage Methods
-    /* show full date if time difference larger than 24 hours
-    private func showDate(_ thenDateString:String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm MM/dd/yy"
-        let thenDate = dateFormatter.date(from: thenDateString)
-        let nowDate = Date()
-        let calendar = Calendar.current
-        let diffHours = calendar.dateComponents([.hour], from: thenDate!, to: nowDate).hour ?? 0
-        if (diffHours >= 24) {
-            return thenDateString
-        } else {
-            dateFormatter.dateFormat = "hh:mm"
-            let convertedDate = dateFormatter.string(from: thenDate!)
-            return convertedDate
-        }
-    }
-    */
-    
     private func observeChats() {
         chatsRefHandle = self.currentUserChatsRef?.observe(.childAdded, with: { (snapshot) -> Void in
             let chatsData = snapshot.value as! Dictionary<String, AnyObject>
@@ -139,8 +111,6 @@ class ChatsListTableViewController: UITableViewController {
                 print("Error! Could not decode chat data")
             }
         })
-        
-        //TODO: -show new messages reminder
         
         //show new message for individual chat
         self.currentUserChatsRef?.observe(.childChanged, with: { (snapshot) in
@@ -216,52 +186,8 @@ class ChatsListTableViewController: UITableViewController {
         self.tableView.deleteRows(at: [indexPath], with: .automatic)
     }
 
-    // MARK: - UI Actions
-//    @IBAction func AddClickedAction(_ sender: UIBarButtonItem) {
-//        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//        let vc = storyboard.instantiateViewController(withIdentifier: "popoverViewController")
-//        vc.modalPresentationStyle = UIModalPresentationStyle.popover
-//        vc.preferredContentSize = CGSize(width: 150, height: 240)
-//        let popover = vc.popoverPresentationController!
-//        popover.barButtonItem = sender
-//        popover.delegate = self
-//        present(vc, animated: true, completion:nil)
-//    }
-//
-    // MARK: - Navigation
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if let indexPath = tableView.indexPathForSelectedRow{
-//            let selectedRow = indexPath.row
-//            let chatVc = segue.destination as! ChatViewController
-//            let selectedChat = chats[selectedRow]
-//            chatVc.chat = selectedChat
-//            chatVc.senderId = self.userId
-//            chatVc.senderDisplayName = self.username
-//        }
-//    }
     //set height
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
     }
-//
-//    private func getChat(){
-//
-//        let storyboard = UIStoryboard(name: "Main", bundle:nil)
-//        let chatVC = storyboard.instantiateViewController(withIdentifier: "chatVC") as? ChatViewController
-//        //let nav = UINavigationController(rootViewController: chatVC!)
-//        chatVC?.chat = self.selectedChat
-//        chatVC?.senderId = self.userId
-//        chatVC?.senderDisplayName = self.username
-//        self.present(chatVC!, animated: true, completion: nil)
-//        //self dismissViewControllerAnimated:NO completion:nil
-//    }
 }
-
-
-//
-//extension ChatsListTableViewController: UIPopoverPresentationControllerDelegate {
-//    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-//        return UIModalPresentationStyle.none
-//    }
-//}
-
