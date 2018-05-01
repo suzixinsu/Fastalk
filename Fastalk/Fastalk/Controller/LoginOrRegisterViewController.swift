@@ -17,6 +17,7 @@ class LoginOrRegisterViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var segControl: UISegmentedControl!
     @IBOutlet weak var labelEmail: UILabel!
     @IBOutlet weak var labelPassword: UILabel!
+    
 
     var Player:AVPlayer!
     var PlayerLayer:AVPlayerLayer!

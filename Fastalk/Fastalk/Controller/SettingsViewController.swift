@@ -205,10 +205,12 @@ class SettingsViewController: UIViewController, UINavigationControllerDelegate, 
                 self.presentSuccess()
             }
         })
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel)
         
         OKAction.isEnabled = false
         actionToEnable = OKAction
         self.alertController!.addAction(OKAction)
+        self.alertController!.addAction(cancelAction)
         self.present(self.alertController!, animated: true, completion:nil)
         
         self.passwordTextField!.addTarget(self, action: #selector(checkPassword), for: .editingChanged)
