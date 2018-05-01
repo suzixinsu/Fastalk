@@ -46,11 +46,13 @@ class PopoverViewController: UIViewController {
     }
     
     @IBAction func newGroupButtonClicked(_ sender: Any) {
+        //self.dismiss(animated: true, completion: nil)
         self.alertController = UIAlertController(title: "New Group", message: "Please provide the group name", preferredStyle: UIAlertControllerStyle.alert)
         
         self.alertController!.addTextField { (textField) -> Void in
             self.groupNameTextField = textField
             self.groupNameTextField?.placeholder = "Enter the group name"
+            
         }
         
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) -> Void in
@@ -85,6 +87,7 @@ class PopoverViewController: UIViewController {
         present(self.alertController!, animated: true, completion:nil)
 
         self.groupNameTextField!.addTarget(self, action: #selector(checkIfNameExists), for: .editingChanged)
+        
     }
     
     @IBAction func groupChatButtonClicked(_ sender: Any) {
@@ -115,6 +118,7 @@ class PopoverViewController: UIViewController {
         present(self.alertController!, animated: true, completion:nil)
         
         self.groupNameTextField!.addTarget(self, action: #selector(checkIfGroupExists), for: .editingChanged)
+       // self.dismiss(animated: true, completion: nil)
     }
 
     @objc func checkIfGroupExists() {
@@ -156,7 +160,6 @@ class PopoverViewController: UIViewController {
     // TODO: - Dismiss Popover after click
     
     //XIN: add contacts moved to here
-    
     @IBAction func buttonAddClickedAction(_ sender: Any) {
         self.alertController = UIAlertController(title: "Add Contact", message: "Please provide the username", preferredStyle: UIAlertControllerStyle.alert)
         
@@ -186,7 +189,7 @@ class PopoverViewController: UIViewController {
             "username": self.contactUsername!
         ]
         self.userContactsRef!.child(self.contactUserId!).setValue(contactItem)
-        jumpTo()
+        self.dismiss(animated: true, completion: nil)
     }
 
     @objc private func checkIfContactUsernameExists() {
@@ -212,12 +215,6 @@ class PopoverViewController: UIViewController {
         let popContactList = storyboard.instantiateViewController(withIdentifier: "newList")
         self.present(popContactList, animated: true, completion: nil)
     }
-    
-    private func jumpTo() {
-        let storyboard = UIStoryboard(name: "Main", bundle:nil)
-        let nav = storyboard.instantiateViewController(withIdentifier: "startNavigation")
-        self.present(nav, animated: true, completion: nil)
-        self.dismiss(animated: true, completion: nil)
-    }
+
 
 }

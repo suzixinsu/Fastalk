@@ -150,7 +150,6 @@ class NewChatContactsViewController: UIViewController, UIBarPositioningDelegate,
     }
     
     private func getChat(){
-
         let storyboard = UIStoryboard(name: "Main", bundle:nil)
         let chatVC = storyboard.instantiateViewController(withIdentifier: "chatVC") as? ChatViewController
         chatVC?.chat = self.selectedChat
