@@ -522,7 +522,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPm-UB-e0K">
-                                <rect key="frame" x="157" y="558" width="60" height="30"/>
+                                <rect key="frame" x="158" y="558" width="60" height="30"/>
                                 <state key="normal" title="Sign Out"/>
                                 <connections>
                                     <action selector="buttonLogOutClickedAction:" destination="Nwt-cX-hD8" eventType="touchUpInside" id="NlA-qD-hgV"/>
@@ -566,9 +566,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P4V-0P-LJK">
-                                <rect key="frame" x="157" y="339" width="60" height="30"/>
+                                <rect key="frame" x="77" y="339" width="222" height="30"/>
                                 <color key="backgroundColor" name="navDefault"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="222" id="0mc-p0-l3U"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="BFx-OF-Rwo"/>
                                     <constraint firstAttribute="height" constant="30" id="Jed-tv-uk5"/>
                                 </constraints>
                                 <state key="normal" title="Default">
@@ -579,9 +581,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i8d-qV-HmK">
-                                <rect key="frame" x="157" y="378" width="60" height="30"/>
+                                <rect key="frame" x="77" y="378" width="222" height="30"/>
                                 <color key="backgroundColor" red="1" green="0.3529411764705882" blue="0.37254901960784315" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="222" id="DtO-gM-iUC"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="VMX-vk-qZW"/>
                                     <constraint firstAttribute="height" constant="30" id="kya-gh-x5n"/>
                                 </constraints>
                                 <state key="normal" title="Love">
@@ -592,10 +596,12 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A4Y-GN-Jmi">
-                                <rect key="frame" x="157" y="419" width="60" height="30"/>
+                                <rect key="frame" x="77" y="419" width="222" height="30"/>
                                 <color key="backgroundColor" red="0.34901960784313724" green="0.73333333333333328" blue="0.81176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="jRd-vW-mt3"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="m2Q-3r-OAl"/>
+                                    <constraint firstAttribute="width" constant="222" id="trH-2X-T2R"/>
                                 </constraints>
                                 <color key="tintColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                 <state key="normal" title="Peace">
@@ -606,10 +612,12 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LWM-xB-OVj">
-                                <rect key="frame" x="157" y="461" width="60" height="30"/>
+                                <rect key="frame" x="77" y="461" width="222" height="30"/>
                                 <color key="backgroundColor" name="navT"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="I1Q-vr-KDj"/>
+                                    <constraint firstAttribute="width" constant="222" id="Xpg-XO-sKA"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="aGl-yw-y2X"/>
                                 </constraints>
                                 <state key="normal" title="Tradition">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
